@@ -1,0 +1,94 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URI")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Workflow {
+  id                String        @id
+  start             DateTime?
+  complete          DateTime?
+  projectDir        String
+  profile           String
+  homeDir           String
+  workDir           String
+  container         String
+  commitId          String?
+  errorMessage      String?
+  repository        String?
+  containerEngine   String?
+  scriptFile        String
+  userName          String
+  launchDir         String
+  runName           String
+  sessionId         String
+  errorReport       String?
+  scriptId          String
+  revision          String?
+  exitStatus        Int?
+  commandLine       String
+  stubRun           Boolean
+  nextflow          Json
+  stats             Json
+  resume            Boolean
+  success           Boolean
+  projectName       String
+  scriptName        String
+  duration          Int
+  params            Json
+  configFiles       String[]
+  configText        String
+  operationId       String?
+  logFile           String?
+  outFile           String?
+  manifest          Json
+  processNames String[]
+  // metrics           Metric[]
+  progress Progress?
+  tasks Task[]
+
+  @@index([id])
+}
+
+model Progress {
+  id          String      @id @unique
+  pending     Int
+  ignored     Int
+  loadCpus    Int
+  loadMemory  Int
+  processes   Json
+  aborted     Int
+  succeeded   Int
+  peakMemory  Int
+  peakCpus    Int
+  failed      Int
+  running     Int
+  retries     Int
+  peakRunning Int
+  cached      Int
+  submitted   Int
+  index       Int?
+  name        String?
+  stored      Int?
+  terminated  Boolean?
+  
+  workflow          Workflow @relation(fields: [workflowId], references: [id])
+  workflowId        String @unique
+
+  @@index([id, workflowId])
+}
+
+model Task {
+  id Int @id @default(autoincrement())
+  taskId Int
+  data Json
+
+  workflow          Workflow @relation(fields: [workflowId], references: [id])
+  workflowId        String
+
+  @@unique([workflowId, taskId])
+  @@index([taskId, workflowId])
+}
