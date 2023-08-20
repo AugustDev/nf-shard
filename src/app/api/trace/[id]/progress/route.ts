@@ -47,7 +47,9 @@ export async function PUT(request: Request, { params }: any) {
         submitted: requestJson.progress.submitted,
       },
     });
-  } catch (error) {}
+  } catch (e: any) {
+    return NextResponse.json({ error: e }, { status: 500 });
+  }
 
   return NextResponse.json({});
 }

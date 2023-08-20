@@ -7,10 +7,21 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator json {
+  provider = "prisma-json-types-generator"
+  // namespace = "PrismaJson"
+  // clientOutput = "<finds it automatically>"
+  // (./ -> relative to schema, or an importable path to require() it)
+  // useType = "MyType"
+  // In case you need to use a type, export it inside the namespace and we will add a index signature to it
+  // (e.g.  export namespace PrismaJson { export type MyType = {a: 1, b: 2} }; will generate namespace.MyType["TYPE HERE"])
+}
+
 model Workflow {
   id                String        @id
   start             DateTime?
   complete          DateTime?
+  updatedAt         DateTime @updatedAt @default(now())
   projectDir        String
   profile           String
   homeDir           String
@@ -31,7 +42,11 @@ model Workflow {
   exitStatus        Int?
   commandLine       String
   stubRun           Boolean
+
+  /// [Nextflow]
   nextflow          Json
+
+  /// [stats]
   stats             Json
   resume            Boolean
   success           Boolean
@@ -44,13 +59,17 @@ model Workflow {
   operationId       String?
   logFile           String?
   outFile           String?
+
+  /// [Manifest]
   manifest          Json
   processNames String[]
-  // metrics           Metric[]
+
+  /// [Metric]
+  metrics           Json[]
   progress Progress?
   tasks Task[]
 
-  @@index([id])
+  @@index([id, updatedAt])
 }
 
 model Progress {
@@ -58,11 +77,11 @@ model Progress {
   pending     Int
   ignored     Int
   loadCpus    Int
-  loadMemory  Int
+  loadMemory  BigInt
   processes   Json
   aborted     Int
   succeeded   Int
-  peakMemory  Int
+  peakMemory  BigInt
   peakCpus    Int
   failed      Int
   running     Int
@@ -74,7 +93,7 @@ model Progress {
   name        String?
   stored      Int?
   terminated  Boolean?
-  
+
   workflow          Workflow @relation(fields: [workflowId], references: [id])
   workflowId        String @unique
 

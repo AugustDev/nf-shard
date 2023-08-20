@@ -3,6 +3,7 @@
 import { FC, Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 const user = {
   name: "Tom Cook",
@@ -11,7 +12,7 @@ const user = {
     "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 };
 const navigation = [
-  { name: "Runs", href: "#", current: true },
+  { name: "Runs", href: "/runs", current: true },
   { name: "Team", href: "#", current: false },
 ];
 const userNavigation = [
@@ -51,7 +52,7 @@ function ProfileDropdown() {
           {userNavigation.map((item) => (
             <Menu.Item key={item.name}>
               {({ active }) => (
-                <a
+                <Link
                   href={item.href}
                   className={classNames(
                     active ? "bg-gray-100" : "",
@@ -59,7 +60,7 @@ function ProfileDropdown() {
                   )}
                 >
                   {item.name}
-                </a>
+                </Link>
               )}
             </Menu.Item>
           ))}
