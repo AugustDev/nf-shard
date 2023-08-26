@@ -1,1 +1,1 @@
-export { fullDateTime, safeDiffMinutes } from "./datetime";
+export { fullDateTime, safeDiffMinutes, formatDuration } from "./datetime";

@@ -4,25 +4,31 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "gen-types": "",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@headlessui/react": "^1.7.16",
     "@heroicons/react": "^2.0.18",
     "@mantine/core": "^6.0.19",
     "@mantine/hooks": "^6.0.19",
     "@mantine/prism": "^6.0.19",
+    "@mui/material": "^5.14.5",
     "@prisma/client": "^5.1.1",
     "@tailwindcss/forms": "^0.5.4",
+    "@textea/json-viewer": "^3.1.1",
+    "@types/bytes": "^3.1.1",
     "@types/moment": "^2.13.0",
     "@types/nanoid": "^3.0.0",
     "@types/node": "20.4.8",
     "@types/react": "18.2.18",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.14",
+    "bytes": "^3.1.2",
     "clsx": "^2.0.0",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.13",
@@ -38,7 +44,7 @@
   },
   "devDependencies": {
     "@types/uuid": "^9.0.2",
-    "prisma": "^5.1.1",
+    "prisma": "^5.2.0",
     "prisma-json-types-generator": "^3.0.0-beta.4"
   }
 }

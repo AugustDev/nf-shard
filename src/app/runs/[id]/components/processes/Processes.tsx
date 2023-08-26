@@ -1,16 +1,8 @@
-import { CheckCircleIcon } from "@heroicons/react/20/solid";
+import { Process } from "@/app/api/trace/[id]/begin/types";
 import { clsx } from "clsx";
 
-type ProcessProps = {
-  name: string;
-  status: string;
-  totalProcesses: number;
-  completedProcesses: number;
-  failedProcesses: number;
-};
-
 type ProcessesProps = {
-  jobs: ProcessProps[];
+  processes: Process[];
   className?: string;
 };
 
@@ -49,7 +41,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
 };
 
 export const Processes: React.FC<ProcessesProps> = ({
-  jobs,
+  processes,
   className,
 }: ProcessesProps) => {
   return (
@@ -65,28 +57,37 @@ export const Processes: React.FC<ProcessesProps> = ({
         </dt>
       </div>
       <div className="flex flex-col border-t border-gray-900/5 pt-6">
-        {jobs.map((step) => (
-          <div key={step.name} className="mx-6">
-            <a href="#">
-              <div className="flex flex-col w-full">
-                <div className="flex flex-row justify-between">
-                  <span className="text-sm font-medium text-gray-500 group-hover:text-gray-900">
-                    {step.name}
-                  </span>
-                  <span className="text-sm font-medium text-gray-500 group-hover:text-gray-900">
-                    {step.completedProcesses + step.failedProcesses}/
-                    {step.totalProcesses}
-                  </span>
+        {processes.map((progress) => {
+          const total =
+            progress.succeeded +
+            progress.failed +
+            progress.running +
+            progress.pending +
+            progress.aborted +
+            progress.cached +
+            progress.ignored;
+          return (
+            <div key={progress.index} className="mx-6">
+              <a href="#">
+                <div className="flex flex-col w-full">
+                  <div className="flex flex-row justify-between">
+                    <span className="text-sm font-medium text-gray-500 group-hover:text-gray-900">
+                      {progress.name}
+                    </span>
+                    <span className="text-sm font-medium text-gray-500 group-hover:text-gray-900">
+                      {progress.succeeded + progress.failed} / {total}
+                    </span>
+                  </div>
+                  <ProgressBar
+                    completed={progress.succeeded}
+                    failed={progress.failed}
+                    total={total}
+                  />
                 </div>
-                <ProgressBar
-                  completed={step.completedProcesses}
-                  failed={step.failedProcesses}
-                  total={step.totalProcesses}
-                />
-              </div>
-            </a>
-          </div>
-        ))}
+              </a>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

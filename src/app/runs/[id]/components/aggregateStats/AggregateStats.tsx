@@ -1,38 +1,61 @@
+"use client";
+
 import { clsx } from "clsx";
+import { Task } from "@prisma/client";
+import { useMemo } from "react";
+import { formatDuration } from "@common/utils/index";
+const bytes = require("bytes");
 
 type AggregateStatsProps = {
-  wall_time: string;
-  cpu_time: string;
-  total_memory: string;
-  storage_read: string;
-  storage_write: string;
-  estimated_cost_usd: string;
+  tasks: Task[];
+  wallTime: number;
   className?: string;
 };
 
-export const AggregateStats: React.FC = () => {
-  const props: AggregateStatsProps = {
-    wall_time: "16m 50s",
-    cpu_time: "1.4",
-    total_memory: "29.09",
-    storage_read: "32.28",
-    storage_write: "21.55",
-    estimated_cost_usd: "0.051",
-  };
+type Stats = {
+  cpuTime: number;
+  totalMemory: number;
+  storageRead: number;
+  storageWrite: number;
+  estimatedCostUsd: number;
+};
+
+export const AggregateStats: React.FC<AggregateStatsProps> = ({
+  tasks,
+  wallTime,
+  className,
+}: AggregateStatsProps) => {
+  const aggregates = useMemo(() => {
+    let aggr: Stats = {
+      cpuTime: 0,
+      totalMemory: 0,
+      storageRead: 0,
+      storageWrite: 0,
+      estimatedCostUsd: 0,
+    };
+    for (const task of tasks) {
+      aggr.cpuTime +=
+        (task?.data.cpus * task?.data.realtime) / (3600 * 1000) ?? 0;
+      aggr.totalMemory += task?.data.rss ?? 0;
+      aggr.storageRead += task?.data.readBytes ?? 0;
+      aggr.storageWrite += task?.data.writeBytes ?? 0;
+    }
+
+    return aggr;
+  }, [tasks]);
+
+  const averageCostPerCpuHour = 0.1;
+  const costEstimate = aggregates.cpuTime * averageCostPerCpuHour;
+
   return (
     <div>
-      <dl
-        className={clsx(
-          props.className,
-          "grid grid-cols-1 gap-5 sm:grid-cols-3"
-        )}
-      >
+      <dl className={clsx(className, "grid grid-cols-1 gap-5 sm:grid-cols-3")}>
         <div className="overflow-hidden rounded-md bg-white px-4 py-5 shadow sm:p-6">
           <dt className="truncate text-sm font-medium text-gray-500">
             Wall Time
           </dt>
           <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-            {props.wall_time}
+            {formatDuration(wallTime)}
           </dd>
         </div>
         <div className="overflow-hidden rounded-md bg-white px-4 py-5 shadow sm:p-6">
@@ -40,7 +63,7 @@ export const AggregateStats: React.FC = () => {
             CPU time
           </dt>
           <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-            {props.cpu_time} h
+            {aggregates.cpuTime.toFixed(2)} h
           </dd>
         </div>
         <div className="overflow-hidden rounded-md bg-white px-4 py-5 shadow sm:p-6">
@@ -48,7 +71,7 @@ export const AggregateStats: React.FC = () => {
             Total Memory
           </dt>
           <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-            {props.total_memory} GB
+            {bytes(aggregates.totalMemory, { unitSeparator: " " })}
           </dd>
         </div>
         <div className="overflow-hidden rounded-md bg-white px-4 py-5 shadow sm:p-6">
@@ -56,7 +79,7 @@ export const AggregateStats: React.FC = () => {
             Storage Read
           </dt>
           <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-            {props.storage_read} GB
+            {bytes(aggregates.storageRead, { unitSeparator: " " })}
           </dd>
         </div>
         <div className="overflow-hidden rounded-md bg-white px-4 py-5 shadow sm:p-6">
@@ -64,7 +87,7 @@ export const AggregateStats: React.FC = () => {
             Storage Write
           </dt>
           <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-            {props.storage_write} GB
+            {bytes(aggregates.storageWrite, { unitSeparator: " " })}
           </dd>
         </div>
         <div className="overflow-hidden rounded-md bg-white px-4 py-5 shadow sm:p-6">
@@ -72,7 +95,7 @@ export const AggregateStats: React.FC = () => {
             Estimated Cost
           </dt>
           <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-            $ {props.estimated_cost_usd}
+            $ {costEstimate.toFixed(3)}
           </dd>
         </div>
       </dl>

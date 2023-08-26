@@ -20,7 +20,6 @@ export const RunsTable: React.FC<RunsTableProps> = ({
   const { push } = useRouter();
 
   const handleRowClick = (id: string) => {
-    console.log("clicked");
     push(`/runs/${id}`);
   };
   return (

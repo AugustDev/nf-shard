@@ -11,14 +11,7 @@ type WorkflowDetailsProps = {
   className?: string;
 };
 
-export const WorkflowDetails = () => {
-  const props: WorkflowDetailsProps = {
-    run_name: "marvelous_fermat",
-    workflow_name: "nf-core/methylation",
-    status: "success",
-    className: "mb-12",
-  };
-
+export const WorkflowDetails = (props: WorkflowDetailsProps) => {
   return (
     <div
       className={clsx(

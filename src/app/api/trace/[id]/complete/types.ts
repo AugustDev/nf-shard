@@ -1,7 +1,7 @@
 export type CompleteRunRequest = {
   workflow: Workflow;
   metrics: Metric[];
-  progress: Proess;
+  progress: Progress;
   instant: number;
 };
 
@@ -32,22 +32,22 @@ export type Measurement = {
   q3Label: string;
 };
 
-export type Proess = {
-  pending: number;
-  ignored: number;
-  loadCpus: number;
-  loadMemory: number;
-  processes?: Proess[];
-  aborted: number;
-  succeeded: number;
-  peakMemory: number;
-  peakCpus: number;
-  failed: number;
-  running: number;
-  retries: number;
-  peakRunning: number;
-  cached: number;
-  submitted: number;
+export type Progress = {
+  pending?: number;
+  ignored?: number;
+  loadCpus?: number;
+  loadMemory?: number;
+  processes?: any;
+  aborted?: number;
+  succeeded?: number;
+  peakMemory?: number;
+  peakCpus?: number;
+  failed?: number;
+  running?: number;
+  retries?: number;
+  peakRunning?: number;
+  cached?: number;
+  submitted?: number;
   index?: number;
   name?: string;
   stored?: number;
@@ -164,7 +164,7 @@ export type Stats = {
   succeededCount: number;
   computeTimeFmt: string;
   cachedCount: number;
-  processes: Proess[];
+  processes: any;
   changeTimestamp: number;
   peakRunning: number;
   succeedDuration: number;

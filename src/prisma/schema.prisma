@@ -46,7 +46,7 @@ model Workflow {
   /// [Nextflow]
   nextflow          Json
 
-  /// [stats]
+  /// [Stats]
   stats             Json
   resume            Boolean
   success           Boolean
@@ -78,7 +78,9 @@ model Progress {
   ignored     Int
   loadCpus    Int
   loadMemory  BigInt
-  processes   Json
+
+  /// [Process]
+  processes   Json[]
   aborted     Int
   succeeded   Int
   peakMemory  BigInt
@@ -103,6 +105,8 @@ model Progress {
 model Task {
   id Int @id @default(autoincrement())
   taskId Int
+
+  /// [Task]
   data Json
 
   workflow          Workflow @relation(fields: [workflowId], references: [id])

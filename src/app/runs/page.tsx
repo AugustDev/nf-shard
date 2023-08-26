@@ -1,16 +1,16 @@
 import { prisma } from "@services/postgres/prisma";
 import { Workflow } from "@prisma/client";
-import { SearchBar, StatusTag, Tag } from "@components/index";
+import { SearchBar } from "@components/index";
 import { RunsTable } from "./components";
 
 export default async function Page() {
   const props = await getData();
 
   return (
-    <div>
+    <>
       <SearchBar value="" />
       <RunsTable runs={props.runs} className="mt-8" />
-    </div>
+    </>
   );
 }
 

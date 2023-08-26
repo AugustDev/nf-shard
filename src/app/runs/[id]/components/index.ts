@@ -5,3 +5,5 @@ export * from "./status";
 export * from "./workflowDetails";
 export * from "./processes";
 export * from "./aggregateStats";
+export * from "./dataviewer";
+export * from "./configuration";

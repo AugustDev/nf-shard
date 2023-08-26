@@ -14,10 +14,15 @@ type TabsProps = {
   className?: string;
 };
 
-export const Tabs: React.FC<TabsProps> = ({ tabs }: TabsProps) => {
+export const Tabs: React.FC<TabsProps> = ({ tabs, className }: TabsProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   return (
-    <div className="bg-white px-5 py-5 rounded-md shadow-sm ring-1 ring-gray-900/5">
+    <div
+      className={clsx(
+        className,
+        "bg-white px-5 py-5 rounded-md shadow-sm ring-1 ring-gray-900/5"
+      )}
+    >
       <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
         <Tab.List>
           <div className="hidden sm:block">
@@ -44,7 +49,7 @@ export const Tabs: React.FC<TabsProps> = ({ tabs }: TabsProps) => {
           </div>
         </Tab.List>
         <Tab.Panels>
-          <div className="mt-8">
+          <div className="mt-8 overflow-y-auto max-h-96">
             {tabs.map((tab) => (
               <Tab.Panel key={tab.name}>{tab.content}</Tab.Panel>
             ))}

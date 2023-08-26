@@ -40,6 +40,7 @@ export async function PUT(request: Request, { params }: any) {
         stats: requestJson.workflow.stats,
         metrics: requestJson.metrics,
         complete: requestJson.workflow.complete,
+        duration: requestJson.workflow.duration,
       },
     });
   } catch (e: any) {
