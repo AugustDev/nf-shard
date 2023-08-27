@@ -86,7 +86,11 @@ export default async function Page({ params }: { params: { id: string } }) {
           </div>
 
           <div className="flex-1">
-            <Utilisation cores={1} coresTotal={4} tasks={tasks} />
+            <Utilisation
+              tasks={tasks}
+              peakCpus={workflow.stats.peakCpus}
+              loadCpus={workflow.stats.loadCpus}
+            />
           </div>
         </div>
       </div>

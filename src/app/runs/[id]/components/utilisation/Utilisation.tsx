@@ -5,8 +5,8 @@ import { useMemo } from "react";
 
 type UtilisationProps = {
   tasks: Task[];
-  cores: number;
-  coresTotal: number;
+  peakCpus: number;
+  loadCpus: number;
   className?: string;
 };
 
@@ -24,6 +24,11 @@ export const Utilisation: React.FC<UtilisationProps> = (
       memoryRss += task.data.peakRss;
       memoryReq += task.data.memory;
     }
+
+    if (memoryReq == 0) {
+      return 0;
+    }
+
     return (memoryRss / memoryReq) * 100;
   }, [props.tasks]);
 
@@ -39,20 +44,16 @@ export const Utilisation: React.FC<UtilisationProps> = (
       cpuLoad += (task.data.pcpu / 100) * (task.data?.realtime ?? 0);
     }
 
+    if (cpuTime == 0) {
+      return 0;
+    }
+
     return (cpuLoad / cpuTime) * 100;
   }, [props.tasks]);
 
-  const completedTasks = useMemo(() => {
-    let completed = 0;
-
-    for (const task of props.tasks) {
-      if (task.data.status === "COMPLETED") {
-        completed++;
-      }
-    }
-
-    return completed;
-  }, [props.tasks]);
+  const completedTaskCount = props.tasks.filter(
+    (task) => task.data.status === "COMPLETED"
+  ).length;
 
   return (
     <div
@@ -89,8 +90,8 @@ export const Utilisation: React.FC<UtilisationProps> = (
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center">
               <ProgressIndicator
-                percent={(props.cores / props.coresTotal) * 100}
-                text={`${props.cores}/${props.coresTotal}`}
+                percent={(props.loadCpus / props.peakCpus) * 100}
+                text={`${props.loadCpus}/${props.peakCpus}`}
               />
               <h1 className="text-m mb-4">Cores</h1>
             </div>
@@ -99,8 +100,8 @@ export const Utilisation: React.FC<UtilisationProps> = (
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center">
               <ProgressIndicator
-                percent={(completedTasks / props.tasks.length) * 100}
-                text={`${completedTasks}/${props.tasks.length}`}
+                percent={(completedTaskCount / props.tasks.length) * 100}
+                text={`${completedTaskCount}/${props.tasks.length}`}
               />
               <h1 className="text-m mb-4">Tasks</h1>
             </div>
