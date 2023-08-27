@@ -1,3 +1,4 @@
+"use client";
 import { prisma } from "@services/postgres/prisma";
 import { Tabs } from "@/app/components";
 import {
@@ -13,9 +14,20 @@ import {
 } from "./components";
 import { Progress, Task, Workflow } from "@prisma/client";
 import { RunResponse } from "@/app/api/runs/[id]/types";
+import { Utilisation } from "./components/utilisation/Utilisation";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { workflow, tasks, progress } = await getData(params.id);
+
+  // useEffect(() => {}, []);
+
+  // useEffect(() => {
+  //   const interval = setInterval(async () => {
+  //     console.log(progress);
+  //   }, 5000);
+
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const tabs = [
     {
@@ -67,13 +79,15 @@ export default async function Page({ params }: { params: { id: string } }) {
         </div>
       </div>
 
-      <div className="container mx-auto pt-10">
+      <div className="container mx-auto pt-8">
         <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
           <div className="flex-1">
             {<Processes processes={progress.processes} />}
           </div>
 
-          <div className="flex-1"></div>
+          <div className="flex-1">
+            <Utilisation cores={1} coresTotal={4} tasks={tasks} />
+          </div>
         </div>
       </div>
     </>

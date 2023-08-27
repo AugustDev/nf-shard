@@ -4,7 +4,7 @@ import { ProgressRequest } from "./types";
 
 export async function PUT(request: Request, { params }: any) {
   const id = params.id;
-  const requestJson: ProgressRequest = await request.json();
+  const requestJson = await request.json();
 
   try {
     // update tasks

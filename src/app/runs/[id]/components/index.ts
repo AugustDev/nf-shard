@@ -7,3 +7,5 @@ export * from "./processes";
 export * from "./aggregateStats";
 export * from "./dataviewer";
 export * from "./configuration";
+export * from "./progressIndicator";
+export * from "./utilisation";

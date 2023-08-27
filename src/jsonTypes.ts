@@ -133,7 +133,7 @@ declare global {
       errorAction?: string;
       complete?: Date;
       duration: number;
-      realtime: number;
+      realtime?: number;
       pcpu: number;
       rchar: number;
       wchar: number;
@@ -145,7 +145,7 @@ declare global {
       vmem: number;
       rss: number;
       peakVmem: number;
-      peakRss: number;
+      peakRss?: number;
       volCtxt: number;
       invCtxt: number;
       nativeId?: string;
