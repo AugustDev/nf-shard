@@ -15,7 +15,8 @@ export const safeDiffMinutes = (date1: Date | null, date2: Date | null) => {
   return `Duration: ${moment(date2).diff(moment(date1), "minutes")} min`;
 };
 
-export const formatDuration = (ms: number) => {
+export const formatDuration = (ms?: number) => {
+  if (!ms) return "";
   const duration = moment.duration(ms);
 
   const hours = duration.hours();

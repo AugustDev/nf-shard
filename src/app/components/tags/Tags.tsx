@@ -28,15 +28,15 @@ export const StatusTag: React.FC<StatusTagProps> = ({ name, type }) => {
   const styles = clsx({
     "inline-flex items-center gap-x-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium capitalize":
       true,
-    "bg-green-100 text-green-700": name === "success",
-    "bg-red-100 text-red-700": name === "error",
-    "bg-orange-100 text-orange-700": name === "pending",
+    "bg-green-100 text-green-700": type === "success",
+    "bg-red-100 text-red-700": type === "error" || type === "aborted",
+    "bg-orange-100 text-orange-700": type === "pending" || type === "running",
   });
   const dotStyles = clsx({
     "h-1.5 w-1.5": true,
-    "fill-green-500": name === "success",
-    "fill-red-500": name === "error",
-    "fill-orange-500": name === "pending",
+    "fill-green-500": type === "success",
+    "fill-red-500": type === "error" || type === "aborted",
+    "fill-orange-500": type === "pending" || type === "running",
   });
   return (
     <span className={styles}>

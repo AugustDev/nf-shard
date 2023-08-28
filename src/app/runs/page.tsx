@@ -1,6 +1,6 @@
 import { prisma } from "@services/postgres/prisma";
 import { Workflow } from "@prisma/client";
-import { SearchBar } from "@components/index";
+import { SearchBar } from "@/app/components/index";
 import { RunsTable } from "./components";
 
 export default async function Page() {

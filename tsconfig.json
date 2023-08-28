@@ -22,11 +22,17 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@components/*": ["./src/app/components/*"],
+      "@components/*": ["src/app/components/*"],
       "@services/*": ["./src/services/*"],
       "@common/*": ["./src/common/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/app"
+  ],
   "exclude": ["node_modules"]
 }

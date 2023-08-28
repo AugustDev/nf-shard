@@ -2,6 +2,7 @@ import { clsx } from "clsx";
 import { ProgressIndicator } from "../progressIndicator/ProgressIndicator";
 import { Task } from "@prisma/client";
 import { useMemo } from "react";
+import { Container } from "@/app/components";
 
 type UtilisationProps = {
   tasks: Task[];
@@ -55,19 +56,17 @@ export const Utilisation: React.FC<UtilisationProps> = (
     (task) => task.data.status === "COMPLETED"
   ).length;
 
+  const tasksPercent = useMemo(() => {
+    if (props.tasks.length === 0) {
+      return 0;
+    }
+
+    return (completedTaskCount / props.tasks.length) * 100;
+  }, [props.tasks]);
+
   return (
-    <div
-      className={clsx(
-        "bg-white py-6 rounded-md shadow-sm ring-1 ring-gray-900/5",
-        props.className
-      )}
-    >
-      <div className="flex-auto">
-        <dt className="text-md font-semibold leading-6 mb-6 mx-6 text-gray-900">
-          Utilisation and Load
-        </dt>
-      </div>
-      <div className="flex flex-col border-t border-gray-900/5 pt-6 pb-10">
+    <Container sectionName="Utilisation & Load" className={props.className}>
+      <div className="flex flex-col  pb-10">
         <div className="flex">
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center">
@@ -90,7 +89,11 @@ export const Utilisation: React.FC<UtilisationProps> = (
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center">
               <ProgressIndicator
-                percent={(props.loadCpus / props.peakCpus) * 100}
+                percent={
+                  props.peakCpus === 0
+                    ? 0
+                    : (props.loadCpus / props.peakCpus) * 100
+                }
                 text={`${props.loadCpus}/${props.peakCpus}`}
               />
               <h1 className="text-m mb-4">Cores</h1>
@@ -100,7 +103,7 @@ export const Utilisation: React.FC<UtilisationProps> = (
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center">
               <ProgressIndicator
-                percent={(completedTaskCount / props.tasks.length) * 100}
+                percent={tasksPercent}
                 text={`${completedTaskCount}/${props.tasks.length}`}
               />
               <h1 className="text-m mb-4">Tasks</h1>
@@ -108,6 +111,6 @@ export const Utilisation: React.FC<UtilisationProps> = (
           </div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };

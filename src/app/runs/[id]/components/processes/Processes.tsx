@@ -1,4 +1,5 @@
 import { Process } from "@/app/api/trace/[id]/begin/types";
+import { Container } from "@/app/components";
 import { clsx } from "clsx";
 
 type ProcessesProps = {
@@ -25,15 +26,15 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
       <div className="overflow-hidden h-2 mb-4 text-xs flex rounded-sm bg-gray-200">
         <div
           style={{ width: completedPercent + "%" }}
-          className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"
+          className="transition-all duration-500 shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"
         ></div>
         <div
           style={{ width: failedPercent + "%" }}
-          className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
+          className="transition-all duration-500 shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
         ></div>
         <div
           style={{ width: remainingPercent + "%" }}
-          className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gray-200"
+          className="transition-all duration-500 shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gray-200"
         ></div>
       </div>
     </div>
@@ -45,18 +46,8 @@ export const Processes: React.FC<ProcessesProps> = ({
   className,
 }: ProcessesProps) => {
   return (
-    <div
-      className={clsx(
-        "bg-white py-6 rounded-md shadow-sm ring-1 ring-gray-900/5",
-        className
-      )}
-    >
-      <div className="flex-auto">
-        <dt className="text-md font-semibold leading-6 mb-6 mx-6 text-gray-900">
-          Processes
-        </dt>
-      </div>
-      <div className="flex flex-col border-t border-gray-900/5 pt-6">
+    <Container sectionName="Processes" className={className}>
+      <div className="flex flex-col  border-gray-900/5 ">
         {processes.map((progress) => {
           const total =
             progress.succeeded +
@@ -67,7 +58,7 @@ export const Processes: React.FC<ProcessesProps> = ({
             progress.cached +
             progress.ignored;
           return (
-            <div key={progress.index} className="mx-6">
+            <div key={progress.index}>
               <a href="#">
                 <div className="flex flex-col w-full">
                   <div className="flex flex-row justify-between">
@@ -89,6 +80,6 @@ export const Processes: React.FC<ProcessesProps> = ({
           );
         })}
       </div>
-    </div>
+    </Container>
   );
 };

@@ -1,5 +1,6 @@
 "use client";
 
+import { Spinner } from "@/app/components";
 import { CheckCircleIcon } from "@heroicons/react/20/solid";
 
 import { clsx } from "clsx";
@@ -7,8 +8,8 @@ import { clsx } from "clsx";
 type WorkflowDetailsProps = {
   run_name: string;
   workflow_name: string;
-  status: string;
   className?: string;
+  isLoading: boolean;
 };
 
 export const WorkflowDetails = (props: WorkflowDetailsProps) => {
@@ -20,10 +21,15 @@ export const WorkflowDetails = (props: WorkflowDetailsProps) => {
       )}
     >
       <div className="flex flex-row items-center">
-        <CheckCircleIcon
-          className="h-10 w-10 text-green-500 mr-4"
-          aria-hidden="true"
-        />
+        {props.isLoading ? (
+          <Spinner className="h-10 w-10 text-green-500 mr-4" />
+        ) : (
+          <CheckCircleIcon
+            className="h-10 w-10 text-green-500 mr-4"
+            aria-hidden="true"
+          />
+        )}
+
         <div className="flex flex-row items-end">
           <div className="font-medium text-2xl pr-4 text-black">
             {props.run_name}

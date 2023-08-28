@@ -1,101 +1,14 @@
-"use client";
-import { prisma } from "@services/postgres/prisma";
-import { Tabs } from "@/app/components";
-import {
-  CodeText,
-  AggregateStats,
-  Attachments,
-  General,
-  Processes,
-  Status,
-  WorkflowDetails,
-  DataViewer,
-  Configuration,
-} from "./components";
-import { Progress, Task, Workflow } from "@prisma/client";
 import { RunResponse } from "@/app/api/runs/[id]/types";
-import { Utilisation } from "./components/utilisation/Utilisation";
+import { MainRun } from "./components/main/Main";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { workflow, tasks, progress } = await getData(params.id);
-
-  // useEffect(() => {}, []);
-
-  // useEffect(() => {
-  //   const interval = setInterval(async () => {
-  //     console.log(progress);
-  //   }, 5000);
-
-  //   return () => clearInterval(interval);
-  // }, []);
-
-  const tabs = [
-    {
-      name: "Command",
-      content: <CodeText code={workflow?.commandLine || ""} />,
-    },
-    {
-      name: "Parameters",
-      content: <DataViewer data={workflow?.params || ""} />,
-    },
-    {
-      name: "Configuration",
-      content: (
-        <Configuration
-          files={workflow?.configFiles || []}
-          configText={workflow?.configText || ""}
-        />
-      ),
-    },
-    { name: "Execution log", content: <CodeText code="echo hello" /> },
-    { name: "Reports", content: <Attachments attachments={[]} /> },
-  ];
 
   if (!workflow) {
     return <p>Missing workflow</p>;
   }
 
-  return (
-    <>
-      <WorkflowDetails
-        run_name={workflow?.manifest.description || ""}
-        workflow_name={workflow?.runName || ""}
-        status={""}
-        className="mb-12"
-      />
-      <Tabs tabs={tabs} />
-
-      {workflow && <Status progress={progress} className="pt-8" />}
-
-      <div className="container mx-auto pt-8">
-        <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-          <div className="flex-1">
-            <General workflow={workflow} />
-          </div>
-
-          <div className="flex-1">
-            <AggregateStats tasks={tasks} wallTime={workflow.duration} />
-          </div>
-        </div>
-      </div>
-
-      <div className="container mx-auto pt-8">
-        <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-          <div className="flex-1">
-            {<Processes processes={progress.processes} />}
-          </div>
-
-          <div className="flex-1">
-            <Utilisation
-              tasks={tasks}
-              peakCpus={workflow.stats.peakCpus}
-              loadCpus={workflow.stats.loadCpus}
-            />
-          </div>
-        </div>
-      </div>
-    </>
-  );
+  return <MainRun workflow={workflow} tasks={tasks} progress={progress} />;
 }
 
 const getData = async (id: string) => {

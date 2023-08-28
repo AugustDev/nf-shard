@@ -60,7 +60,10 @@ export const RunsTable: React.FC<RunsTableProps> = ({
                   ))}
                 </td> */}
               <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500 text-right">
-                <StatusTag name="completed" type="completed" />
+                <StatusTag
+                  name={run.complete ? "completed" : "In progress"}
+                  type={run.complete ? "success" : "pending"}
+                />
               </td>
             </tr>
           ))}

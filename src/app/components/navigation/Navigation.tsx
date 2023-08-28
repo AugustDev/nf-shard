@@ -4,6 +4,7 @@ import { FC, Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { Toaster } from "react-hot-toast";
 
 const user = {
   name: "Tom Cook",
@@ -36,7 +37,9 @@ function ProfileDropdown() {
         <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-indigo-600 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-600">
           <span className="absolute -inset-1.5" />
           <span className="sr-only">Open user menu</span>
-          <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+          <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-400">
+            <span className="font-medium leading-none text-white">AM</span>
+          </span>
         </Menu.Button>
       </div>
       <Transition
@@ -199,7 +202,9 @@ export const MainNavigation: FC<MainNavigationProps> = ({ child }) => {
         </div>
       </header>
       <main>
-        <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">{child}</div>
+        <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+          {child} <Toaster position="top-right" />
+        </div>
       </main>
     </div>
   );

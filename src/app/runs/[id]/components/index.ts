@@ -9,3 +9,5 @@ export * from "./dataviewer";
 export * from "./configuration";
 export * from "./progressIndicator";
 export * from "./utilisation";
+export * from "./tasksTable";
+export * from "./TaskDetails";
