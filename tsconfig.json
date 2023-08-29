@@ -2,7 +2,11 @@
   "compilerOptions": {
     "baseUrl": ".",
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -21,10 +25,18 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@components/*": ["src/app/components/*"],
-      "@services/*": ["./src/services/*"],
-      "@common/*": ["./src/common/*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@components/*": [
+        "src/app/components/*"
+      ],
+      "@services/*": [
+        "./src/services/*"
+      ],
+      "@common/*": [
+        "./src/common/*"
+      ]
     }
   },
   "include": [
@@ -32,7 +44,10 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app"
+    "src/app",
+    "build/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

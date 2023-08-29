@@ -30,13 +30,21 @@ export const StatusTag: React.FC<StatusTagProps> = ({ name, type }) => {
       true,
     "bg-green-100 text-green-700": type === "success",
     "bg-red-100 text-red-700": type === "error" || type === "aborted",
-    "bg-orange-100 text-orange-700": type === "pending" || type === "running",
+    "bg-orange-100 text-orange-700":
+      type === "pending" ||
+      type === "running" ||
+      type === "new" ||
+      type == "submitted",
   });
   const dotStyles = clsx({
     "h-1.5 w-1.5": true,
     "fill-green-500": type === "success",
     "fill-red-500": type === "error" || type === "aborted",
-    "fill-orange-500": type === "pending" || type === "running",
+    "fill-orange-500":
+      type === "pending" ||
+      type === "running" ||
+      type === "new" ||
+      type == "submitted",
   });
   return (
     <span className={styles}>

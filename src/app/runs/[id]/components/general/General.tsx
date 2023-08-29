@@ -76,14 +76,8 @@ export const General: React.FC<GeneralProps> = ({ workflow }: GeneralProps) => {
           />
         </dt>
         <dd className="text-sm leading-6 text-gray-500">
-          {workflow.containerEngine}
+          {workflow.container}
         </dd>
-      </div>
-      <div className="mt-4 flex w-full flex-none gap-x-4">
-        <dt className="flex-none">
-          <CogIcon className="h-6 w-5 text-gray-400" aria-hidden="true" />
-        </dt>
-        <dd className="text-sm leading-6 text-gray-500">TBD</dd>
       </div>
       <div className="mt-4 flex w-full flex-none gap-x-4">
         <dt className="flex-none">
@@ -113,21 +107,21 @@ export const General: React.FC<GeneralProps> = ({ workflow }: GeneralProps) => {
         </dt>
         <dd className="text-sm leading-6 text-gray-500">{workflow.id}</dd>
       </div>
-      <div className="mt-4 flex w-full flex-none gap-x-4">
+      {/* <div className="mt-4 flex w-full flex-none gap-x-4">
         <dt className="flex-none">
           <TagIcon className="h-6 w-5 text-gray-400" aria-hidden="true" />
         </dt>
-        {/* <dd className="text-sm leading-6 text-gray-500 pb-6">
-              {props.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 mr-2"
-                >
-                  {tag}
-                </span>
-              ))}
-            </dd> */}
-      </div>
+        <dd className="text-sm leading-6 text-gray-500 pb-6">
+          {props.tags.map((tag) => (
+            <span
+              key={tag}
+              className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 mr-2"
+            >
+              {tag}
+            </span>
+          ))}
+        </dd>
+      </div> */}
     </Container>
   );
 };

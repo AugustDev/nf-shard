@@ -11,14 +11,6 @@ type SlideOverProps = {
 };
 
 export const SlideOver = ({ children, open, setOpen }: SlideOverProps) => {
-  // const [open, setOpen] = useState(isOpen);
-
-  // useEffect(() => {
-  //   if (!isOpen && onClose) {
-  //     onClose();
-  //   }
-  // }, [isOpen]);
-
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpen}>
@@ -50,9 +42,7 @@ export const SlideOver = ({ children, open, setOpen }: SlideOverProps) => {
                   <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
                     <div className="px-4 sm:px-6">
                       <div className="flex items-start justify-between">
-                        <Dialog.Title className="text-base font-semibold leading-6 text-gray-900">
-                          Panel title
-                        </Dialog.Title>
+                        <Dialog.Title className="text-base font-semibold leading-6 text-gray-900"></Dialog.Title>
                         <div className="ml-3 flex h-7 items-center">
                           <button
                             type="button"

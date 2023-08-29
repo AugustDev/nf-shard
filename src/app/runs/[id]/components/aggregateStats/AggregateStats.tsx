@@ -9,6 +9,7 @@ const bytes = require("bytes");
 type AggregateStatsProps = {
   tasks: Task[];
   wallTime: number;
+  starts?: Date;
   className?: string;
 };
 
@@ -23,6 +24,7 @@ type Stats = {
 export const AggregateStats: React.FC<AggregateStatsProps> = ({
   tasks,
   wallTime,
+  starts,
   className,
 }: AggregateStatsProps) => {
   const aggregates = useMemo(() => {
@@ -47,6 +49,20 @@ export const AggregateStats: React.FC<AggregateStatsProps> = ({
 
   const averageCostPerCpuHour = 0.1;
   const costEstimate = aggregates.cpuTime * averageCostPerCpuHour;
+  const wallTimeDerived = useMemo(() => {
+    console.log(starts);
+    if (wallTime) {
+      return wallTime;
+    }
+
+    if (starts) {
+      console.log({ starts }), starts.getTime();
+      // return 0;
+      return Date.now() - starts.getTime();
+    }
+
+    return 0;
+  }, [wallTime, starts]);
 
   return (
     <div>

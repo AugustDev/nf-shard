@@ -11,3 +11,5 @@ export * from "./progressIndicator";
 export * from "./utilisation";
 export * from "./tasksTable";
 export * from "./TaskDetails";
+export * from "./PlotBox";
+export * from "./Metrics";

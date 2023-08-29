@@ -21,7 +21,10 @@ export const Configuration = ({
       <div>
         <div className="text-gray-900 font-medium pb-2">Files</div>
         {files.map((file) => (
-          <div className="text-gray-500 text-sm flex items-center space-x-2">
+          <div
+            key={file}
+            className="text-gray-500 text-sm flex items-center space-x-2"
+          >
             <DocumentIcon
               className="h-6 w-5 text-gray-400"
               aria-hidden="true"

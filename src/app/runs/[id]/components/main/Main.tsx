@@ -9,6 +9,7 @@ import {
   Configuration,
   DataViewer,
   General,
+  MetricsOverview,
   Processes,
   Status,
   TaskDetails,
@@ -135,7 +136,7 @@ export const MainRun = (props: PageProps) => {
         className="mb-12"
         isLoading={!workflow.complete}
       />
-      <Tabs tabs={tabs} />
+      <Tabs tabs={tabs} className="py-5 px-5" panelClassName="max-h-96" />
       {workflow && <Status progress={progress} className="pt-8" />}
       <div className="container mx-auto pt-8">
         <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
@@ -144,7 +145,11 @@ export const MainRun = (props: PageProps) => {
           </div>
 
           <div className="flex-1">
-            <AggregateStats tasks={tasks} wallTime={workflow.duration} />
+            <AggregateStats
+              tasks={tasks}
+              wallTime={workflow.duration}
+              starts={workflow.start}
+            />
           </div>
         </div>
       </div>
@@ -170,6 +175,8 @@ export const MainRun = (props: PageProps) => {
           onTaskClick={setselectedTask}
         />
       )}
+
+      <MetricsOverview className="mt-8 h-full" metrics={workflow.metrics} />
     </>
   );
 };

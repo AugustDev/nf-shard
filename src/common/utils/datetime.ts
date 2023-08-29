@@ -7,7 +7,7 @@ export const fullDateTime = (date?: Date | null) => {
   return moment(date).format("YYYY-MM-DD HH:mm");
 };
 
-export const safeDiffMinutes = (date1: Date | null, date2: Date | null) => {
+export const safeDiffMinutes = (date1?: Date, date2?: Date) => {
   if (!date1 || !date2) {
     return "";
   }
