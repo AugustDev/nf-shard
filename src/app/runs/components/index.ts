@@ -1,1 +1,1 @@
-export * from "./Runs";
+export * from "./RunsTable";

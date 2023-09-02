@@ -59,7 +59,7 @@ export const Processes: React.FC<ProcessesProps> = ({
             progress.ignored;
           return (
             <div key={progress.index}>
-              <a href="#">
+              <a href={undefined}>
                 <div className="flex flex-col w-full">
                   <div className="flex flex-row justify-between">
                     <span className="text-sm font-medium text-gray-500 group-hover:text-gray-900">

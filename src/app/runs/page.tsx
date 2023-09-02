@@ -1,21 +1,14 @@
-import { prisma } from "@services/postgres/prisma";
+import { prisma } from "@/services/prisma/prisma";
 import { Workflow } from "@prisma/client";
-import { SearchBar } from "@/app/components/index";
-import { RunsTable } from "./components";
+import { Main } from "./components/Main";
 
 export default async function Page() {
   const props = await getData();
 
-  return (
-    <>
-      <SearchBar value="" />
-      <RunsTable runs={props.runs} className="mt-8" />
-    </>
-  );
+  return <Main runs={props.runs} />;
 }
 
 type TRunsPageProps = {
-  isLoading: boolean;
   runs: Workflow[];
 };
 
@@ -33,7 +26,6 @@ const getData = async (): Promise<TRunsPageProps> => {
   }
 
   return {
-    isLoading: false,
     runs: workflows,
   };
 };

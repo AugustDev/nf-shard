@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@services/postgres/prisma";
+import { prisma } from "@/services/prisma/prisma";
 import { CompleteRunRequest } from "./types";
 
 export async function PUT(request: Request, { params }: any) {

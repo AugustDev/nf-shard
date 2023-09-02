@@ -1,10 +1,19 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@services/postgres/prisma";
+import { prisma } from "@/services/prisma/prisma";
 import { BeginRunRequest } from "./types";
 
 export async function PUT(request: Request, { params }: any) {
   const id = params.id;
   const requestJson: BeginRunRequest = await request.json();
+
+  const searchableQuery = [
+    requestJson.workflow?.manifest?.description,
+    requestJson.workflow.projectName,
+    requestJson.workflow.runName,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
 
   try {
     await prisma.workflow.create({
@@ -47,6 +56,7 @@ export async function PUT(request: Request, { params }: any) {
         outFile: requestJson.workflow.outFile,
         manifest: requestJson.workflow.manifest,
         processNames: requestJson.processNames,
+        searchable: searchableQuery,
         progress: {
           create: {
             id: id,

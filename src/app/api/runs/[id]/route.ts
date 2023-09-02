@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@services/postgres/prisma";
+import { prisma } from "@/services/prisma/prisma";
 import { revalidatePath } from "next/cache";
 
 interface BigInt {

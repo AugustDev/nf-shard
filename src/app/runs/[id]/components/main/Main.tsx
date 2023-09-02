@@ -50,9 +50,6 @@ export const MainRun = (props: PageProps) => {
     );
     const result: RunResponse = await response.json();
 
-    console.log(tasks);
-    // handleCompletedTasks(tasks, result.tasks);
-
     setWorkflow(result.workflow);
     setTasks(result.tasks);
     setProgress(result.progress);
@@ -116,8 +113,6 @@ export const MainRun = (props: PageProps) => {
         />
       ),
     },
-    { name: "Execution log", content: <CodeText code="echo hello" /> },
-    { name: "Reports", content: <Attachments attachments={[]} /> },
   ];
   return (
     <>
@@ -138,34 +133,28 @@ export const MainRun = (props: PageProps) => {
       />
       <Tabs tabs={tabs} className="py-5 px-5" panelClassName="max-h-96" />
       {workflow && <Status progress={progress} className="pt-8" />}
-      <div className="container mx-auto pt-8">
-        <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-          <div className="flex-1">
-            <General workflow={workflow} />
-          </div>
-
-          <div className="flex-1">
-            <AggregateStats
-              tasks={tasks}
-              wallTime={workflow.duration}
-              starts={workflow.start}
-            />
-          </div>
+      <div className="md:grid md:grid-cols-2 md:gap-4 pt-8 grid-cols-1">
+        <div>
+          <General workflow={workflow} />
+        </div>
+        <div>
+          <AggregateStats
+            tasks={tasks}
+            wallTime={workflow.duration}
+            starts={workflow.start}
+          />
         </div>
       </div>
-      <div className="container mx-auto pt-8">
-        <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-          <div className="flex-1">
-            {<Processes processes={progress.processes} />}
-          </div>
-
-          <div className="flex-1">
-            <Utilisation
-              tasks={tasks}
-              peakCpus={workflow.stats.peakCpus}
-              loadCpus={workflow.stats.loadCpus}
-            />
-          </div>
+      <div className="md:grid md:grid-cols-2 md:gap-4 pt-8 grid-cols-1">
+        <div>
+          <Processes processes={progress.processes} />
+        </div>
+        <div>
+          <Utilisation
+            tasks={tasks}
+            peakCpus={workflow.stats.peakCpus}
+            loadCpus={workflow.stats.loadCpus}
+          />
         </div>
       </div>
       {tasks.length > 0 && (
@@ -176,7 +165,9 @@ export const MainRun = (props: PageProps) => {
         />
       )}
 
-      <MetricsOverview className="mt-8 h-full" metrics={workflow.metrics} />
+      {workflow.metrics.length > 0 && (
+        <MetricsOverview className="mt-8 h-full" metrics={workflow.metrics} />
+      )}
     </>
   );
 };

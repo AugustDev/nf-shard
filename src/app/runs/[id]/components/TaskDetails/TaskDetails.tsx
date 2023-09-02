@@ -322,7 +322,7 @@ export const TaskDetails = ({ task }: TaskDetailsProps) => {
                 <div className="text-left">pCPU</div>
               </td>
               <td className="p-2 whitespace-nowrap">
-                <div className="text-left">{task.data.pcpu}</div>
+                <div className="text-left">{task.data.pcpu}%</div>
               </td>
               <td className="p-2 whitespace-nowrap">
                 <div className="text-left">
@@ -454,7 +454,9 @@ export const TaskDetails = ({ task }: TaskDetailsProps) => {
                 <div className="text-left">syscr</div>
               </td>
               <td className="p-2 whitespace-nowrap">
-                <div className="text-left"> {task.data.syscr}</div>
+                <div className="text-left">
+                  {bytes(task.data.syscr, { unitSeparator: " " })}
+                </div>
               </td>
               <td className="p-2 whitespace-nowrap">
                 <div className="text-left">
@@ -468,7 +470,9 @@ export const TaskDetails = ({ task }: TaskDetailsProps) => {
                 <div className="text-left">syscw</div>
               </td>
               <td className="p-2 whitespace-nowrap">
-                <div className="text-left"> {task.data.syscw}</div>
+                <div className="text-left">
+                  {bytes(task.data.syscw, { unitSeparator: " " })}
+                </div>
               </td>
               <td className="p-2 whitespace-nowrap">
                 <div className="text-left">

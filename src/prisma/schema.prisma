@@ -1,84 +1,79 @@
-datasource db {
-  provider = "postgresql"
-  url      = env("POSTGRES_URI")
-}
-
 generator client {
   provider = "prisma-client-js"
 }
 
 generator json {
   provider = "prisma-json-types-generator"
-  // namespace = "PrismaJson"
-  // clientOutput = "<finds it automatically>"
-  // (./ -> relative to schema, or an importable path to require() it)
-  // useType = "MyType"
-  // In case you need to use a type, export it inside the namespace and we will add a index signature to it
-  // (e.g.  export namespace PrismaJson { export type MyType = {a: 1, b: 2} }; will generate namespace.MyType["TYPE HERE"])
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URI")
 }
 
 model Workflow {
-  id                String        @id
-  start             DateTime?
-  complete          DateTime?
-  updatedAt         DateTime @updatedAt @default(now())
-  projectDir        String
-  profile           String
-  homeDir           String
-  workDir           String
-  container         String
-  commitId          String?
-  errorMessage      String?
-  repository        String?
-  containerEngine   String?
-  scriptFile        String
-  userName          String
-  launchDir         String
-  runName           String
-  sessionId         String
-  errorReport       String?
-  scriptId          String
-  revision          String?
-  exitStatus        Int?
-  commandLine       String
-  stubRun           Boolean
-
+  id              String                   @id
+  start           DateTime?
+  complete        DateTime?
+  updatedAt       DateTime                 @default(now()) @updatedAt
+  projectDir      String
+  profile         String
+  homeDir         String
+  workDir         String
+  container       String
+  commitId        String?
+  errorMessage    String?
+  repository      String?
+  containerEngine String?
+  scriptFile      String
+  userName        String
+  launchDir       String
+  runName         String
+  sessionId       String
+  errorReport     String?
+  scriptId        String
+  revision        String?
+  exitStatus      Int?
+  commandLine     String
+  stubRun         Boolean
   /// [Nextflow]
-  nextflow          Json
-
+  nextflow        Json
   /// [Stats]
-  stats             Json
-  resume            Boolean
-  success           Boolean
-  projectName       String
-  scriptName        String
-  duration          Int
-  params            Json
-  configFiles       String[]
-  configText        String
-  operationId       String?
-  logFile           String?
-  outFile           String?
-
+  stats           Json
+  resume          Boolean
+  success         Boolean
+  projectName     String
+  scriptName      String
+  duration        Int
+  params          Json
+  configFiles     String[]
+  configText      String
+  operationId     String?
+  logFile         String?
+  outFile         String?
   /// [Manifest]
-  manifest          Json
-  processNames String[]
-
+  manifest        Json
+  processNames    String[]
   /// [Metric]
-  metrics           Json[]
-  progress Progress?
-  tasks Task[]
+  metrics         Json[]
+  progress        Progress?
+  tasks           Task[]
 
-  @@index([id, updatedAt])
+  // nf-shard specific
+  searchable String?
+  tags String[]
+  status String?
+
+  @@index([id, updatedAt, projectName, runName, userName, tags, status])
+  @@index([searchable(ops: raw("gin_trgm_ops"))], type: Gin, name: "searchable_idx")
 }
 
 model Progress {
-  id          String      @id @unique
+  id          String   @id @unique
   pending     Int
   ignored     Int
   loadCpus    Int
   loadMemory  BigInt
-
   /// [Process]
   processes   Json[]
   aborted     Int
@@ -95,22 +90,19 @@ model Progress {
   name        String?
   stored      Int?
   terminated  Boolean?
-
-  workflow          Workflow @relation(fields: [workflowId], references: [id])
-  workflowId        String @unique
+  workflowId  String   @unique
+  workflow    Workflow @relation(fields: [workflowId], references: [id])
 
   @@index([id, workflowId])
 }
 
 model Task {
-  id Int @id @default(autoincrement())
-  taskId Int
-
+  id         Int      @id @default(autoincrement())
+  taskId     Int
   /// [Task]
-  data Json
-
-  workflow          Workflow @relation(fields: [workflowId], references: [id])
-  workflowId        String
+  data       Json
+  workflowId String
+  workflow   Workflow @relation(fields: [workflowId], references: [id])
 
   @@unique([workflowId, taskId])
   @@index([taskId, workflowId])

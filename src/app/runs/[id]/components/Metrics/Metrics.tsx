@@ -21,20 +21,6 @@ type MetricsCollection = {
   writes: any[];
 };
 
-function norm_mem(list: number[]) {
-  var result = new Array<number>(list.length);
-  for (let i = 0; i < list.length; i++) {
-    var value = list[i];
-    var x = Math.floor(Math.log10(value) / Math.log10(1024));
-    if (x == 0) value = value / 1.024;
-    else {
-      for (let j = 0; j < x; j++) value = value / 1.024;
-    }
-    result[i] = Math.round(value);
-  }
-  return result;
-}
-
 export const MetricsOverview = (props: MetricsProps) => {
   const metricsCollection = useMemo(() => {
     let metrics: MetricsCollection = {

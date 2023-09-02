@@ -4,12 +4,13 @@ import { clsx } from "clsx";
 import { Task } from "@prisma/client";
 import { useMemo } from "react";
 import { formatDuration } from "@common/utils/index";
+import moment from "moment";
 const bytes = require("bytes");
 
 type AggregateStatsProps = {
   tasks: Task[];
   wallTime: number;
-  starts?: Date;
+  starts?: Date | null;
   className?: string;
 };
 
@@ -50,15 +51,12 @@ export const AggregateStats: React.FC<AggregateStatsProps> = ({
   const averageCostPerCpuHour = 0.1;
   const costEstimate = aggregates.cpuTime * averageCostPerCpuHour;
   const wallTimeDerived = useMemo(() => {
-    console.log(starts);
     if (wallTime) {
       return wallTime;
     }
 
     if (starts) {
-      console.log({ starts }), starts.getTime();
-      // return 0;
-      return Date.now() - starts.getTime();
+      return moment(starts).diff(moment(), "minutes");
     }
 
     return 0;

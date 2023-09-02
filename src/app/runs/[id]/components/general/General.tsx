@@ -2,8 +2,6 @@ import {
   CalendarDaysIcon,
   UserCircleIcon,
   DocumentIcon,
-  TagIcon,
-  CogIcon,
   FingerPrintIcon,
   WrenchScrewdriverIcon,
 } from "@heroicons/react/20/solid";
@@ -55,7 +53,9 @@ export const General: React.FC<GeneralProps> = ({ workflow }: GeneralProps) => {
         <dt className="flex-none">
           <FolderIcon className="h-6 w-5 text-gray-400" aria-hidden="true" />
         </dt>
-        <dd className="text-sm leading-6 text-gray-500">{workflow.workDir}</dd>
+        <dd className="text-sm leading-6 text-gray-500 truncate w-full whitespace-nowrap">
+          {workflow.workDir}
+        </dd>
       </div>
       <div className="mt-4 flex w-full flex-none gap-x-4">
         <dt className="flex-none">
@@ -98,7 +98,7 @@ export const General: React.FC<GeneralProps> = ({ workflow }: GeneralProps) => {
           />
         </dt>
         <dd className="text-sm leading-6 text-gray-500">
-          {workflow.nextflow.version}
+          {workflow.nextflow.version} build {workflow.nextflow.build}
         </dd>
       </div>
       <div className="mt-4 flex w-full flex-none gap-x-4">
