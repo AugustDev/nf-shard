@@ -43,6 +43,7 @@
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.1",
     "react-plotly.js": "^2.6.0",
+    "sass": "^1.66.1",
     "tailwindcss": "3.3.3",
     "typescript": "5.1.6"
   },

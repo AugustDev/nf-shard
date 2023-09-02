@@ -43,6 +43,8 @@ export type Workflow = {
   operationId?: string;
   logFile?: string;
   outFile?: string;
+  tags?: string;
+  status?: string;
 };
 
 export type Manifest = {

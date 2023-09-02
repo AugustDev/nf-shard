@@ -1,7 +1,6 @@
 .fadeInBottom {
-  -webkit-animation: fade-in-bottom 0.3s cubic-bezier(0.39, 0.575, 0.565, 1)
-    both;
-  animation: fade-in-bottom 0.3s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  -webkit-animation: fade-in-bottom 0.2s ease-in-out both;
+  animation: fade-in-bottom 0.2s ease-in-out both;
 }
 
 /* ----------------------------------------------

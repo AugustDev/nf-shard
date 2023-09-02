@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { StatusTag } from "@/app/components";
+import { StatusTag, Tag } from "@/app/components";
 import { fullDateTime, safeDiffMinutes } from "@/common";
 import { Workflow } from "@prisma/client";
 
@@ -54,11 +54,11 @@ export const RunsTable: React.FC<RunsTableProps> = ({
                   {safeDiffMinutes(run.start, run.complete)}
                 </div>
               </td>
-              {/* <td className="text-right">
-                  {["Hi", "X"].map((tag) => (
-                    <Tag key={tag} name={tag} />
-                  ))}
-                </td> */}
+              <td className="text-right">
+                {run.tags.map((tag) => (
+                  <Tag key={tag} name={tag} />
+                ))}
+              </td>
               <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500 text-right">
                 <StatusTag
                   name={run.complete ? "completed" : "In progress"}
