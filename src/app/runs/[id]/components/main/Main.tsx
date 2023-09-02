@@ -85,9 +85,14 @@ export const MainRun = (props: PageProps) => {
           prevTask.data.status === "RUNNING" &&
           currentTask.data.status === "COMPLETED"
         ) {
-          toast.success(<span>{currentTask.data.name} completed.</span>, {
-            duration: 6000,
-          });
+          toast.success(
+            <div className="text-xs font-medium">
+              {currentTask.data.name} completed
+            </div>,
+            {
+              duration: 6000,
+            }
+          );
         }
       });
     }
@@ -126,8 +131,9 @@ export const MainRun = (props: PageProps) => {
       </SlideOver>
 
       <WorkflowDetails
-        run_name={workflow?.manifest.description || ""}
-        workflow_name={workflow?.runName || ""}
+        runName={workflow?.manifest.description || ""}
+        workflowName={workflow?.runName || ""}
+        projectName={workflow.projectName}
         className="mb-12"
         isLoading={!workflow.complete}
       />

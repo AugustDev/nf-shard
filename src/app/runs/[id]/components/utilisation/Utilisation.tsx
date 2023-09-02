@@ -62,7 +62,7 @@ export const Utilisation: React.FC<UtilisationProps> = (
     }
 
     return (completedTaskCount / props.tasks.length) * 100;
-  }, [props.tasks]);
+  }, [props.tasks, completedTaskCount]);
 
   return (
     <Container sectionName="Utilisation & Load" className={props.className}>

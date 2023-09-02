@@ -6,8 +6,9 @@ import { CheckCircleIcon } from "@heroicons/react/20/solid";
 import { clsx } from "clsx";
 
 type WorkflowDetailsProps = {
-  run_name: string;
-  workflow_name: string;
+  runName: string;
+  projectName: string;
+  workflowName: string;
   className?: string;
   isLoading: boolean;
 };
@@ -30,12 +31,12 @@ export const WorkflowDetails = (props: WorkflowDetailsProps) => {
           />
         )}
 
-        <div className="flex flex-row items-end">
+        <div className="flex flex-col items-end">
           <div className="font-medium text-2xl pr-4 text-black">
-            {props.run_name}
+            <div>{props.runName}</div>
           </div>
-          <div className="font-medium text-xl text-gray-500">
-            {props.workflow_name}
+          <div className="font-medium text-xl pr-4 text-gray-500">
+            {props.workflowName} {props.projectName}
           </div>
         </div>
       </div>

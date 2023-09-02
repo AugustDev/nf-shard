@@ -1,1 +1,1 @@
-export * from "./mongo/mongodb";
+export * from "./prisma/prisma";
