@@ -15,6 +15,11 @@ export async function PUT(request: Request, { params }: any) {
     .join(" ")
     .toLowerCase();
 
+  const tags =
+    requestJson.workflow?.params["tags"]
+      ?.split(",")
+      .map((e: string) => e.trim()) ?? [];
+
   try {
     await prisma.workflow.create({
       data: {
@@ -57,6 +62,7 @@ export async function PUT(request: Request, { params }: any) {
         manifest: requestJson.workflow.manifest,
         processNames: requestJson.processNames,
         searchable: searchableQuery,
+        tags: tags,
         progress: {
           create: {
             id: id,
