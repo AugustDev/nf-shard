@@ -10,7 +10,7 @@ Following instructions allows to run `nf-shard` locally.
 
 ### Method 1 - docker-compose
 
-dcker-compose is recommended way to run `nf-shard`. It will spin up PostgreSQL database and the server.
+docker-compose is recommended way to run `nf-shard`. It will spin up PostgreSQL database and the server.
 
 ```bash
 git clone git@github.com:AugustDev/nf-shard.git
