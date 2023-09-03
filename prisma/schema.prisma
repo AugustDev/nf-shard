@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator json {
+  provider = "prisma-json-types-generator"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URI")
+}
+
+model Workflow {
+  id              String                   @id
+  start           DateTime?
+  complete        DateTime?
+  updatedAt       DateTime                 @default(now()) @updatedAt
+  projectDir      String
+  profile         String
+  homeDir         String
+  workDir         String
+  container       String
+  commitId        String?
+  errorMessage    String?
+  repository      String?
+  containerEngine String?
+  scriptFile      String
+  userName        String
+  launchDir       String
+  runName         String
+  sessionId       String
+  errorReport     String?
+  scriptId        String
+  revision        String?
+  exitStatus      Int?
+  commandLine     String
+  stubRun         Boolean
+  /// [Nextflow]
+  nextflow        Json
+  /// [Stats]
+  stats           Json
+  resume          Boolean
+  success         Boolean
+  projectName     String
+  scriptName      String
+  duration        Int
+  params          Json
+  configFiles     String[]
+  configText      String
+  operationId     String?
+  logFile         String?
+  outFile         String?
+  /// [Manifest]
+  manifest        Json
+  processNames    String[]
+  /// [Metric]
+  metrics         Json[]
+  progress        Progress?
+  tasks           Task[]
+
+  // nf-shard specific
+  searchable String?
+  tags String[]
+
+  @@index([id, updatedAt, projectName, runName, userName, tags])
+  @@index([searchable(ops: raw("gin_trgm_ops"))], type: Gin, name: "searchable_idx")
+}
+
+model Progress {
+  id          String   @id @unique
+  pending     Int
+  ignored     Int
+  loadCpus    Int
+  loadMemory  BigInt
+  /// [Process]
+  processes   Json[]
+  aborted     Int
+  succeeded   Int
+  peakMemory  BigInt
+  peakCpus    Int
+  failed      Int
+  running     Int
+  retries     Int
+  peakRunning Int
+  cached      Int
+  submitted   Int
+  index       Int?
+  name        String?
+  stored      Int?
+  terminated  Boolean?
+  workflowId  String   @unique
+  workflow    Workflow @relation(fields: [workflowId], references: [id])
+
+  @@index([id, workflowId])
+}
+
+model Task {
+  id         Int      @id @default(autoincrement())
+  taskId     Int
+  /// [Task]
+  data       Json
+  workflowId String
+  workflow   Workflow @relation(fields: [workflowId], references: [id])
+
+  @@unique([workflowId, taskId])
+  @@index([taskId, workflowId])
+}

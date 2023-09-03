@@ -1,34 +1,72 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+![nf-shard Logo](./assets/logo.png)
 
-## Getting Started
+# nf-shard
 
-First, run the development server:
+nf-shard is an open source user interface for monitoring Nextflow runs, searching historical runs and analysing metrics. It was designed as drop-in replacement for community [nf-tower](https://github.com/seqeralabs/nf-tower), however it does not aim to replace Enterprise nf-tower.
+
+## Usage
+
+Following instructions allows to run `nf-shard` locally.
+
+### Method 1 - docker-compose
+
+dcker-compose is recommended way to run `nf-shard`. It will spin up PostgreSQL database and the server.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+git clone git@github.com:AugustDev/nf-shard.git
+cd nf-shard
+docker-compose up
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Add tower server details in your Nextflow config.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```nextflow
+tower {
+    enabled = true
+    accessToken = "non-empty"
+    endpoint = "http://localhost:3000/api"
+}
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Done! If you navigate to `http://localhost:3000` and run Nextflow workflow you should be able to see progress in the UI.
 
-## Learn More
+Note - `accessToken` can by any non-empty string.
 
-To learn more about Next.js, take a look at the following resources:
+### Method 2
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+If you already have running PostgreSQL database, you can run build project from package manager. To specify your database login edit `.env`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```
+yarn
+yarn build
+yarn run
+```
 
-## Deploy on Vercel
+## Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- NextJS/React/Typescript
+- PostgreSQL
+- Prisma ORM
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+I was picking the a stack with large communities to maximise open source controbutions from the community.
+
+## Features
+
+- Indexed search by workflow ID, run name, user name, tag, projeect name, before date, after date.
+- Search supports multiple `AND` conditions.
+- Ability to attach multiple tags for each workflow. Tags are visible in the UI and can be used in search.
+- List of historical runs
+- Run details
+- `nf-tower` plugin compatible API.
+
+## Roadmap
+
+- Authentication
+- Dedicated plugin
+- Upload/view execution logs
+- Download reports
+- [tRPC](https://trpc.io/) client/server communication
+
+## Deployment to production
+
+Instructions of how to deploy to production are coming soon.
