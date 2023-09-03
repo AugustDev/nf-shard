@@ -1,19 +1,19 @@
-"use client";
+"use client"
 
-import { JsonViewer } from "@textea/json-viewer";
+import { JsonViewer } from "@textea/json-viewer"
 
 type DataViewerProps = {
-  data: any;
-};
+	data: any
+}
 
 export const DataViewer = ({ data }: DataViewerProps) => {
-  return (
-    <JsonViewer
-      displayDataTypes={false}
-      displaySize={false}
-      //   maxDisplayLength={0}
-      value={data}
-      enableClipboard={false}
-    />
-  );
-};
+	return (
+		<JsonViewer
+			displayDataTypes={false}
+			displaySize={false}
+			//   maxDisplayLength={0}
+			value={data}
+			enableClipboard={false}
+		/>
+	)
+}

@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
-import { Prism } from "@mantine/prism";
+import { Prism } from "@mantine/prism"
 
 export function CodeText({ code }: { code: string }) {
-  return <Prism language="bash">{code}</Prism>;
+	return <Prism language="bash">{code}</Prism>
 }
