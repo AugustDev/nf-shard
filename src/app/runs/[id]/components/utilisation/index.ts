@@ -1,1 +1,1 @@
-export { Utilisation } from "./Utilisation";
+export { Utilisation } from "./Utilisation"

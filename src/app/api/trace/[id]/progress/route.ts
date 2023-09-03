@@ -1,10 +1,10 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@/services/prisma/prisma";
-import { ProgressRequest } from "./types";
+import { NextResponse } from "next/server"
+import { prisma } from "@/services/prisma/prisma"
+import { ProgressRequest } from "./types"
 
 export async function PUT(request: Request, { params }: any) {
-  const id = params.id;
-  const requestJson = await request.json();
+  const id = params.id
+  const requestJson = await request.json()
 
   try {
     // update tasks
@@ -21,7 +21,7 @@ export async function PUT(request: Request, { params }: any) {
           taskId: task.taskId,
           data: task,
         },
-      });
+      })
     }
 
     //update progress
@@ -46,10 +46,10 @@ export async function PUT(request: Request, { params }: any) {
         cached: requestJson.progress.cached,
         submitted: requestJson.progress.submitted,
       },
-    });
+    })
   } catch (e: any) {
-    return NextResponse.json({ error: e }, { status: 500 });
+    return NextResponse.json({ error: e }, { status: 500 })
   }
 
-  return NextResponse.json({});
+  return NextResponse.json({})
 }

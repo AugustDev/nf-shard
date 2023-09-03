@@ -1,1 +1,1 @@
-export { Attachments } from "./Attachments";
+export { Attachments } from "./Attachments"

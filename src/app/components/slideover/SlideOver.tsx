@@ -1,14 +1,14 @@
-"use client";
+"use client"
 
-import { Fragment, useEffect, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { Fragment } from "react"
+import { Dialog, Transition } from "@headlessui/react"
+import { XMarkIcon } from "@heroicons/react/24/outline"
 
 type SlideOverProps = {
-  children: React.ReactNode;
-  open: boolean;
-  setOpen: (status: Boolean) => void;
-};
+  children: React.ReactNode
+  open: boolean
+  setOpen: (status: Boolean) => void
+}
 
 export const SlideOver = ({ children, open, setOpen }: SlideOverProps) => {
   return (
@@ -67,5 +67,5 @@ export const SlideOver = ({ children, open, setOpen }: SlideOverProps) => {
         </div>
       </Dialog>
     </Transition.Root>
-  );
-};
+  )
+}

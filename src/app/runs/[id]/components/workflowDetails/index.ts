@@ -1,1 +1,1 @@
-export { WorkflowDetails } from "./WorkflowDetails";
+export { WorkflowDetails } from "./WorkflowDetails"

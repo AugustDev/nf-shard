@@ -1,10 +1,10 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@/services/prisma/prisma";
-import { CompleteRunRequest } from "./types";
+import { NextResponse } from "next/server"
+import { prisma } from "@/services/prisma/prisma"
+import { CompleteRunRequest } from "./types"
 
 export async function PUT(request: Request, { params }: any) {
-  const id = params.id as string;
-  const requestJson: CompleteRunRequest = await request.json();
+  const id = params.id as string
+  const requestJson: CompleteRunRequest = await request.json()
 
   try {
     //update progress
@@ -29,7 +29,7 @@ export async function PUT(request: Request, { params }: any) {
         cached: requestJson.progress.cached,
         submitted: requestJson.progress.submitted,
       },
-    });
+    })
 
     // update workflow stats and metrics
     await prisma.workflow.update({
@@ -42,10 +42,10 @@ export async function PUT(request: Request, { params }: any) {
         complete: requestJson.workflow.complete,
         duration: requestJson.workflow.duration,
       },
-    });
+    })
   } catch (e: any) {
-    return NextResponse.json({ error: e }, { status: 500 });
+    return NextResponse.json({ error: e }, { status: 500 })
   }
 
-  return NextResponse.json({});
+  return NextResponse.json({})
 }

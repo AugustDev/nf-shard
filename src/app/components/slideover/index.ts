@@ -1,1 +1,1 @@
-export { SlideOver } from "./SlideOver";
+export { SlideOver } from "./SlideOver"

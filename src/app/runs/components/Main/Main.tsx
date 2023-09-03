@@ -1,83 +1,83 @@
-"use client";
+"use client"
 
-import React, { useEffect, useState } from "react";
-import { clsx } from "clsx";
-import { SearchBar } from "@/app/components";
-import { Workflow } from "@prisma/client";
-import { RunsTable } from "../RunsTable";
-import { SearchRequest, SearchResponse } from "@/app/api/search/types";
-import styles from "./Main.module.scss";
-import moment from "moment";
+import React, { useEffect, useState } from "react"
+import { clsx } from "clsx"
+import { SearchBar } from "@/app/components"
+import { Workflow } from "@prisma/client"
+import { RunsTable } from "../RunsTable"
+import { SearchRequest, SearchResponse } from "@/app/api/search/types"
+import styles from "./Main.module.scss"
+import moment from "moment"
 
 type TMainProps = {
-  runs: Workflow[];
-};
+  runs: Workflow[]
+}
 
 export const Main = (props: TMainProps) => {
-  const [searchTags, setSearchTags] = useState<string[]>([]);
-  const [workflows, setWorkflows] = useState<Workflow[]>(props.runs);
+  const [searchTags, setSearchTags] = useState<string[]>([])
+  const [workflows, setWorkflows] = useState<Workflow[]>(props.runs)
 
   const addSearchTag = (tag: string) => {
     if (tag == "" || searchTags.includes(tag)) {
-      return;
+      return
     }
-    setSearchTags([...searchTags, tag]);
-  };
+    setSearchTags([...searchTags, tag])
+  }
 
   const removeSearchTag = (tag: string) => {
-    setSearchTags(searchTags.filter((t) => t !== tag));
-  };
+    setSearchTags(searchTags.filter((t) => t !== tag))
+  }
 
   useEffect(() => {
-    executeSearch();
-  }, [searchTags]);
+    executeSearch()
+  }, [searchTags])
 
   const executeSearch = async () => {
     if (searchTags.length == 0) {
-      setWorkflows(props.runs);
-      return;
+      setWorkflows(props.runs)
+      return
     }
 
-    const searchBody: SearchRequest = {};
+    const searchBody: SearchRequest = {}
 
     for (const tag of searchTags) {
-      const [type, value] = tag.split(":").map((e) => e.trim());
+      const [type, value] = tag.split(":").map((e) => e.trim())
       if (!value) {
-        searchBody.term = tag;
+        searchBody.term = tag
       }
 
       if (type == "tag") {
-        searchBody.tags = searchBody.tags || [];
-        searchBody.tags.push(value);
+        searchBody.tags = searchBody.tags || []
+        searchBody.tags.push(value)
       }
 
       if (type == "id") {
-        searchBody.id = value;
+        searchBody.id = value
       }
 
       if (type == "run") {
-        searchBody.run_name = value;
+        searchBody.run_name = value
       }
 
       if (type == "project") {
-        searchBody.project_name = value;
+        searchBody.project_name = value
       }
 
       if (type == "user") {
-        searchBody.user_name = value;
+        searchBody.user_name = value
       }
 
       if (type == "after") {
-        const date = moment(value);
+        const date = moment(value)
         if (date) {
-          searchBody.after = date.toDate();
+          searchBody.after = date.toDate()
         }
       }
 
       if (type == "before") {
-        const date = moment(value);
+        const date = moment(value)
         if (date) {
-          searchBody.before = date.toDate();
+          searchBody.before = date.toDate()
         }
       }
     }
@@ -86,11 +86,11 @@ export const Main = (props: TMainProps) => {
       body: JSON.stringify(searchBody),
       method: "POST",
       cache: "no-store",
-    });
+    })
 
-    const results: SearchResponse = await response.json();
-    setWorkflows(results.workflows);
-  };
+    const results: SearchResponse = await response.json()
+    setWorkflows(results.workflows)
+  }
 
   return (
     <>
@@ -106,5 +106,5 @@ export const Main = (props: TMainProps) => {
         />
       )}
     </>
-  );
-};
+  )
+}

@@ -1,1 +1,1 @@
-export { ProgressIndicator } from "./ProgressIndicator";
+export { ProgressIndicator } from "./ProgressIndicator"

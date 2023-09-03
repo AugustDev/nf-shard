@@ -1,1 +1,1 @@
-export { PlotBox } from "./PlotBox";
+export { PlotBox } from "./PlotBox"

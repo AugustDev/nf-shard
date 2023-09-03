@@ -1,10 +1,10 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@/services/prisma/prisma";
-import { BeginRunRequest } from "./types";
+import { NextResponse } from "next/server"
+import { prisma } from "@/services/prisma/prisma"
+import { BeginRunRequest } from "./types"
 
 export async function PUT(request: Request, { params }: any) {
-  const id = params.id;
-  const requestJson: BeginRunRequest = await request.json();
+  const id = params.id
+  const requestJson: BeginRunRequest = await request.json()
 
   const searchableQuery = [
     requestJson.workflow?.manifest?.description,
@@ -13,12 +13,12 @@ export async function PUT(request: Request, { params }: any) {
   ]
     .filter(Boolean)
     .join(" ")
-    .toLowerCase();
+    .toLowerCase()
 
   const tags =
     requestJson.workflow?.params["tags"]
       ?.split(",")
-      .map((e: string) => e.trim()) ?? [];
+      .map((e: string) => e.trim()) ?? []
 
   try {
     await prisma.workflow.create({
@@ -84,10 +84,10 @@ export async function PUT(request: Request, { params }: any) {
           },
         },
       },
-    });
+    })
 
-    return NextResponse.json({});
+    return NextResponse.json({})
   } catch (e: any) {
-    return NextResponse.json({ error: e }, { status: 500 });
+    return NextResponse.json({ error: e }, { status: 500 })
   }
 }

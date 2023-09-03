@@ -1,1 +1,1 @@
-export { TasksTable } from "./TasksTable";
+export { TasksTable } from "./TasksTable"

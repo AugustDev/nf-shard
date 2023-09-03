@@ -1,1 +1,1 @@
-export { TaskDetails } from "./TaskDetails";
+export { TaskDetails } from "./TaskDetails"

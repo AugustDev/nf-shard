@@ -1,7 +1,7 @@
-import { Progress, Task, Workflow } from "@prisma/client";
+import { Progress, Task, Workflow } from "@prisma/client"
 
 export type RunResponse = {
-  workflow: Workflow;
-  tasks: Task[];
-  progress: Progress;
-};
+  workflow: Workflow
+  tasks: Task[]
+  progress: Progress
+}

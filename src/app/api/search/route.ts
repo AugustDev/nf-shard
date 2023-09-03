@@ -1,19 +1,19 @@
-import { prisma } from "@/services/prisma/prisma";
-import { NextResponse } from "next/server";
-import { SearchRequest, SearchResponse } from "./types";
+import { prisma } from "@/services/prisma/prisma"
+import { NextResponse } from "next/server"
+import { SearchRequest, SearchResponse } from "./types"
 
 export async function POST(request: Request) {
-  const searchRequest: SearchRequest = await request.json();
+  const searchRequest: SearchRequest = await request.json()
 
   // requested search conditions
-  let conditions = [];
+  let conditions = []
 
   if (searchRequest.term) {
     conditions.push({
       searchable: {
         contains: searchRequest.term?.toLowerCase(),
       },
-    });
+    })
   }
 
   if (searchRequest.id) {
@@ -21,7 +21,7 @@ export async function POST(request: Request) {
       id: {
         equals: searchRequest.id,
       },
-    });
+    })
   }
 
   if (searchRequest.run_name) {
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
       runName: {
         equals: searchRequest.run_name,
       },
-    });
+    })
   }
 
   if (searchRequest.project_name) {
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
       projectName: {
         equals: searchRequest.project_name,
       },
-    });
+    })
   }
 
   if (searchRequest.user_name) {
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
       userName: {
         equals: searchRequest.user_name,
       },
-    });
+    })
   }
 
   if (searchRequest.tags) {
@@ -53,7 +53,7 @@ export async function POST(request: Request) {
       tags: {
         hasEvery: searchRequest.tags,
       },
-    });
+    })
   }
 
   if (searchRequest.status) {
@@ -61,7 +61,7 @@ export async function POST(request: Request) {
       status: {
         equals: searchRequest.status,
       },
-    });
+    })
   }
 
   if (searchRequest.after) {
@@ -69,7 +69,7 @@ export async function POST(request: Request) {
       updatedAt: {
         gte: searchRequest.after,
       },
-    });
+    })
   }
 
   if (searchRequest.before) {
@@ -77,18 +77,18 @@ export async function POST(request: Request) {
       updatedAt: {
         lte: searchRequest.before,
       },
-    });
+    })
   }
 
   const workflows = await prisma.workflow.findMany({
     where: {
       AND: conditions,
     },
-  });
+  })
 
   const res: SearchResponse = {
     workflows: workflows,
-  };
+  }
 
-  return NextResponse.json(res);
+  return NextResponse.json(res)
 }
