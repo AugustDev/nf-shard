@@ -8,13 +8,13 @@ nf-shard is an open source user interface for monitoring Nextflow runs, searchin
 
 Following instructions allows to run `nf-shard` locally.
 
-### Method 1 - docker-compose (recommended)
+### Method 1 - docker-compose
 
-Docker-compose is recommended way to run `nf-shard`. It will spin up PostgreSQL database and the server.
-
-Clone directory and navigate into it.
+dcker-compose is recommended way to run `nf-shard`. It will spin up PostgreSQL database and the server.
 
 ```bash
+git clone git@github.com:AugustDev/nf-shard.git
+cd nf-shard
 docker-compose up
 ```
 
@@ -27,6 +27,8 @@ tower {
     endpoint = "http://localhost:3000/api"
 }
 ```
+
+Done! If you navigate to `http://localhost:3000` and run Nextflow workflow you should be able to see progress in the UI.
 
 Note - `accessToken` can by any non-empty string.
 
