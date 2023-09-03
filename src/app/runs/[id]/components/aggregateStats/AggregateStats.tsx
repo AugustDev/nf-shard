@@ -40,8 +40,8 @@ export const AggregateStats: React.FC<AggregateStatsProps> = ({
 		for (const task of tasks) {
 			aggr.cpuTime += (task?.data.cpus * (task?.data?.realtime ?? 0)) / (3600 * 1000)
 			aggr.totalMemory += task?.data.rss ?? 0
-			aggr.storageRead += task?.data.readBytes ?? 0
-			aggr.storageWrite += task?.data.writeBytes ?? 0
+			aggr.storageRead += task?.data.rchar ?? 0
+			aggr.storageWrite += task?.data.wchar ?? 0
 		}
 
 		return aggr

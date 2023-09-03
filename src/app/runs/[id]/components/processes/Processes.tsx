@@ -11,12 +11,14 @@ type ProgressBarProps = {
 	completed: number
 	failed: number
 	total: number
+	running: number
 }
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ completed, failed, total }: ProgressBarProps) => {
+const ProgressBar: React.FC<ProgressBarProps> = ({ completed, running, failed, total }: ProgressBarProps) => {
 	const completedPercent = (completed / total) * 100
 	const failedPercent = (failed / total) * 100
-	const remainingPercent = 100 - completedPercent - failedPercent
+	const runningPercent = (running / total) * 100
+	const remainingPercent = 100 - completedPercent - failedPercent - runningPercent
 	return (
 		<div className="pt-1">
 			<div className="overflow-hidden h-2 mb-4 text-xs flex rounded-sm bg-gray-200">
@@ -25,8 +27,12 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ completed, failed, total }: P
 					className="transition-all duration-500 shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"
 				></div>
 				<div
+					style={{ width: runningPercent + "%" }}
+					className="transition-all duration-500 shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-400"
+				></div>
+				<div
 					style={{ width: failedPercent + "%" }}
-					className="transition-all duration-500 shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
+					className="transition-all duration-500 shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-400"
 				></div>
 				<div
 					style={{ width: remainingPercent + "%" }}
@@ -60,7 +66,12 @@ export const Processes: React.FC<ProcessesProps> = ({ processes, className }: Pr
 											{progress.succeeded + progress.failed} / {total}
 										</span>
 									</div>
-									<ProgressBar completed={progress.succeeded} failed={progress.failed} total={total} />
+									<ProgressBar
+										completed={progress.succeeded}
+										running={progress.running}
+										failed={progress.failed}
+										total={total}
+									/>
 								</div>
 							</a>
 						</div>
