@@ -2,8 +2,8 @@
 
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { StatusTag, Tag, WorkflowStatusTag } from "@/app/components"
-import { fullDateTime, safeDiffMinutes, workflowStatus } from "@/common"
+import { StatusTag, Tag, TimerDisplay, TimerDisplayDynamic, WorkflowStatusTag } from "@/app/components"
+import { formatDifference, fullDateTime, prettyDiffMinutes, workflowStatus } from "@/common"
 import { Workflow } from "@prisma/client"
 
 import { clsx } from "clsx"
@@ -39,7 +39,10 @@ export const RunsTable: React.FC<RunsTableProps> = ({ runs, className }: RunsTab
 
 							<td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500 text-right">
 								<div className="font-medium text-gray-900">{fullDateTime(run.start)}</div>
-								<div className="mt-1 text-gray-500">{safeDiffMinutes(run.start, run.complete)}</div>
+								<div className="text-gray-500 mt-1">
+									{run.complete && <div>{formatDifference(run.start, run.complete)}</div>}
+									{!run.complete && <TimerDisplayDynamic startedAt={run.start} />}
+								</div>
 							</td>
 							<td className="text-right">
 								{run.tags.map((tag) => (

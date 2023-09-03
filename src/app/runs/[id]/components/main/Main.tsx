@@ -138,7 +138,7 @@ export const MainRun = (props: PageProps) => {
 					<General workflow={workflow} />
 				</div>
 				<div>
-					<AggregateStats tasks={tasks} wallTime={workflow.duration} starts={workflow.start} />
+					<AggregateStats tasks={tasks} completedAt={workflow.complete} startedAt={workflow.start} />
 				</div>
 			</div>
 
