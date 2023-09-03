@@ -28,7 +28,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ completed, running, failed, t
 				></div>
 				<div
 					style={{ width: runningPercent + "%" }}
-					className="transition-all duration-500 shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-400"
+					className="transition-all duration-500 shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-sky-500"
 				></div>
 				<div
 					style={{ width: failedPercent + "%" }}
