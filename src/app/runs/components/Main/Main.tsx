@@ -28,10 +28,6 @@ export const Main = (props: TMainProps) => {
 		setSearchTags(searchTags.filter((t) => t !== tag))
 	}
 
-	useEffect(() => {
-		executeSearch()
-	}, [searchTags])
-
 	const executeSearch = async () => {
 		if (searchTags.length == 0) {
 			setWorkflows(props.runs)
@@ -91,6 +87,10 @@ export const Main = (props: TMainProps) => {
 		const results: SearchResponse = await response.json()
 		setWorkflows(results.workflows)
 	}
+
+	useEffect(() => {
+		executeSearch()
+	}, [searchTags])
 
 	return (
 		<>
