@@ -43,6 +43,8 @@ export async function PUT(request: Request, { params }: any) {
 				duration: requestJson.workflow.duration,
 				errorMessage: requestJson.workflow.errorMessage,
 				exitStatus: requestJson.workflow.exitStatus,
+				success: requestJson.workflow.success,
+				errorReport: requestJson.workflow.errorReport,
 			},
 		})
 	} catch (e: any) {

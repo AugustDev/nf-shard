@@ -37,7 +37,6 @@ export const MainRun = (props: PageProps) => {
 	const [selectedTask, setselectedTask] = useState<Task | undefined>()
 
 	const status = useMemo(() => {
-		console.log(workflowStatus(workflow))
 		return workflowStatus(workflow)
 	}, [workflow])
 
@@ -127,6 +126,7 @@ export const MainRun = (props: PageProps) => {
 				status={status}
 				errorMessage={workflow.errorMessage}
 				exitStatus={workflow.exitStatus}
+				errorReport={workflow.errorReport}
 			/>
 
 			<Tabs tabs={tabs} className="py-5 px-5" panelClassName="max-h-96" />

@@ -18,8 +18,7 @@ export const workflowStatus = (workflow: Workflow): WorkflowStatus => {
 	}
 
 	const lastUpdatedAt = moment(new Date()).diff(moment(workflow.updatedAt), "minutes")
-	console.log(lastUpdatedAt)
-	if (lastUpdatedAt > 30) {
+	if (lastUpdatedAt > 5) {
 		return WorkflowStatus.FAILED_TIMEOUT
 	}
 

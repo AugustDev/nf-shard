@@ -2,6 +2,10 @@
 
 import { Prism } from "@mantine/prism"
 
-export function CodeText({ code }: { code: string }) {
-	return <Prism language="bash">{code}</Prism>
+export function CodeText({ code, className }: { code: string; className?: string }) {
+	return (
+		<Prism className={className} language="bash">
+			{code}
+		</Prism>
+	)
 }

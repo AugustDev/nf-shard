@@ -1,11 +1,13 @@
 "use client"
 
-import { Spinner } from "@/app/components"
+import { AnimatedIcon, Spinner } from "@/app/components"
 import { WorkflowStatus } from "@common/index"
 import { FaCircleCheck } from "react-icons/fa6"
 import { MdCancel } from "react-icons/md"
 
 import { clsx } from "clsx"
+import { CodeText } from ".."
+import { AiOutlineLoading3Quarters } from "react-icons/ai"
 
 type WorkflowDetailsProps = {
 	runName: string
@@ -15,6 +17,7 @@ type WorkflowDetailsProps = {
 	status: WorkflowStatus
 	errorMessage?: string | null
 	exitStatus: number | null
+	errorReport?: string | null
 }
 
 export const WorkflowDetails = (props: WorkflowDetailsProps) => {
@@ -24,7 +27,11 @@ export const WorkflowDetails = (props: WorkflowDetailsProps) => {
 				{props.status == WorkflowStatus.SUCCESS && (
 					<FaCircleCheck className="h-10 w-10 text-green-500 mr-4" aria-hidden="true" />
 				)}
-				{props.status == WorkflowStatus.RUNNING && <Spinner className="h-10 w-10 text-green-500 mr-4" />}
+				{props.status == WorkflowStatus.RUNNING && (
+					<AnimatedIcon className="mr-4">
+						<AiOutlineLoading3Quarters className="h-8 w-8 flex-shrink-0 text-indigo-700" />
+					</AnimatedIcon>
+				)}
 				{(props.status == WorkflowStatus.FAILED || props.status == WorkflowStatus.FAILED_TIMEOUT) && (
 					<MdCancel className="h-10 w-10 text-red-500 mr-4" aria-hidden="true" />
 				)}
@@ -39,17 +46,14 @@ export const WorkflowDetails = (props: WorkflowDetailsProps) => {
 				</div>
 			</div>
 
-			{props.errorMessage && (
+			{props.errorReport && (
 				<div className="rounded-md bg-red-50 p-4 mt-8">
-					<div className="flex">
-						<div className="ml-3">
-							<h3 className="text-sm font-medium text-red-800">Workflow failed</h3>
-							<div className="mt-2 text-sm text-red-700">
-								<ul role="list" className="list-disc space-y-1 pl-5">
-									<li>{props.errorMessage}</li>
-									<li>Exit status: {props.exitStatus}</li>
-								</ul>
-							</div>
+					<div className="ml-3">
+						<h3 className="text-sm font-medium text-red-800">Workflow failed</h3>
+						<div className="mt-2 text-sm text-red-700">
+							{props.errorMessage && <p>{props.errorMessage}</p>}
+							{props.exitStatus && <p>{props.exitStatus}</p>}
+							<CodeText className="w-full" code={props.errorReport} />
 						</div>
 					</div>
 				</div>

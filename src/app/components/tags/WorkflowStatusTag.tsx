@@ -1,6 +1,8 @@
 import { WorkflowStatus } from "@/common"
 import clsx from "clsx"
 import { useMemo } from "react"
+import { AnimatedIcon } from ".."
+import { AiOutlineLoading3Quarters } from "react-icons/ai"
 
 type WorkflowStatusProps = {
 	status: WorkflowStatus
@@ -22,5 +24,15 @@ export const WorkflowStatusTag = ({ status }: WorkflowStatusProps) => {
 			return "Running"
 		}
 	}, [status])
-	return <span className={styles}>{status}</span>
+	return (
+		<span className={styles}>
+			{status === WorkflowStatus.RUNNING && (
+				<AnimatedIcon>
+					<AiOutlineLoading3Quarters className="h-4 w-4 flex-shrink-0 text-indigo-700" />
+				</AnimatedIcon>
+			)}
+
+			{status}
+		</span>
+	)
 }
