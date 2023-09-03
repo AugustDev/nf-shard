@@ -1,4 +1,4 @@
-import { Container, StatusTag } from "@/app/components"
+import { Container, StatusTag, TaskStatusTag } from "@/app/components"
 import { formatDuration, fullDateTime } from "@/common"
 import { Task } from "@prisma/client"
 import bytes from "bytes"
@@ -92,7 +92,7 @@ export const TasksTable = ({ tasks, className, onTaskClick }: TasksTableProps) =
 								</td>
 								<td className="p-2 whitespace-nowrap">
 									<div className="text-right">
-										<StatusTag type={task.data.status.toLowerCase()} name={task.data.status.toLowerCase()} />
+										<TaskStatusTag status={task.data.status.toLowerCase()} />
 									</div>
 								</td>
 								<td className="p-2 whitespace-nowrap">

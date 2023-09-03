@@ -5,6 +5,8 @@ import {
 	FingerPrintIcon,
 	WrenchScrewdriverIcon,
 } from "@heroicons/react/20/solid"
+import { FaDocker } from "react-icons/fa"
+import { PiEngineLight, PiSubtitlesLight } from "react-icons/pi"
 import { BuildingLibraryIcon, FolderIcon } from "@heroicons/react/24/outline"
 import { Workflow } from "@prisma/client"
 
@@ -46,15 +48,21 @@ export const General: React.FC<GeneralProps> = ({ workflow }: GeneralProps) => {
 			</div>
 			<div className="mt-4 flex w-full flex-none gap-x-4">
 				<dt className="flex-none">
-					<CalendarDaysIcon className="h-6 w-5 text-gray-400" aria-hidden="true" />
+					<PiSubtitlesLight className="h-6 w-5 text-gray-400" aria-hidden="true" />
 				</dt>
 				<dd className="text-sm leading-6 text-gray-500">{workflow.manifest.description}</dd>
 			</div>
 			<div className="mt-4 flex w-full flex-none gap-x-4">
 				<dt className="flex-none">
-					<CalendarDaysIcon className="h-6 w-5 text-gray-400" aria-hidden="true" />
+					<FaDocker className="h-6 w-5 text-gray-400" aria-hidden="true" />
 				</dt>
 				<dd className="text-sm leading-6 text-gray-500">{workflow.container}</dd>
+			</div>
+			<div className="mt-4 flex w-full flex-none gap-x-4">
+				<dt className="flex-none">
+					<PiEngineLight className="h-6 w-5 text-gray-400" aria-hidden="true" />
+				</dt>
+				<dd className="text-sm leading-6 text-gray-500">{workflow.profile}</dd>
 			</div>
 			<div className="mt-4 flex w-full flex-none gap-x-4">
 				<dt className="flex-none">

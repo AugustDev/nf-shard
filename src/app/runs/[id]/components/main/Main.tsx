@@ -1,10 +1,9 @@
 "use client"
 
-import { RunResponse } from "@/app/api/runs/[id]/types"
+import { toast } from "react-hot-toast"
 import { Progress, Task, Workflow } from "@prisma/client"
 import {
 	AggregateStats,
-	Attachments,
 	CodeText,
 	Configuration,
 	DataViewer,
@@ -18,9 +17,10 @@ import {
 	WorkflowDetails,
 } from ".."
 import { Tabs } from "@/app/components/Tabs/Tabs"
-import { useEffect, useRef, useState } from "react"
+import { RunResponse } from "@/app/api/runs/[id]/types"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { SlideOver } from "@/app/components"
-import { toast } from "react-hot-toast"
+import { workflowStatus } from "@/common/index"
 
 type PageProps = {
 	workflow: Workflow
@@ -35,6 +35,11 @@ export const MainRun = (props: PageProps) => {
 	const tasksRef = useRef<Task[]>()
 	const shouldPoll = useRef<boolean>(true)
 	const [selectedTask, setselectedTask] = useState<Task | undefined>()
+
+	const status = useMemo(() => {
+		console.log(workflowStatus(workflow))
+		return workflowStatus(workflow)
+	}, [workflow])
 
 	const fetchData = async () => {
 		if (workflow.complete) {
@@ -111,7 +116,7 @@ export const MainRun = (props: PageProps) => {
 					setselectedTask(undefined)
 				}}
 			>
-				<div>{selectedTask && <TaskDetails task={selectedTask} />}</div>
+				<>{selectedTask && <TaskDetails task={selectedTask} />}</>
 			</SlideOver>
 
 			<WorkflowDetails
@@ -119,10 +124,15 @@ export const MainRun = (props: PageProps) => {
 				workflowName={workflow?.runName || ""}
 				projectName={workflow.projectName}
 				className="mb-12"
-				isLoading={!workflow.complete}
+				status={status}
+				errorMessage={workflow.errorMessage}
+				exitStatus={workflow.exitStatus}
 			/>
+
 			<Tabs tabs={tabs} className="py-5 px-5" panelClassName="max-h-96" />
+
 			{workflow && <Status progress={progress} className="pt-8" />}
+
 			<div className="md:grid md:grid-cols-2 md:gap-4 pt-8 grid-cols-1">
 				<div>
 					<General workflow={workflow} />
@@ -131,6 +141,7 @@ export const MainRun = (props: PageProps) => {
 					<AggregateStats tasks={tasks} wallTime={workflow.duration} starts={workflow.start} />
 				</div>
 			</div>
+
 			<div className="md:grid md:grid-cols-2 md:gap-4 pt-8 grid-cols-1">
 				<div>
 					<Processes processes={progress.processes} />
@@ -139,6 +150,7 @@ export const MainRun = (props: PageProps) => {
 					<Utilisation tasks={tasks} peakCpus={workflow.stats.peakCpus} loadCpus={workflow.stats.loadCpus} />
 				</div>
 			</div>
+
 			{tasks.length > 0 && <TasksTable tasks={tasks} className="mt-8" onTaskClick={setselectedTask} />}
 
 			{workflow.metrics.length > 0 && <MetricsOverview className="mt-8 h-full" metrics={workflow.metrics} />}

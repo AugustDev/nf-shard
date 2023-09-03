@@ -62,9 +62,8 @@ model Workflow {
   // nf-shard specific
   searchable String?
   tags String[]
-  status String?
 
-  @@index([id, updatedAt, projectName, runName, userName, tags, status])
+  @@index([id, updatedAt, projectName, runName, userName, tags])
   @@index([searchable(ops: raw("gin_trgm_ops"))], type: Gin, name: "searchable_idx")
 }
 

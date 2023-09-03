@@ -2,8 +2,8 @@
 
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { StatusTag, Tag } from "@/app/components"
-import { fullDateTime, safeDiffMinutes } from "@/common"
+import { StatusTag, Tag, WorkflowStatusTag } from "@/app/components"
+import { fullDateTime, safeDiffMinutes, workflowStatus } from "@/common"
 import { Workflow } from "@prisma/client"
 
 import { clsx } from "clsx"
@@ -25,7 +25,7 @@ export const RunsTable: React.FC<RunsTableProps> = ({ runs, className }: RunsTab
 				<tbody className="divide-y align-middle sm:px-6 lg:px-8">
 					{runs.map((run) => (
 						<tr onClick={() => handleRowClick(run.id)} key={run.id} className="hover:bg-gray-50 cursor-pointer">
-							<td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+							<td className="whitespace-nowrap px-6 py-5 text-sm text-gray-500">
 								<div className="text-gray-900">{run.manifest.description}</div>
 							</td>
 							<td className="whitespace-nowrap py-5 px-3 text-sm sm:pl-0">
@@ -46,11 +46,8 @@ export const RunsTable: React.FC<RunsTableProps> = ({ runs, className }: RunsTab
 									<Tag key={tag} name={tag} />
 								))}
 							</td>
-							<td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500 text-right">
-								<StatusTag
-									name={run.complete ? "completed" : "In progress"}
-									type={run.complete ? "success" : "pending"}
-								/>
+							<td className="whitespace-nowrap pr-6 py-5 text-sm text-gray-500 text-right">
+								<WorkflowStatusTag status={workflowStatus(run)} />
 							</td>
 						</tr>
 					))}

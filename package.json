@@ -7,7 +7,8 @@
     "gen-types": "npx prisma migrate dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "studio": "npx prisma studio"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
