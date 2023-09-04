@@ -4,7 +4,8 @@
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
-		"gen-types": "npx prisma migrate dev",
+		"migrate": "npx prisma migrate dev",
+		"generate": "npx prisma generate",
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
