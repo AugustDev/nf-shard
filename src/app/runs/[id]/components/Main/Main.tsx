@@ -46,7 +46,7 @@ export const MainRun = (props: PageProps) => {
 			return
 		}
 
-		const response = await fetch(`http://localhost:3000/api/runs/${workflow.id}`, {
+		const response = await fetch(`/api/runs/${workflow.id}`, {
 			cache: "no-store",
 		})
 		const result: RunResponse = await response.json()

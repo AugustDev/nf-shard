@@ -13,7 +13,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
 const getData = async (id: string) => {
 	try {
-		const response = await fetch(`http://localhost:3000/api/runs/${id}`, {
+		const response = await fetch(`${process.env.SERVER_URI}/api/runs/${id}`, {
 			cache: "no-store",
 		})
 		const result: RunResponse = await response.json()

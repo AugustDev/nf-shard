@@ -78,7 +78,7 @@ export const Main = (props: TMainProps) => {
 			}
 		}
 
-		const response = await fetch(`http://localhost:3000/api/search`, {
+		const response = await fetch(`/api/search`, {
 			body: JSON.stringify(searchBody),
 			method: "POST",
 			cache: "no-store",

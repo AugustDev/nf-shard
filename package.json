@@ -52,6 +52,7 @@
 		"@types/plotly.js": "^2.12.26",
 		"@types/react-plotly.js": "^2.6.0",
 		"@types/uuid": "^9.0.2",
+		"dotenv-cli": "^7.3.0",
 		"prettier": "^3.0.3",
 		"prisma": "^5.2.0",
 		"prisma-json-types-generator": "^3.0.0-beta.4"
