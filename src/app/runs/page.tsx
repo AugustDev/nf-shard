@@ -29,3 +29,5 @@ const getData = async (): Promise<TRunsPageProps> => {
 		runs: workflows,
 	}
 }
+
+export const fetchCache = "force-no-store"
