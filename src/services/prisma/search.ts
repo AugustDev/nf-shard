@@ -82,6 +82,9 @@ export const searchWorkflows = async (request: TSearchRequest) => {
 		where: {
 			AND: conditions,
 		},
+		orderBy: {
+			updatedAt: "desc",
+		},
 	})
 
 	return workflows

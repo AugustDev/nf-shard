@@ -1,2 +1,2 @@
-export * from "./runs"
+export * from "./workflow"
 export * from "./search"

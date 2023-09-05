@@ -11,7 +11,7 @@ export default function Page() {
 					pipeline to see the results in the dashboard.
 				</p>
 				<CodeText
-					className="pt-8"
+					className="mt-8"
 					code={`tower {
     enabled = true
     accessToken = "x"
