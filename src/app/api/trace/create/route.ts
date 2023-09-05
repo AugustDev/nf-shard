@@ -6,6 +6,6 @@ export async function POST(request: Request) {
 	return NextResponse.json({
 		workflowId: workflowId,
 		dir: process.cwd(),
-		watchUrl: `${process.env.SERVER_URI}/${workflowId}`,
+		watchUrl: `${process.env.WATCH_BASE_URI}/runs/${workflowId}`,
 	})
 }
