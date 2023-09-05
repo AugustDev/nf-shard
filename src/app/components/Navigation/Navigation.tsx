@@ -3,7 +3,6 @@
 import { FC, Fragment } from "react"
 import Link from "next/link"
 import { clsx } from "clsx"
-import Image from "next/image"
 import { Disclosure, Menu, Transition } from "@headlessui/react"
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import { Toaster } from "react-hot-toast"
@@ -16,7 +15,7 @@ const user = {
 }
 const navigation = [
 	{ name: "Runs", href: "/runs", current: true },
-	{ name: "Guide", href: "/guide", current: false },
+	{ name: "Get Started", href: "/guide", current: false },
 ]
 const userNavigation = [
 	{ name: "Your Profile", href: "#" },
@@ -179,11 +178,6 @@ export const MainNavigation: FC<MainNavigationProps> = ({ child }) => {
 				)}
 			</Disclosure>
 
-			<header className="bg-white shadow-sm">
-				<div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-					<h1 className="text-lg font-semibold leading-6 text-gray-900">{currentNav?.name}</h1>
-				</div>
-			</header>
 			<main>
 				<div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
 					{child} <Toaster position="top-right" />
