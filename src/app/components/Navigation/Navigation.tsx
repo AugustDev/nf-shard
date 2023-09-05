@@ -6,6 +6,7 @@ import { clsx } from "clsx"
 import { Disclosure, Menu, Transition } from "@headlessui/react"
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import { Toaster } from "react-hot-toast"
+import { usePathname } from "next/navigation"
 
 const user = {
 	name: "Tom Cook",
@@ -14,8 +15,8 @@ const user = {
 		"https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 }
 const navigation = [
-	{ name: "Runs", href: "/runs", current: true },
-	{ name: "Get Started", href: "/guide", current: false },
+	{ name: "Runs", href: "/runs" },
+	{ name: "Get Started", href: "/guide" },
 ]
 const userNavigation = [
 	{ name: "Your Profile", href: "#" },
@@ -68,7 +69,7 @@ function ProfileDropdown() {
 }
 
 export const MainNavigation: FC<MainNavigationProps> = ({ child }) => {
-	const currentNav = navigation.find((nav) => nav.current)
+	const currentPath = usePathname()
 
 	return (
 		<div className="min-h-full">
@@ -92,12 +93,12 @@ export const MainNavigation: FC<MainNavigationProps> = ({ child }) => {
 													key={item.name}
 													href={item.href}
 													className={clsx(
-														item.current
+														item.href === currentPath
 															? "bg-indigo-700 text-white"
 															: "text-white hover:bg-indigo-500 hover:bg-opacity-75",
 														"rounded-md px-3 py-2 text-sm font-medium"
 													)}
-													aria-current={item.current ? "page" : undefined}
+													aria-current={item.href == currentPath ? "page" : undefined}
 												>
 													{item.name}
 												</a>
@@ -133,10 +134,12 @@ export const MainNavigation: FC<MainNavigationProps> = ({ child }) => {
 										as="a"
 										href={item.href}
 										className={clsx(
-											item.current ? "bg-indigo-700 text-white" : "text-white hover:bg-indigo-500 hover:bg-opacity-75",
+											item.href == currentPath
+												? "bg-indigo-700 text-white"
+												: "text-white hover:bg-indigo-500 hover:bg-opacity-75",
 											"block rounded-md px-3 py-2 text-base font-medium"
 										)}
-										aria-current={item.current ? "page" : undefined}
+										aria-current={item.href == currentPath ? "page" : undefined}
 									>
 										{item.name}
 									</Disclosure.Button>
