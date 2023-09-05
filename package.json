@@ -33,7 +33,7 @@
 		"bytes": "^3.1.2",
 		"clsx": "^2.0.0",
 		"eslint": "8.46.0",
-		"eslint-config-next": "13.4.13",
+		"eslint-config-next": "13.4.19",
 		"moment": "^2.29.4",
 		"nanoid": "^4.0.2",
 		"next": "13.4.19",
