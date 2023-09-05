@@ -3,8 +3,12 @@
 import { clsx } from "clsx"
 import dynamic from "next/dynamic"
 import { Data, Layout } from "plotly.js"
+import { ComponentType } from "react"
 
-const DynamicPlot = dynamic(() => import("react-plotly.js"), { ssr: false })
+const DynamicPlot: ComponentType<{ data: Data[]; layout: Partial<Layout>; className?: string }> = dynamic(
+	() => import("react-plotly.js") as any,
+	{ ssr: false }
+)
 
 type PlotBoxProps = {
 	className?: string
