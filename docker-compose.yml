@@ -7,47 +7,24 @@ services:
     environment:
       POSTGRES_PASSWORD: yourpassword
     ports:
-      - "5432:5432"
+      - 5432:5432
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    profiles:
+      - db
+      - all
 
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: some-pgadmin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@example.com
-      PGADMIN_DEFAULT_PASSWORD: adminpassword
+  nextjs:
+    build: .
+    platform: linux/amd64
+    env_file:
+      - .env
     ports:
-      - "8081:80"
+      - 3000:3000
+    profiles:
+      - all
     depends_on:
       - postgres
-    volumes:
-      - pgadmin-data:/var/lib/pgadmin
 
 volumes:
   postgres-data:
-  pgadmin-data:
-
-  # version: "3.8"
-# services:
-#   mongo:
-#     image: mongo
-#     container_name: mongodb_container
-#     environment:
-#       - MONGO_INITDB_ROOT_USERNAME=mongodb
-#       - MONGO_INITDB_ROOT_PASSWORD=mongodb
-#       - MONGO_INITDB_DATABASE=nfshard
-#     ports:
-#       - "27017:27017"
-#     volumes:
-#       - mongodb_data1:/data/db
-#     networks:
-#       - node-network
-
-# volumes:
-#   mongodb_data1:
-
-# networks:
-#   node-network:
-#     driver: bridge
-
