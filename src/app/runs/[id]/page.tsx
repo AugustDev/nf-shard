@@ -1,5 +1,5 @@
-import { RunResponse } from "@/app/api/runs/[id]/types"
 import { MainRun } from "./components/Main/Main"
+import { workflowById } from "@/services/prisma"
 
 export default async function Page({ params }: { params: { id: string } }) {
 	const { workflow, tasks, progress } = await getData(params.id)
@@ -13,16 +13,13 @@ export default async function Page({ params }: { params: { id: string } }) {
 
 const getData = async (id: string) => {
 	try {
-		const response = await fetch(`localhost:${process.env.PORT}/api/runs/${id}`, {
-			cache: "no-store",
-		})
-		const result: RunResponse = await response.json()
+		const workflow = await workflowById(id)
 
 		return {
 			isLoading: false,
-			workflow: result.workflow,
-			tasks: result.tasks,
-			progress: result.progress,
+			workflow: workflow,
+			tasks: workflow?.tasks ?? [],
+			progress: workflow?.progress,
 		}
 	} catch (e) {
 		console.error(e)

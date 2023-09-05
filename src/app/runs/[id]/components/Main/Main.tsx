@@ -25,13 +25,13 @@ import { workflowStatus } from "@/common/index"
 type PageProps = {
 	workflow: Workflow
 	tasks: Task[]
-	progress: Progress
+	progress?: Progress | null
 }
 
 export const MainRun = (props: PageProps) => {
 	const [workflow, setWorkflow] = useState<Workflow>(props.workflow)
 	const [tasks, setTasks] = useState<Task[]>(props.tasks)
-	const [progress, setProgress] = useState<Progress>(props.progress)
+	const [progress, setProgress] = useState<Progress | undefined | null>(props.progress)
 	const tasksRef = useRef<Task[]>()
 	const shouldPoll = useRef<boolean>(true)
 	const [selectedTask, setselectedTask] = useState<Task | undefined>()
@@ -131,7 +131,7 @@ export const MainRun = (props: PageProps) => {
 
 			<Tabs tabs={tabs} className="py-5 px-5" panelClassName="max-h-96" />
 
-			{workflow && <Status progress={progress} className="pt-8" />}
+			{progress && <Status progress={progress} className="pt-8" />}
 
 			<div className="md:grid md:grid-cols-2 md:gap-4 pt-8 grid-cols-1">
 				<div>
@@ -143,9 +143,7 @@ export const MainRun = (props: PageProps) => {
 			</div>
 
 			<div className="md:grid md:grid-cols-2 md:gap-4 pt-8 grid-cols-1">
-				<div>
-					<Processes processes={progress.processes} />
-				</div>
+				<div>{progress && <Processes processes={progress.processes} />}</div>
 				<div>
 					<Utilisation tasks={tasks} peakCpus={workflow.stats.peakCpus} loadCpus={workflow.stats.loadCpus} />
 				</div>

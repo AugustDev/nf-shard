@@ -1,81 +1,20 @@
 import { prisma } from "@/services/prisma/prisma"
 import { NextResponse } from "next/server"
 import { SearchRequest, SearchResponse } from "./types"
+import { searchWorkflows } from "@/services/prisma"
 
 export async function POST(request: Request) {
 	const searchRequest: SearchRequest = await request.json()
 
-	// requested search conditions
-	let conditions = []
-
-	if (searchRequest.term) {
-		conditions.push({
-			searchable: {
-				contains: searchRequest.term?.toLowerCase(),
-			},
-		})
-	}
-
-	if (searchRequest.id) {
-		conditions.push({
-			id: {
-				equals: searchRequest.id,
-			},
-		})
-	}
-
-	if (searchRequest.run_name) {
-		conditions.push({
-			runName: {
-				equals: searchRequest.run_name,
-			},
-		})
-	}
-
-	if (searchRequest.project_name) {
-		conditions.push({
-			projectName: {
-				equals: searchRequest.project_name,
-			},
-		})
-	}
-
-	if (searchRequest.user_name) {
-		conditions.push({
-			userName: {
-				equals: searchRequest.user_name,
-			},
-		})
-	}
-
-	if (searchRequest.tags) {
-		conditions.push({
-			tags: {
-				hasEvery: searchRequest.tags,
-			},
-		})
-	}
-
-	if (searchRequest.after) {
-		conditions.push({
-			updatedAt: {
-				gte: searchRequest.after,
-			},
-		})
-	}
-
-	if (searchRequest.before) {
-		conditions.push({
-			updatedAt: {
-				lte: searchRequest.before,
-			},
-		})
-	}
-
-	const workflows = await prisma.workflow.findMany({
-		where: {
-			AND: conditions,
-		},
+	const workflows = await searchWorkflows({
+		term: searchRequest.term,
+		id: searchRequest.id,
+		runName: searchRequest.run_name,
+		projectName: searchRequest.project_name,
+		userName: searchRequest.user_name,
+		tags: searchRequest.tags,
+		after: searchRequest.after,
+		before: searchRequest.before,
 	})
 
 	const res: SearchResponse = {

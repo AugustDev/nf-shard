@@ -1,31 +1,10 @@
 import { NextResponse } from "next/server"
-import { prisma } from "@/services/prisma/prisma"
-import { revalidatePath } from "next/cache"
-
-interface BigInt {
-	/** Convert to BigInt to string form in JSON.stringify */
-	toJSON: () => string
-}
-
-// @ts-ignore: Unreachable code error
-BigInt.prototype.toJSON = function (): string {
-	return this.toString()
-}
+import { workflowById } from "@/services/prisma"
 
 export async function GET(request: Request, { params }: any) {
 	const id = params.id as string
 	try {
-		const workflow = await prisma.workflow.findUnique({
-			where: {
-				id: id,
-			},
-			include: {
-				tasks: true,
-				progress: true,
-			},
-		})
-
-		revalidatePath(request.url)
+		const workflow = await workflowById(id)
 
 		return NextResponse.json({
 			workflow: workflow,
