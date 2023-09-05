@@ -23,3 +23,15 @@ export const workflowById = async (id: string) => {
 
 	return workflow
 }
+
+export const getWorkflows = async (skip?: number) => {
+	const workflows = await prisma.workflow.findMany({
+		take: 20,
+		skip: skip,
+		orderBy: {
+			updatedAt: "desc",
+		},
+	})
+
+	return workflows
+}

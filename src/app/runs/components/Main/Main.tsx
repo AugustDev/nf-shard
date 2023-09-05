@@ -29,11 +29,6 @@ export const Main = (props: TMainProps) => {
 	}
 
 	const executeSearch = async () => {
-		if (searchTags.length == 0) {
-			setWorkflows(props.runs)
-			return
-		}
-
 		const searchBody: SearchRequest = {}
 
 		for (const tag of searchTags) {
@@ -90,6 +85,17 @@ export const Main = (props: TMainProps) => {
 
 	useEffect(() => {
 		executeSearch()
+
+		// Execute every 5 seconds
+		const intervalId = setInterval(() => {
+			console.log("brah")
+			executeSearch()
+		}, 5000) // 5000 milliseconds = 5 seconds
+
+		// Clear interval on component unmount
+		return () => {
+			clearInterval(intervalId)
+		}
 	}, [searchTags])
 
 	return (
