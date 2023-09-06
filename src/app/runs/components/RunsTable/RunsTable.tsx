@@ -20,8 +20,8 @@ export const RunsTable: React.FC<RunsTableProps> = ({ runs, className }: RunsTab
 		push(`/runs/${id}`)
 	}
 	return (
-		<div className={className}>
-			<table className="rounded-md text-left bg-white w-full">
+		<div className={clsx(className, "overflow-auto")}>
+			<table className="rounded-md text-left bg-white w-full mx-4 md:mx-0 ">
 				<tbody className="divide-y align-middle sm:px-6 lg:px-8">
 					{runs.map((run) => (
 						<tr onClick={() => handleRowClick(run.id)} key={run.id} className="hover:bg-gray-50 cursor-pointer">
