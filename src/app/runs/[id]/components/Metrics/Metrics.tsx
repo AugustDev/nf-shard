@@ -3,6 +3,7 @@ import { Container, Tabs } from "@/app/components"
 import { PlotBox } from ".."
 import { useMemo } from "react"
 import moment from "moment"
+import clsx from "clsx"
 
 type MetricsProps = {
 	className?: string
@@ -147,11 +148,13 @@ export const MetricsOverview = (props: MetricsProps) => {
 	return (
 		<Container sectionName="Metrics" className={props.className}>
 			<Tabs
+				className="overflow-x-auto w-full min-w-24"
 				tabs={[
 					{
 						name: "CPU Usage",
 						content: (
 							<PlotBox
+								className="w-full min-w-24"
 								data={metricsCollection.cpu}
 								layout={{
 									title: "CPU Usage",
