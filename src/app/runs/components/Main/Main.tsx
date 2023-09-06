@@ -88,7 +88,6 @@ export const Main = (props: TMainProps) => {
 
 		// Execute every 5 seconds
 		const intervalId = setInterval(() => {
-			console.log("brah")
 			executeSearch()
 		}, 5000) // 5000 milliseconds = 5 seconds
 
