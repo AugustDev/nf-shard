@@ -10,12 +10,13 @@ Following instructions allows to run `nf-shard` locally.
 
 ### Method 1 - docker-compose
 
-dcker-compose is recommended way to run `nf-shard`. It will spin up PostgreSQL database and the server.
+docker-compose will spin up PostgreSQL database and the server.
 
 ```bash
 git clone git@github.com:AugustDev/nf-shard.git
 cd nf-shard
-docker-compose up
+docker-compose up -d
+yarn migrate
 ```
 
 Add tower server details in your Nextflow config.
@@ -38,6 +39,7 @@ If you already have running PostgreSQL database, you can run build project from 
 
 ```
 yarn
+yarn migrate
 yarn build
 yarn run
 ```
