@@ -149,6 +149,7 @@ export const MetricsOverview = (props: MetricsProps) => {
 		<Container sectionName="Metrics" className={props.className}>
 			<Tabs
 				className="overflow-x-auto w-full min-w-24"
+				style={{ minWidth: "1000px" }}
 				tabs={[
 					{
 						name: "CPU Usage",
