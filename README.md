@@ -52,7 +52,7 @@ yarn run
 - PostgreSQL
 - Prisma ORM
 
-I was picking the a stack with large communities to maximise open source controbutions from the community.
+I was picking the a stack with large communities to maximise open source contribution from the Nextflow community.
 
 ## Features
 
