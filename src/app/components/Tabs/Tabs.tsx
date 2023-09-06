@@ -13,9 +13,10 @@ type TabsProps = {
 	tabs: TabProps[]
 	className?: string
 	panelClassName?: string
+	style?: React.CSSProperties
 }
 
-export const Tabs: React.FC<TabsProps> = ({ tabs, className, panelClassName }: TabsProps) => {
+export const Tabs: React.FC<TabsProps> = ({ tabs, className, panelClassName, style }: TabsProps) => {
 	const [selectedIndex, setSelectedIndex] = useState(0)
 	return (
 		<div className={clsx(className, "bg-white rounded-md")}>
@@ -43,7 +44,7 @@ export const Tabs: React.FC<TabsProps> = ({ tabs, className, panelClassName }: T
 						</nav>
 					</div>
 				</Tab.List>
-				<Tab.Panels className="mt-8 overflow-auto" style={{ minWidth: "1000px" }}>
+				<Tab.Panels className="mt-8 overflow-auto" style={style}>
 					<div className={clsx(panelClassName)}>
 						{tabs.map((tab) => (
 							<Tab.Panel key={tab.name}>{tab.content}</Tab.Panel>
