@@ -4,6 +4,8 @@
 
 nf-shard is an open source user interface for monitoring Nextflow runs, searching historical runs and analysing metrics. It was designed as drop-in replacement for community [nf-tower](https://github.com/seqeralabs/nf-tower), however it does not aim to replace Enterprise nf-tower.
 
+[![Foo](./assets/play.png)](https://www.youtube.com/watch?v=Fzq9cqozwEU)
+
 ## Usage
 
 Following instructions allows to run `nf-shard` locally.
