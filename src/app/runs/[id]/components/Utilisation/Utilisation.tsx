@@ -62,7 +62,7 @@ export const Utilisation: React.FC<UtilisationProps> = (props: UtilisationProps)
 
 	return (
 		<Container sectionName="Utilisation & Load" className={props.className}>
-			<div className="flex flex-col  pb-10">
+			<div className="flex flex-col pb-10 text-black">
 				<div className="flex">
 					<div className="flex-1 flex items-center justify-center">
 						<div className="text-center">
@@ -80,7 +80,7 @@ export const Utilisation: React.FC<UtilisationProps> = (props: UtilisationProps)
 				</div>
 			</div>
 
-			<div className="flex flex-col border-t border-gray-900/5 pt-10">
+			<div className="flex flex-col border-t border-gray-900/5 pt-10 text-black">
 				<div className="flex">
 					<div className="flex-1 flex items-center justify-center">
 						<div className="text-center">
