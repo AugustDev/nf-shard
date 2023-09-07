@@ -1,15 +1,15 @@
 "use client"
 
-import { FC, Fragment } from "react"
-import Link from "next/link"
+import { FC } from "react"
 import { clsx } from "clsx"
-import { Disclosure, Menu, Transition } from "@headlessui/react"
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline"
+import { Disclosure } from "@headlessui/react"
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
 import { Toaster } from "react-hot-toast"
 import { usePathname } from "next/navigation"
 
 const navigation = [
 	{ name: "Runs", href: "/runs" },
+	{ name: "Workspaces", href: "/workspaces" },
 	{ name: "Get Started", href: "/guide" },
 ]
 

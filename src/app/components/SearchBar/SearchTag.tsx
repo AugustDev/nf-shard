@@ -1,7 +1,7 @@
 import { TagIcon } from "@heroicons/react/20/solid"
 import { BsFillPersonFill } from "react-icons/bs"
 import { FiHash } from "react-icons/fi"
-import { FaFolder } from "react-icons/fa"
+import { FaFolder, FaLayerGroup } from "react-icons/fa"
 import { LiaGreaterThanEqualSolid, LiaLessThanEqualSolid } from "react-icons/lia"
 
 type TSearchTagProps = {
@@ -23,6 +23,7 @@ export const SearchTag = ({ tag, onRemoveClick }: TSearchTagProps) => {
 				{type == "project" && <FaFolder className={tagClass} aria-hidden="true" />}
 				{type == "after" && <LiaGreaterThanEqualSolid className={tagClass} aria-hidden="true" />}
 				{type == "before" && <LiaLessThanEqualSolid className={tagClass} aria-hidden="true" />}
+				{type == "workspace" && <FaLayerGroup className={tagClass} aria-hidden="true" />}
 				{value ? value : tag}
 				<button
 					type="button"

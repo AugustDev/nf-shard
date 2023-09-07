@@ -9,6 +9,7 @@ export type SearchRequest = {
 	tags?: string[]
 	after?: Date
 	before?: Date
+	workspace_id?: number
 }
 
 export type SearchResponse = {
