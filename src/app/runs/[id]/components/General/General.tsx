@@ -8,16 +8,19 @@ import {
 import { FaDocker } from "react-icons/fa"
 import { PiEngineLight, PiSubtitlesLight } from "react-icons/pi"
 import { BuildingLibraryIcon, FolderIcon } from "@heroicons/react/24/outline"
-import { Workflow } from "@prisma/client"
+import { FaLayerGroup } from "react-icons/fa"
+import { Workflow, Workspace } from "@prisma/client"
 
 import { fullDateTime } from "@common/index"
 import { Container } from "@/app/components"
+import Link from "next/link"
 
 type GeneralProps = {
 	workflow: Workflow
+	workspace?: Workspace | null
 }
 
-export const General: React.FC<GeneralProps> = ({ workflow }: GeneralProps) => {
+export const General: React.FC<GeneralProps> = ({ workflow, workspace }: GeneralProps) => {
 	return (
 		<Container sectionName="General">
 			<div className="flex w-full flex-none gap-x-4 border-gray-900/5">
@@ -84,6 +87,17 @@ export const General: React.FC<GeneralProps> = ({ workflow }: GeneralProps) => {
 				</dt>
 				<dd className="text-sm leading-6 text-gray-500">{workflow.id}</dd>
 			</div>
+			{workspace && (
+				<div className="mt-4 flex w-full flex-none gap-x-4">
+					<dt className="flex-none">
+						<FaLayerGroup className="h-6 w-5 text-gray-400" aria-hidden="true" />
+					</dt>
+					<Link href={`/runs/?workspaceId=${workspace.id}`} className="flex items-center">
+						<dd className="text-sm leading-6 text-gray-500 hover:underline">{workspace.name}</dd>
+					</Link>
+				</div>
+			)}
+
 			{/* <div className="mt-4 flex w-full flex-none gap-x-4">
         <dt className="flex-none">
           <TagIcon className="h-6 w-5 text-gray-400" aria-hidden="true" />

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react"
 import { clsx } from "clsx"
 import { SearchBar } from "@/app/components"
-import { Workflow } from "@prisma/client"
+import { Workflow, Workspace } from "@prisma/client"
 import { RunsTable } from "../RunsTable"
 import { SearchRequest, SearchResponse } from "@/app/api/search/types"
 import styles from "./Main.module.scss"
@@ -11,11 +11,14 @@ import moment from "moment"
 
 type TMainProps = {
 	runs: Workflow[]
+	workspaces: Workspace[]
+	searchTags: string[]
 }
 
 export const Main = (props: TMainProps) => {
-	const [searchTags, setSearchTags] = useState<string[]>([])
+	const [searchTags, setSearchTags] = useState<string[]>(props.searchTags ?? [])
 	const [workflows, setWorkflows] = useState<Workflow[]>(props.runs)
+	const [workspaces, setWorkspaces] = useState<Workspace[]>(props.workspaces)
 
 	const addSearchTag = (tag: string) => {
 		if (tag == "" || searchTags.includes(tag)) {
@@ -69,6 +72,15 @@ export const Main = (props: TMainProps) => {
 				const date = moment(value)
 				if (date) {
 					searchBody.before = date.toDate()
+				}
+			}
+
+			if (type == "workspace") {
+				console.log("workspace", value)
+				const workspaceId = workspaces.find((w) => w.name.toLowerCase() == value.toLowerCase())?.id
+				console.log(workspaceId)
+				if (workspaceId) {
+					searchBody.workspace_id = workspaceId
 				}
 			}
 		}

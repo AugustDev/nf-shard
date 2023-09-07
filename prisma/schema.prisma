@@ -63,9 +63,20 @@ model Workflow {
   // nf-shard specific
   searchable String?
   tags String[]
+  workspace Workspace? @relation(fields: [workspaceId], references: [id])
+  workspaceId Int?
 
-  @@index([id, updatedAt, projectName, runName, userName, tags])
+  @@index([id, updatedAt, projectName, runName, userName, tags, workspaceId])
   @@index([searchable(ops: raw("gin_trgm_ops"))], type: Gin, name: "searchable_idx")
+
+}
+
+model Workspace {
+  id         Int  @id @default(autoincrement())
+  name       String
+  workflows  Workflow[]
+
+  @@index([id], type: Hash)
 }
 
 model Progress {

@@ -9,6 +9,7 @@ type TSearchRequest = {
 	tags?: string[]
 	after?: Date
 	before?: Date
+	workspaceId?: number
 }
 
 export const searchWorkflows = async (request: TSearchRequest) => {
@@ -78,6 +79,13 @@ export const searchWorkflows = async (request: TSearchRequest) => {
 		})
 	}
 
+	if (request.workspaceId) {
+		conditions.push({
+			workspaceId: {
+				equals: request.workspaceId,
+			},
+		})
+	}
 	const workflows = await prisma.workflow.findMany({
 		where: {
 			AND: conditions,

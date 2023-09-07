@@ -1,17 +1,21 @@
-import { Main } from "./components"
+import { prisma } from "@/services"
 import { Workspace } from "@prisma/client"
-import { getAllWorkspaces } from "@/services/prisma"
+import { Main } from "./components"
 
 export default async function Page() {
 	const props = await getData()
+
 	return <Main workspaces={props.workspaces} />
 }
 
-const getData = async () => {
-	let workspaces: Workspace[] = []
+type TWorkspaceProps = {
+	workspaces: Workspace[]
+}
 
+const getData = async (): Promise<TWorkspaceProps> => {
+	let workspaces: Workspace[] = []
 	try {
-		workspaces = await getAllWorkspaces()
+		workspaces = await prisma.workspace.findMany()
 	} catch (e) {
 		console.error(e)
 	}

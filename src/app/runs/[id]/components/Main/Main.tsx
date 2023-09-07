@@ -1,7 +1,7 @@
 "use client"
 
 import { toast } from "react-hot-toast"
-import { Progress, Task, Workflow } from "@prisma/client"
+import { Progress, Task, Workflow, Workspace } from "@prisma/client"
 import {
 	AggregateStats,
 	CodeText,
@@ -26,6 +26,7 @@ type PageProps = {
 	workflow: Workflow
 	tasks: Task[]
 	progress?: Progress | null
+	workspace?: Workspace | null
 }
 
 export const MainRun = (props: PageProps) => {
@@ -135,7 +136,7 @@ export const MainRun = (props: PageProps) => {
 
 			<div className="md:grid md:grid-cols-2 md:gap-4 pt-8 grid-cols-1">
 				<div>
-					<General workflow={workflow} />
+					<General workflow={workflow} workspace={props.workspace} />
 				</div>
 				<div>
 					<AggregateStats tasks={tasks} completedAt={workflow.complete} startedAt={workflow.start} />

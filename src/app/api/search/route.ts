@@ -15,6 +15,7 @@ export async function POST(request: Request) {
 		tags: searchRequest.tags,
 		after: searchRequest.after,
 		before: searchRequest.before,
+		workspaceId: searchRequest.workspace_id,
 	})
 
 	const res: SearchResponse = {
