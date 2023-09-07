@@ -13,7 +13,7 @@ export const TasksTable = ({ tasks, className, onTaskClick }: TasksTableProps) =
 	return (
 		<Container sectionName="Tasks" className={className}>
 			<div className="overflow-x-auto">
-				<table className="table-auto w-full">
+				<table className="table-auto w-full text-black">
 					<thead className="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
 						<tr>
 							<th className="p-2 whitespace-nowrap">

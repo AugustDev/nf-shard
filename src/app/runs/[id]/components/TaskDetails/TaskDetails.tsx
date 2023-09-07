@@ -11,7 +11,7 @@ type TaskDetailsProps = {
 
 export const TaskDetails = ({ task }: TaskDetailsProps) => {
 	return (
-		<>
+		<div className="text-black">
 			<div>
 				<div className="text-lg">Name</div>
 				<CodeText code={`${task.data.process} ${task.data.name}`} />
@@ -420,6 +420,6 @@ export const TaskDetails = ({ task }: TaskDetailsProps) => {
 					</tbody>
 				</table>
 			</div>
-		</>
+		</div>
 	)
 }

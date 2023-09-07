@@ -12,7 +12,7 @@ export const ProgressIndicator = ({ percent, text }: ProgressIndicatorProps) => 
 	const offset = (1 - percent / 100) * circumference
 
 	return (
-		<div className="flex items-center justify-center">
+		<div className="flex items-center justify-center text-black">
 			<div className="relative">
 				<svg className="w-32 h-32" viewBox="0 0 120 120">
 					<circle cx="60" cy="60" r="50" fill="none" stroke="#eaeaea" strokeWidth="10" />
