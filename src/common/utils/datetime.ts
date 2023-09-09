@@ -40,5 +40,5 @@ export const formatDuration = (ms?: number) => {
 export const formatDifference = (date1?: Date | null, date2?: Date | null) => {
 	if (!date1 && !date2) return ""
 
-	return formatDuration(moment(date2 || new Date()).diff(moment(date1 || new Date())))
+	return formatDuration(moment(date2).diff(moment(date1), "s"))
 }
