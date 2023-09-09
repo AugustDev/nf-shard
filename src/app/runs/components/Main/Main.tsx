@@ -76,9 +76,7 @@ export const Main = (props: TMainProps) => {
 			}
 
 			if (type == "workspace") {
-				console.log("workspace", value)
 				const workspaceId = workspaces.find((w) => w.name.toLowerCase() == value.toLowerCase())?.id
-				console.log(workspaceId)
 				if (workspaceId) {
 					searchBody.workspace_id = workspaceId
 				}
