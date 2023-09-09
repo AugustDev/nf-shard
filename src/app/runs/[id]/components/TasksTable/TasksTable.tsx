@@ -108,10 +108,10 @@ export const TasksTable = ({ tasks, className, onTaskClick }: TasksTableProps) =
 									<div className="text-left">{fullDateTime(task.data.submit)}</div>
 								</td>
 								<td className="p-2 whitespace-nowrap">
-									<div className="text-left">{formatDuration(task.data.duration)}</div>
+									<div className="text-left">{formatDuration(task.data.duration, "ms")}</div>
 								</td>
 								<td className="p-2 whitespace-nowrap">
-									<div className="text-left">{formatDuration(task.data.realtime)}</div>
+									<div className="text-left">{formatDuration(task.data.realtime, "ms")}</div>
 								</td>
 								<td className="p-2 whitespace-nowrap">
 									<div className="text-left">{task.data.pcpu}</div>

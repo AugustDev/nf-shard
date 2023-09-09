@@ -15,9 +15,9 @@ export const prettyDiffMinutes = (date1?: Date | null, date2?: Date | null) => {
 	return `Duration: ${moment(date2).diff(moment(date1), "minutes")} min`
 }
 
-export const formatDuration = (ms?: number) => {
-	if (!ms) return ""
-	const duration = moment.duration(ms, "s")
+export const formatDuration = (d?: number, format: moment.unitOfTime.DurationConstructor = "s") => {
+	if (!d) return ""
+	const duration = moment.duration(d, format)
 
 	const hours = Math.floor(duration.asHours())
 	const minutes = duration.minutes()
@@ -32,7 +32,7 @@ export const formatDuration = (ms?: number) => {
 	if (minutes || hours) result += `${minutes} min `
 
 	// Append seconds if hours and minutes aren't present, or if only seconds exist
-	if (!hours || !ms) result += `${seconds} s`
+	if (!hours || !d) result += `${seconds} s`
 
 	return result.trim() // trim removes the trailing space, if any
 }
