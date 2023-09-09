@@ -17,7 +17,7 @@ export const TasksTable = ({ tasks, className, onTaskClick }: TasksTableProps) =
 					<thead className="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
 						<tr>
 							<th className="p-2 whitespace-nowrap">
-								<div className="font-semibold text-left">Task Id</div>
+								<div className="font-semibold text-center">Status</div>
 							</th>
 							<th className="p-2 whitespace-nowrap">
 								<div className="font-semibold text-left">Process</div>
@@ -26,10 +26,10 @@ export const TasksTable = ({ tasks, className, onTaskClick }: TasksTableProps) =
 								<div className="font-semibold text-left">Tag</div>
 							</th>
 							<th className="p-2 whitespace-nowrap">
-								<div className="font-semibold text-center">Hash</div>
+								<div className="font-semibold text-left">Task Id</div>
 							</th>
 							<th className="p-2 whitespace-nowrap">
-								<div className="font-semibold text-center">Status</div>
+								<div className="font-semibold text-center">Hash</div>
 							</th>
 							<th className="p-2 whitespace-nowrap">
 								<div className="font-semibold text-center">Exit</div>
@@ -79,7 +79,9 @@ export const TasksTable = ({ tasks, className, onTaskClick }: TasksTableProps) =
 						{tasks.map((task) => (
 							<tr key={task.id} className="hover:bg-gray-50 cursor-pointer" onClick={() => onTaskClick(task)}>
 								<td className="p-2 whitespace-nowrap">
-									<div className="text-left">{task.id}</div>
+									<div className="text-left">
+										<TaskStatusTag status={task.data.status.toLowerCase()} />
+									</div>
 								</td>
 								<td className="p-2 whitespace-nowrap">
 									<div className="text-left">{task.data.process}</div>
@@ -88,13 +90,12 @@ export const TasksTable = ({ tasks, className, onTaskClick }: TasksTableProps) =
 									<div className="text-left">{task.data.tag}</div>
 								</td>
 								<td className="p-2 whitespace-nowrap">
-									<div className="text-left">{task.data.hash}</div>
+									<div className="text-left">{task.id}</div>
 								</td>
 								<td className="p-2 whitespace-nowrap">
-									<div className="text-right">
-										<TaskStatusTag status={task.data.status.toLowerCase()} />
-									</div>
+									<div className="text-left">{task.data.hash}</div>
 								</td>
+
 								<td className="p-2 whitespace-nowrap">
 									<div className="text-left">{task.data.exit}</div>
 								</td>
