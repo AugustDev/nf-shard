@@ -67,7 +67,7 @@ export const Processes: React.FC<ProcessesProps> = ({ processes, className }: Pr
 										</span>
 									</div>
 									<ProgressBar
-										completed={progress.succeeded}
+										completed={progress.succeeded + progress.cached}
 										running={progress.running}
 										failed={progress.failed}
 										total={total}
