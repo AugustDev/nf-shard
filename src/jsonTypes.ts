@@ -155,6 +155,8 @@ declare global {
 			cloudZone?: string
 			machineType?: string
 			priceModel?: string
+			costEstimate?: number
+			updatedAt: Date
 		}
 	}
 }

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { prisma } from "@/services/prisma/prisma"
+import { prisma, EstimateComputeCost } from "@/services"
 
 export async function PUT(request: Request, { params }: any) {
 	const id = params.id
@@ -8,17 +8,28 @@ export async function PUT(request: Request, { params }: any) {
 	try {
 		// update tasks
 		for (const task of requestJson.tasks) {
+			/* Cost estimation */
+			let costEstimate = await EstimateComputeCost(
+				task.executor,
+				task.duration,
+				task.machineType,
+				task.cloudZone,
+				task.priceModel
+			)
+
 			await prisma.task.upsert({
 				where: {
 					workflowId_taskId: { workflowId: id, taskId: task.taskId },
 				},
 				update: {
 					data: task,
+					costEstimate: costEstimate,
 				},
 				create: {
 					workflowId: id,
 					taskId: task.taskId,
 					data: task,
+					costEstimate: costEstimate,
 				},
 			})
 		}
