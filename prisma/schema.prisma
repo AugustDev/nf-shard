@@ -114,7 +114,10 @@ model Task {
   data       Json
   workflowId String
   workflow   Workflow @relation(fields: [workflowId], references: [id])
+  costEstimate       Float?
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@unique([workflowId, taskId])
   @@index([taskId, workflowId])
+  @@index([updatedAt])
 }

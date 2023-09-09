@@ -12,7 +12,7 @@ export async function GET(request: Request, { params }: any) {
 			progress: workflow?.progress,
 		})
 	} catch (e: any) {
-		console.log(e)
+		console.error(e)
 		return NextResponse.json({ error: e }, { status: 500 })
 	}
 }
