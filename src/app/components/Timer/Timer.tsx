@@ -24,8 +24,8 @@ type TTimerDisplayProps = {
 }
 
 export const TimerDisplay = ({ startedAt }: TTimerDisplayProps) => {
-	const s = useTimer(moment().diff(startedAt, "seconds"))
-	return <div>{formatDuration(s * 1000)}</div>
+	const s = useTimer(moment(new Date()).diff(startedAt, "seconds"))
+	return <div>{formatDuration(s)}</div>
 }
 
 export const TimerDisplayDynamic = dynamic(() => Promise.resolve(TimerDisplay), {

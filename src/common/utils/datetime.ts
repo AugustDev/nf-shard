@@ -17,9 +17,9 @@ export const prettyDiffMinutes = (date1?: Date | null, date2?: Date | null) => {
 
 export const formatDuration = (ms?: number) => {
 	if (!ms) return ""
-	const duration = moment.duration(ms)
+	const duration = moment.duration(ms, "s")
 
-	const hours = duration.hours()
+	const hours = Math.floor(duration.asHours())
 	const minutes = duration.minutes()
 	const seconds = duration.seconds()
 
