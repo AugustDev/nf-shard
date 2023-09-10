@@ -1,8 +1,7 @@
 import { prisma } from "@/services/prisma/prisma"
 import { Workflow, Workspace } from "@prisma/client"
 import { Main } from "./components/Main"
-import { getAllWorkspaces, getWorkflows } from "@/services/prisma"
-import { NextRequest } from "next/server"
+import { getAllWorkspaces, GetWorkflows } from "@/services/prisma"
 
 export default async function Page(request: any) {
 	const workspaceId = Number(request.searchParams.workspaceId)
@@ -31,15 +30,13 @@ const getData = async (workspaceId: number): Promise<TRunsPageProps> => {
 				workspaceId: workspaceId ? workspaceId : undefined,
 			},
 		})
-
 		workspaces = await getAllWorkspaces()
-
 		const workspaceName = workspaces.find((w) => w.id == workspaceId)?.name
 		if (workspaceName) {
 			searchTags.push(`workspace:${workspaceName}`)
 		}
 	} catch (e) {
-		console.error(e)
+		console.log(e)
 	}
 
 	return {

@@ -1,0 +1,12 @@
+root = true
+
+[*]
+indent_style = tab
+indent_size = 2
+
+[*.yml]
+indent_style = space
+
+[{*.md,tsconfig.json}]
+indent_style = unset
+indent_size = unset

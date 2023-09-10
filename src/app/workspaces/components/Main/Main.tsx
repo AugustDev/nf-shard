@@ -131,7 +131,7 @@ export const Main = (props: TWorkspaceProps) => {
 				}}
 			>
 				<div>
-					<div className="mt-3 text-center sm:mt-5">
+					<div className="text-center">
 						<div className="mt-2 text-left">
 							<p className="text-dm">Enter new Workspace name</p>
 						</div>
@@ -173,7 +173,7 @@ export const Main = (props: TWorkspaceProps) => {
 				}}
 			>
 				<div>
-					<div className="mt-3 text-center sm:mt-5">
+					<div className="text-center">
 						<div className="mt-2 text-left">
 							<p className="text-dm">Permanently delete workspace?</p>
 						</div>

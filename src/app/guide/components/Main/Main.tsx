@@ -2,7 +2,7 @@
 import { ColorDot, Container } from "@/app/components"
 import { CodeText } from "@/app/runs/[id]/components"
 
-import { Fragment, use, useEffect, useState } from "react"
+import { Fragment, useEffect, useState } from "react"
 import { Menu, Transition } from "@headlessui/react"
 import { ChevronDownIcon } from "@heroicons/react/20/solid"
 import { Workspace } from "@prisma/client"

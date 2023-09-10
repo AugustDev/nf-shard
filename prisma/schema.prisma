@@ -63,7 +63,7 @@ model Workflow {
   // nf-shard specific
   searchable String?
   tags String[]
-  workspace Workspace? @relation(fields: [workspaceId], references: [id])
+  workspace Workspace? @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
   workspaceId Int?
 
   @@index([id, updatedAt, projectName, runName, userName, tags, workspaceId])
@@ -102,7 +102,7 @@ model Progress {
   stored      Int?
   terminated  Boolean?
   workflowId  String   @unique
-  workflow    Workflow @relation(fields: [workflowId], references: [id])
+  workflow    Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
 
   @@index([id, workflowId])
 }
@@ -113,7 +113,7 @@ model Task {
   /// [Task]
   data       Json
   workflowId String
-  workflow   Workflow @relation(fields: [workflowId], references: [id])
+  workflow   Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
 
   @@unique([workflowId, taskId])
   @@index([taskId, workflowId])

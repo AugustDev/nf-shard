@@ -1,26 +1,28 @@
 "use client"
 
-import { useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { StatusTag, Tag, TimerDisplay, TimerDisplayDynamic, WorkflowStatusTag } from "@/app/components"
-import { formatDifference, fullDateTime, prettyDiffMinutes, workflowStatus } from "@/common"
+import { Tag, TimerDisplayDynamic, WorkflowStatusTag } from "@/app/components"
+import { formatDifference, fullDateTime, workflowStatus } from "@/common"
 import { Workflow } from "@prisma/client"
 
 import { clsx } from "clsx"
+import { OptionsDropdown } from "../OptionsDropdown"
 
 type RunsTableProps = {
 	runs: Workflow[]
 	className?: string
+	onDeleteClick: (id: string) => void
 }
 
-export const RunsTable: React.FC<RunsTableProps> = ({ runs, className }: RunsTableProps) => {
+export const RunsTable: React.FC<RunsTableProps> = ({ runs, className, onDeleteClick }: RunsTableProps) => {
 	const { push } = useRouter()
 
 	const handleRowClick = (id: string) => {
 		push(`/runs/${id}`)
 	}
+
 	return (
-		<div className={clsx(className, "overflow-auto")}>
+		<div className={clsx(className, "overflow-auto h-full")}>
 			<table className="rounded-md text-left bg-white w-full mx-4 md:mx-0 ">
 				<tbody className="divide-y align-middle sm:px-6 lg:px-8">
 					{runs.map((run) => (
@@ -51,6 +53,9 @@ export const RunsTable: React.FC<RunsTableProps> = ({ runs, className }: RunsTab
 							</td>
 							<td className="whitespace-nowrap pr-6 py-5 text-sm text-gray-500 text-right">
 								<WorkflowStatusTag status={workflowStatus(run)} />
+							</td>
+							<td className="whitespace-nowrap pr-6 py-5 text-sm text-gray-500 text-right">
+								<OptionsDropdown deleteWorkflow={() => onDeleteClick(run.id)} />
 							</td>
 						</tr>
 					))}
