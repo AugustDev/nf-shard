@@ -10,7 +10,7 @@ BigInt.prototype.toJSON = function (): string {
 	return this.toString()
 }
 
-export const workflowById = async (id: string, includeWorkspace?: boolean) => {
+export const WorkflowById = async (id: string, includeWorkspace?: boolean) => {
 	const workflow = await prisma.workflow.findUnique({
 		where: {
 			id: id,
@@ -25,7 +25,7 @@ export const workflowById = async (id: string, includeWorkspace?: boolean) => {
 	return workflow
 }
 
-export const getWorkflows = async (skip?: number, workspace_id?: number) => {
+export const GetWorkflows = async (skip?: number, workspace_id?: number) => {
 	const workflows = await prisma.workflow.findMany({
 		take: 20,
 		skip: skip,
@@ -38,4 +38,12 @@ export const getWorkflows = async (skip?: number, workspace_id?: number) => {
 	})
 
 	return workflows
+}
+
+export const DeleteWorkflow = async (id: string) => {
+	await prisma.workflow.delete({
+		where: {
+			id: id,
+		},
+	})
 }

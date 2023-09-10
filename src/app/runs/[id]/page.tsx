@@ -1,5 +1,5 @@
 import { MainRun } from "./components/Main/Main"
-import { workflowById } from "@/services/prisma"
+import { WorkflowById } from "@/services/prisma"
 
 export default async function Page({ params }: { params: { id: string } }) {
 	const { workflow, tasks, progress, workspace } = await getData(params.id)
@@ -13,7 +13,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
 const getData = async (id: string) => {
 	try {
-		const workflow = await workflowById(id, true)
+		const workflow = await WorkflowById(id, true)
 
 		return {
 			isLoading: false,

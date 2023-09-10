@@ -30,7 +30,6 @@ export const Main = (props: TMainProps) => {
 	const removeSearchTag = (tag: string) => {
 		setSearchTags(searchTags.filter((t) => t !== tag))
 	}
-
 	const executeSearch = async () => {
 		const searchBody: SearchRequest = {}
 
@@ -93,6 +92,14 @@ export const Main = (props: TMainProps) => {
 		setWorkflows(results.workflows)
 	}
 
+	const onWorkflowDeleteClick = async (id: string) => {
+		await fetch(`/api/runs/${id}`, {
+			method: "DELETE",
+			cache: "no-store",
+		})
+		executeSearch()
+	}
+
 	useEffect(() => {
 		executeSearch()
 
@@ -110,7 +117,13 @@ export const Main = (props: TMainProps) => {
 	return (
 		<>
 			<SearchBar tags={searchTags} addTag={addSearchTag} removeTag={removeSearchTag} />
-			{workflows.length > 0 && <RunsTable runs={workflows} className={clsx(styles.fadeInBottom, "mt-8")} />}
+			{workflows.length > 0 && (
+				<RunsTable
+					runs={workflows}
+					className={clsx(styles.fadeInBottom, "mt-8")}
+					onDeleteClick={onWorkflowDeleteClick}
+				/>
+			)}
 		</>
 	)
 }

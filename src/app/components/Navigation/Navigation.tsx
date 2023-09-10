@@ -21,7 +21,7 @@ export const MainNavigation: FC<MainNavigationProps> = ({ child }) => {
 	const currentPath = usePathname()
 
 	return (
-		<div className="min-h-full">
+		<div className="h-full">
 			<Disclosure as="nav" className="bg-indigo-600">
 				{({ open }) => (
 					<>
@@ -94,8 +94,8 @@ export const MainNavigation: FC<MainNavigationProps> = ({ child }) => {
 				)}
 			</Disclosure>
 
-			<main>
-				<div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+			<main className="h-full">
+				<div className="h-full mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
 					{child} <Toaster position="top-right" />
 				</div>
 			</main>
