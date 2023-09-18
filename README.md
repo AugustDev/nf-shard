@@ -57,7 +57,7 @@ yarn run
 
 One click deployment using Vercel requires having PostgreSQL running.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAugustDev%2Fnf-shard&env=POSTGRES_URI,NEXT_PUBLIC_BASE_URI&envDescription=Environment%20variables%20needed%20for%20the%20application&envLink=https%3A%2F%2Fgithub.com%2FAugustDev%2Fnf-shard&project-name=nf-shard&demo-title=nf-shard&demo-description=Running%20nf-shard%20application%20with%20PostgreSQL&demo-url=https%3A%2F%2Fmain.d29s1tosoaghp.amplifyapp.com%2F)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAugustDev%2Fnf-shard&env=POSTGRES_URI,NEXT_PUBLIC_BASE_URI&envDescription=Environment%20variables%20needed%20for%20the%20application&envLink=https%3A%2F%2Fgithub.com%2FAugustDev%2Fnf-shard&project-name=nf-shard&repository-name=nf-shard&demo-title=nf-shard&demo-description=Running%20nf-shard%20application%20with%20PostgreSQL&demo-url=https%3A%2F%2Fmain.d29s1tosoaghp.amplifyapp.com%2F)
 
 ## Stack
 
