@@ -6,7 +6,7 @@ import { MainNavigation } from "./components"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-	title: "nf-tower - monitor Nextlfow pipelines",
+	title: "nf-tower - Monitor Nextlfow pipelines. Group runs into workspaces.",
 	description: "Monitor Nextlfow pipelines",
 }
 

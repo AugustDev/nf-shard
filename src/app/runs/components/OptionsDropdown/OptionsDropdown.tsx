@@ -58,7 +58,7 @@ export const OptionsDropdown = ({ deleteWorkflow }: TOptionDropdownProps) => {
 				<div>
 					<div className="text-center">
 						<div className="mt-2 text-left">
-							<p className="text-md">Permanently delete workflow?</p>
+							<p className="text-md text-black">Permanently delete workflow?</p>
 						</div>
 					</div>
 				</div>
