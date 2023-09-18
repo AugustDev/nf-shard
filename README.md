@@ -53,7 +53,7 @@ yarn build
 yarn run
 ```
 
-### Vercel
+### Method 3 - Vercel
 
 One click deployment using Vercel requires having PostgreSQL running.
 
