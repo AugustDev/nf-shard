@@ -22,7 +22,7 @@ export const Main = (props: TMainProps) => {
 		let config = []
 		config.push("enabled = true")
 		config.push(`accessToken = "x"`)
-		config.push(`endpoint = "${process.env.NEXT_PUBLIC_WATCH_BASE_URI}/api"`)
+		config.push(`endpoint = "${process.env.NEXT_PUBLIC_BASE_URI}/api"`)
 		if (selectedWorkspace.id !== 0) {
 			config.push(`workspaceId = "${selectedWorkspace.id}"`)
 		}

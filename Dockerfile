@@ -8,7 +8,6 @@ COPY yarn.lock ./
 RUN yarn install --immutable --immutable-cache --check-cache
 
 FROM node:lts
-ARG branch_name
 
 COPY --from=build /build /app
 WORKDIR /app

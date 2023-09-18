@@ -17,8 +17,15 @@ docker-compose will spin up PostgreSQL database and the server.
 ```bash
 git clone git@github.com:AugustDev/nf-shard.git
 cd nf-shard
-docker-compose up -d
-yarn migrate
+docker-compose --profile all up
+```
+
+If you have PostgreSQL running externally then you only need to launch the server. In this case update your `.env` with `POSTGRES_URI` and run
+
+```bash
+git clone git@github.com:AugustDev/nf-shard.git
+cd nf-shard
+docker-compose --profile server up
 ```
 
 Add tower server details in your Nextflow config.
@@ -35,9 +42,9 @@ Done! If you navigate to `http://localhost:3000` and run Nextflow workflow you s
 
 Note - `accessToken` can by any non-empty string.
 
-### Method 2
+### Method 2 - yarn
 
-If you already have running PostgreSQL database, you can run build project from package manager. To specify your database login edit `.env`.
+If you already have running PostgreSQL database, you can run build the project using yarn package manager. To specify your database login edit `.env`. If you are developer you would prefer using this approach.
 
 ```
 yarn
@@ -45,6 +52,12 @@ yarn migrate
 yarn build
 yarn run
 ```
+
+### Vercel
+
+One click deployment using Vercel requires having PostgreSQL running.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAugustDev%2Fnf-shard&env=POSTGRES_URI,NEXT_PUBLIC_BASE_URI&envDescription=Environment%20variables%20needed%20for%20the%20application&envLink=https%3A%2F%2Fgithub.com%2FAugustDev%2Fnf-shard&project-name=nf-shard&demo-title=nf-shard&demo-description=Running%20nf-shard%20application%20with%20PostgreSQL&demo-url=https%3A%2F%2Fmain.d29s1tosoaghp.amplifyapp.com%2F)
 
 ## Stack
 
@@ -59,6 +72,7 @@ I was picking the a stack with large communities to maximise open source contrib
 - Indexed search by workflow ID, run name, user name, tag, projeect name, before date, after date.
 - Search supports multiple `AND` conditions.
 - Ability to attach multiple tags for each workflow. Tags are visible in the UI and can be used in search.
+- Workspaces
 - List of historical runs
 - Run details
 - `nf-tower` plugin compatible API.
@@ -70,7 +84,3 @@ I was picking the a stack with large communities to maximise open source contrib
 - Upload/view execution logs
 - Download reports
 - [tRPC](https://trpc.io/) client/server communication
-
-## Deployment to production
-
-Instructions of how to deploy to production are coming soon.

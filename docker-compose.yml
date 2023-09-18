@@ -5,7 +5,7 @@ services:
     image: postgres
     container_name: some-postgres
     environment:
-      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_PASSWORD: yourpassword # keep this hardcoded as before, or move to .env if needed
     ports:
       - 5432:5432
     volumes:
@@ -15,13 +15,19 @@ services:
       - all
 
   nextjs:
-    build: .
+    build:
+      context: .
+      args:
+        POSTGRES_URI: ${POSTGRES_URI}
+        NEXT_PUBLIC_BASE_URI: ${NEXT_PUBLIC_BASE_URI}
     platform: linux/amd64
-    env_file:
-      - .env
+    environment:
+      POSTGRES_URI: ${POSTGRES_URI}
+      NEXT_PUBLIC_BASE_URI: ${NEXT_PUBLIC_BASE_URI}
     ports:
       - 3000:3000
     profiles:
+      - server
       - all
     depends_on:
       - postgres
