@@ -4,7 +4,8 @@ import { getAllWorkspaces } from "@/services/prisma"
 
 export default async function Page() {
 	const props = await getData()
-	return <Main workspaces={props.workspaces} />
+	const baseUri = process.env.NEXT_PUBLIC_BASE_URI || ""
+	return <Main workspaces={props.workspaces} baseUri={baseUri} />
 }
 
 const getData = async () => {

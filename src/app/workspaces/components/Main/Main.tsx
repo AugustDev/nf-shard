@@ -141,7 +141,7 @@ export const Main = (props: TWorkspaceProps) => {
 									type="text"
 									name="company"
 									id="company"
-									className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+									className="block w-full rounded-md border-gray-300 text-black shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
 									onChange={(e) => setNewWorkspaceName(e.target.value)}
 								/>
 							</div>
