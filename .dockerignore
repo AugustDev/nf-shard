@@ -1,3 +1,11 @@
 node_modules
 .next
 .env
+.vscode
+.gitignore
+README.md
+.dockerignore
+.git
+Dockerfile
+docker-compose.yml
+docker-compose-local.yml
