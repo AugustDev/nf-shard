@@ -84,3 +84,10 @@ I was picking the a stack with large communities to maximise open source contrib
 - Upload/view execution logs
 - Download reports
 - [tRPC](https://trpc.io/) client/server communication
+
+## Development
+
+```
+docker buildx build --platform linux/amd64 -t nf-shard:semver . --load
+docker run -it nf-shard:semver /bin/sh
+```

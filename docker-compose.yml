@@ -5,7 +5,7 @@ services:
     image: postgres
     container_name: some-postgres
     environment:
-      POSTGRES_PASSWORD: yourpassword # keep this hardcoded as before, or move to .env if needed
+      POSTGRES_PASSWORD: yourpassword
     ports:
       - 5432:5432
     volumes:
@@ -15,11 +15,7 @@ services:
       - all
 
   nextjs:
-    build:
-      context: .
-      args:
-        POSTGRES_URI: ${POSTGRES_URI}
-        NEXT_PUBLIC_BASE_URI: ${NEXT_PUBLIC_BASE_URI}
+    image: ghcr.io/augustdev/nf-shard:latest
     platform: linux/amd64
     environment:
       POSTGRES_URI: ${POSTGRES_URI}
