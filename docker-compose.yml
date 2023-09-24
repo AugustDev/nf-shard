@@ -15,14 +15,13 @@ services:
       - all
 
   nextjs:
-    image: nf-shard:semver
+    image: ghcr.io/augustdev/nf-shard:latest
     entrypoint: ["/app/entrypoint.sh"]
     volumes:
       - ./docker/entrypoint.sh:/app/entrypoint.sh
     platform: linux/amd64
     environment:
       POSTGRES_URI: ${POSTGRES_URI}
-      NEXT_PUBLIC_BASE_URI: ${NEXT_PUBLIC_BASE_URI}
     ports:
       - 3000:3000
     profiles:

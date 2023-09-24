@@ -89,6 +89,8 @@ I was picking the a stack with large communities to maximise open source contrib
 
 ## Development
 
+Useful during development
+
 ```
 docker buildx build --platform linux/amd64 -t nf-shard:semver . --load
 docker run -it nf-shard:semver /bin/sh
