@@ -14,6 +14,7 @@ COPY --from=build /app/next.config.js ./
 COPY --from=build /app/public ./public
 COPY --from=build /app/build/standalone ./
 COPY --from=build /app/build/static ./build/static
+COPY --from=build /app/prisma ./prisma
 
 EXPOSE 3000
 
