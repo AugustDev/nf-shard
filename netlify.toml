@@ -1,3 +1,12 @@
 [build]
   command = "yarn generate && yarn build && yarn migrate"
   publish = "build"
+
+	environment = {
+    POSTGRES_URI = string
+  }
+
+[functions]
+	environment = {
+    POSTGRES_URI = string
+  }

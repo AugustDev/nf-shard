@@ -65,7 +65,7 @@ One click deployment using Vercel requires having PostgreSQL access.
 
 One click deployment using Netlify requires having PostgreSQL access.
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repositoryhttps://github.com/AugustDev/nf-shard)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/AugustDev/nf-shard)
 
 ## Stack
 
