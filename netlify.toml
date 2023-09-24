@@ -3,10 +3,10 @@
   publish = "build"
 
 [build.environment]
-  POSTGRES_URI = "your_postgres_uri_here"
+  POSTGRES_URI = 
 
 [functions]
   # your functions configuration here
 
 [functions.environment]
-  POSTGRES_URI = "your_postgres_uri_here"
+  POSTGRES_URI = 

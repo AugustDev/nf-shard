@@ -63,7 +63,7 @@ One click deployment using Vercel requires having PostgreSQL access.
 
 ### Method 4 - Netlify
 
-One click deployment using Netlify requires having PostgreSQL access.
+One click deployment using Netlify requires having PostgreSQL access. When using Netlify deploy button you will have to set up environment variables manually. First wait until initial build finishes. Then go to Deploys > Deploy Settings > Environment variables > Add variable and create your `POSTGRES_URI` variable. After setting up environment variables that trigger new deployment by going to Deploys > Trigger deploy > Deploy site
 
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/AugustDev/nf-shard)
 
