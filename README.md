@@ -53,11 +53,13 @@ yarn build
 yarn run
 ```
 
+Not that `yarn migrate` requires connection to databse, so you should update `.env` file.
+
 ### Method 3 - Vercel
 
 One click deployment using Vercel requires having PostgreSQL running.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAugustDev%2Fnf-shard&env=POSTGRES_URI,NEXT_PUBLIC_BASE_URI&envDescription=Environment%20variables%20needed%20for%20the%20application&envLink=https%3A%2F%2Fgithub.com%2FAugustDev%2Fnf-shard&project-name=nf-shard&repository-name=nf-shard&demo-title=nf-shard&demo-description=Running%20nf-shard%20application%20with%20PostgreSQL&demo-url=https%3A%2F%2Fmain.d29s1tosoaghp.amplifyapp.com%2F)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAugustDev%2Fnf-shard%2F&env=POSTGRES_URI&project-name=nf-shard&repository-name=nf-shard&demo-title=nf-shard&demo-description=Monitor%20Nextlfow%20pipelines.%20Group%20runs%20into%20workspaces&demo-url=https%3A%2F%2Fmain.d29s1tosoaghp.amplifyapp.com%2F&build-command=yarn%20generate%20%26%26%20yarn%20build&output-directory=build)
 
 ## Stack
 

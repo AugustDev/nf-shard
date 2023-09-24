@@ -11,7 +11,6 @@ import { stringToColour } from "@/common"
 
 type TMainProps = {
 	workspaces: Workspace[]
-	baseUri: string
 }
 
 export const Main = (props: TMainProps) => {
@@ -20,10 +19,12 @@ export const Main = (props: TMainProps) => {
 	const [shardConfig, setShardConfig] = useState<string>("")
 
 	useEffect(() => {
+		const baseUrl = window.location.origin
+
 		let config = []
 		config.push("enabled = true")
 		config.push(`accessToken = "x"`)
-		config.push(`endpoint = "${props.baseUri}/api"`)
+		config.push(`endpoint = "${baseUrl}/api"`)
 		if (selectedWorkspace.id !== 0) {
 			config.push(`workspaceId = "${selectedWorkspace.id}"`)
 		}
