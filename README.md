@@ -57,7 +57,7 @@ Not that `yarn migrate` requires connection to databse, so you should update `.e
 
 ### Method 3 - Vercel
 
-One click deployment using Vercel requires having PostgreSQL access. Video instructions below
+One click deployment using Vercel requires having PostgreSQL access. Video instructions below. In the video I use [Neon.tech](https://neon.tech/) free PostgreSQL version, but any provider works.
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAugustDev%2Fnf-shard%2F&env=POSTGRES_URI&project-name=nf-shard&repository-name=nf-shard&demo-title=nf-shard&demo-description=Monitor%20Nextlfow%20pipelines.%20Group%20runs%20into%20workspaces&demo-url=https%3A%2F%2Fmain.d29s1tosoaghp.amplifyapp.com%2F&build-command=yarn%20generate%20%26%26%20yarn%20build%20%26%26%20npx%20prisma%20migrate%20deploy&output-directory=build)
 
