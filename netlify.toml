@@ -1,0 +1,3 @@
+[build]
+  command = "yarn generate && yarn build && yarn migrate"
+  publish = "build"
