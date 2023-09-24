@@ -57,5 +57,8 @@
 		"prettier": "^3.0.3",
 		"prisma": "^5.2.0",
 		"prisma-json-types-generator": "^3.0.0-beta.4"
+	},
+	"peerDependencies": {
+		"prisma": "^5.2.0"
 	}
 }

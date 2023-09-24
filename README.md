@@ -61,12 +61,6 @@ One click deployment using Vercel requires having PostgreSQL access.
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAugustDev%2Fnf-shard%2F&env=POSTGRES_URI&project-name=nf-shard&repository-name=nf-shard&demo-title=nf-shard&demo-description=Monitor%20Nextlfow%20pipelines.%20Group%20runs%20into%20workspaces&demo-url=https%3A%2F%2Fmain.d29s1tosoaghp.amplifyapp.com%2F&build-command=yarn%20generate%20%26%26%20yarn%20build%20%26%26%20npx%20prisma%20migrate%20deploy&output-directory=build)
 
-### Method 4 - Netlify
-
-One click deployment using Netlify requires having PostgreSQL access. When using Netlify deploy button you will have to set up environment variables manually. First wait until initial build finishes. Then go to Deploys > Deploy Settings > Environment variables > Add variable and create your `POSTGRES_URI` variable. After setting up environment variables that trigger new deployment by going to Deploys > Trigger deploy > Deploy site
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/AugustDev/nf-shard)
-
 ## Stack
 
 - NextJS/React/Typescript

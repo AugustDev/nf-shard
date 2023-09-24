@@ -1,0 +1,36 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: postgres
+    container_name: some-postgres
+    environment:
+      POSTGRES_PASSWORD: yourpassword # keep this hardcoded as before, or move to .env if needed
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    profiles:
+      - db
+      - all
+
+  nextjs:
+    build:
+      context: .
+      args:
+        POSTGRES_URI: ${POSTGRES_URI}
+        NEXT_PUBLIC_BASE_URI: ${NEXT_PUBLIC_BASE_URI}
+    platform: linux/amd64
+    environment:
+      POSTGRES_URI: ${POSTGRES_URI}
+      NEXT_PUBLIC_BASE_URI: ${NEXT_PUBLIC_BASE_URI}
+    ports:
+      - 3000:3000
+    profiles:
+      - server
+      - all
+    depends_on:
+      - postgres
+
+volumes:
+  postgres-data:
