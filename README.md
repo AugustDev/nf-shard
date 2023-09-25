@@ -6,9 +6,9 @@ nf-shard is an open source user interface for monitoring Nextflow runs, searchin
 
 [![Foo](./assets/play.png)](https://www.youtube.com/watch?v=Fzq9cqozwEU)
 
-## Usage
+## Run
 
-Following instructions allows to run `nf-shard` locally.
+Following instructions allows to run `nf-shard` locally. To run nf-shard you PostgreSQL database.
 
 ### Method 1 - docker-compose
 
