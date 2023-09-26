@@ -87,6 +87,11 @@ export const Slack = (props: TSlackSettingsProps) => {
 												/>
 											</div>
 										</div>
+										<div className="text-blue-600 text-sm pt-4">
+											<a target="_blank" href="https://api.slack.com/messaging/webhooks">
+												How to create a webhook?
+											</a>
+										</div>
 									</div>
 
 									<fieldset>
