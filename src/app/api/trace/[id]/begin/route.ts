@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/services/prisma/prisma"
 import { BeginRunRequest } from "./types"
+import { GetSettings } from "@/services/prisma"
 
 export async function PUT(request: NextRequest, { params }: any) {
 	const id = params.id
@@ -92,7 +93,12 @@ export async function PUT(request: NextRequest, { params }: any) {
 			},
 		})
 
-		return NextResponse.json({})
+		const url = new URL(request.url)
+		const baseUrl = `${url.protocol}//${url.host}`
+
+		return NextResponse.json({
+			watchUrl: `${baseUrl}/runs/${id}`,
+		})
 	} catch (e: any) {
 		return NextResponse.json({ error: e }, { status: 500 })
 	}

@@ -28,3 +28,11 @@ export const createWorkspace = async (name: string) => {
 export const getAllWorkspaces = async () => {
 	return await prisma.workspace.findMany()
 }
+
+export const GetWorkspaceById = async (id: number) => {
+	return await prisma.workspace.findUnique({
+		where: {
+			id: id,
+		},
+	})
+}
