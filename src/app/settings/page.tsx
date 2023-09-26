@@ -25,3 +25,6 @@ const getData = async (): Promise<AppSettings | undefined> => {
 		console.error(e)
 	}
 }
+
+export const fetchCache = "force-no-store"
+export const revalidate = 0
