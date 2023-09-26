@@ -6,6 +6,18 @@ nf-shard is an open source user interface for monitoring Nextflow runs, searchin
 
 [![Foo](./assets/play.png)](https://www.youtube.com/watch?v=Fzq9cqozwEU)
 
+## Usage in Nextflow
+
+Once nf-shard is running to integrate it into your Nextflow project you should add similar snippet to your `nextflow.config`. The exact form of this snippet will be displayed once you start nf-shard.
+
+```nextflow
+tower {
+    enabled = true
+    accessToken = "non-empty"
+    endpoint = "http://localhost:3000/api"
+}
+```
+
 ## Run
 
 Following instructions allows to run `nf-shard` locally. To run nf-shard you PostgreSQL database.
@@ -54,6 +66,18 @@ yarn run
 ```
 
 Not that `yarn migrate` requires connection to databse, so you should update `.env` file.
+
+To run PostgreSQL for local development you can use
+
+```
+docker-compose --profile db up
+```
+
+Since connection to PostgreSQL now happens outside of docker, you should update your `.env` to specify `localhost`
+
+```
+POSTGRES_URI=postgresql://postgres:yourpassword@localhost:5432/localhost?schema=public
+```
 
 ### Method 3 - Vercel
 
