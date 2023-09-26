@@ -1,4 +1,4 @@
-![example workflow](https://github.com/github/docs/actions/workflows/ci.yml/badge.svg)
+![example workflow](https://github.com/AugustDev/nf-shard/actions/workflows/ci.yml/badge.svg)
 
 ![nf-shard Logo](./assets/logo.png)
 
