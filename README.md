@@ -1,4 +1,6 @@
-![example workflow](https://github.com/AugustDev/nf-shard/actions/workflows/ci.yml/badge.svg)
+![build badge](https://github.com/AugustDev/nf-shard/actions/workflows/ci.yml/badge.svg)
+![version badge](https://ghcr-badge.deta.dev/augustdev/nf-shard/latest_tag?color=%236d52f4&ignore=latest&label=version&trim=)
+![size badge](https://ghcr-badge.deta.dev/augustdev/nf-shard/size?color=%23fa0092&tag=latest&label=image+size&trim=)
 
 ![nf-shard Logo](./assets/logo.png)
 
