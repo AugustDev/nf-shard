@@ -101,6 +101,7 @@ I was picking the a stack with large communities to maximise open source contrib
 
 ## Features
 
+- [Slack integration](https://www.youtube.com/watch?v=8lWLgvROQ8Q)
 - Indexed search by workflow ID, run name, user name, tag, projeect name, before date, after date.
 - Search supports multiple `AND` conditions.
 - Ability to attach multiple tags for each workflow. Tags are visible in the UI and can be used in search.
