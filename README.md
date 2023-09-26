@@ -76,7 +76,7 @@ docker-compose --profile db up
 Since connection to PostgreSQL now happens outside of docker, you should update your `.env` to specify `localhost`
 
 ```
-POSTGRES_URI=postgresql://postgres:yourpassword@localhost:5432/localhost?schema=public
+POSTGRES_URI=postgresql://postgres:yourpassword@localhost:5432/postgres?schema=public
 ```
 
 ### Method 3 - Vercel
