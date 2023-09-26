@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/services/prisma/prisma"
+import { GetSettings } from "@/services/prisma"
+import { formatDuration } from "@/common"
+import { TTaskCompletedOptions, TaskCompleteWebhook } from "@/services/slack"
 
 export async function PUT(request: Request, { params }: any) {
 	const id = params.id
 	const requestJson = await request.json()
+	const settings = await GetSettings()
 
 	try {
 		// update tasks
@@ -21,6 +25,25 @@ export async function PUT(request: Request, { params }: any) {
 					data: task,
 				},
 			})
+
+			if (
+				settings.slack_notifications_enabled &&
+				settings.slack_webhook_url &&
+				settings.slack_notification_events.includes("task_completed") &&
+				(task.status == "COMPLETED" || task.status == "FAILED")
+			) {
+				const duration = formatDuration(task.duration / 1000)
+				const status = task.status == "COMPLETED" ? true : false
+				const slackWebhookOpts: TTaskCompletedOptions = {
+					workflowId: id,
+					baseUrl: settings.base_url ?? "",
+					name: task.name,
+					tag: task.tag,
+					duration: duration,
+					status: status,
+				}
+				TaskCompleteWebhook(settings.slack_webhook_url, slackWebhookOpts)
+			}
 		}
 
 		//update progress

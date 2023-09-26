@@ -118,3 +118,11 @@ model Task {
   @@unique([workflowId, taskId])
   @@index([taskId, workflowId])
 }
+
+model AppSettings {
+	id         Int      @id @default(autoincrement())
+	base_url	 String?
+	slack_webhook_url String?
+	slack_notification_events String[]
+	slack_notifications_enabled Boolean @default(false)
+}

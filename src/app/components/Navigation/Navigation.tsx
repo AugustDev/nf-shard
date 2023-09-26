@@ -11,6 +11,7 @@ const navigation = [
 	{ name: "Runs", href: "/runs" },
 	{ name: "Workspaces", href: "/workspaces" },
 	{ name: "Get Started", href: "/guide" },
+	{ name: "Settings", href: "/settings" },
 ]
 
 type MainNavigationProps = {
