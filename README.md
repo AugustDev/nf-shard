@@ -1,3 +1,5 @@
+![example workflow](https://github.com/github/docs/actions/workflows/ci.yml/badge.svg)
+
 ![nf-shard Logo](./assets/logo.png)
 
 # nf-shard
