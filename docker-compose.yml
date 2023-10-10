@@ -15,7 +15,7 @@ services:
       - all
 
   nextjs:
-    image: ghcr.io/augustdev/nf-shard:latest
+    image: ghcr.io/augustdev/nf-shard:0.1.21
     entrypoint: ["/app/entrypoint.sh"]
     volumes:
       - ./docker/entrypoint.sh:/app/entrypoint.sh
