@@ -8,6 +8,7 @@ import {
 	Configuration,
 	DataViewer,
 	General,
+	MentionedResources,
 	MetricsOverview,
 	Processes,
 	Status,
@@ -106,6 +107,10 @@ export const MainRun = (props: PageProps) => {
 		{
 			name: "Configuration",
 			content: <Configuration files={workflow?.configFiles || []} configText={workflow?.configText || ""} />,
+		},
+		{
+			name: "Resources",
+			content: <MentionedResources data={workflow?.params} />,
 		},
 	]
 	return (

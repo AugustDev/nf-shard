@@ -11,7 +11,7 @@ export const DataViewer = ({ data }: DataViewerProps) => {
 		<JsonViewer
 			displayDataTypes={false}
 			displaySize={false}
-			//   maxDisplayLength={0}
+			maxDisplayLength={300}
 			value={data}
 			enableClipboard={false}
 		/>
