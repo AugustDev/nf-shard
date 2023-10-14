@@ -21,7 +21,7 @@ export const Tabs: React.FC<TabsProps> = ({ tabs, className, panelClassName, sty
 	return (
 		<div className={clsx(className, "bg-white rounded-md")}>
 			<Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
-				<Tab.List>
+				<Tab.List className={"overflow-auto py-1.5"}>
 					<div>
 						<nav className="flex space-x-4" aria-label="Tabs">
 							{tabs.map((tab) => (
