@@ -23,6 +23,18 @@ export const TasksTable = ({ tasks, className, onTaskClick }: TasksTableProps) =
 								<div className="font-semibold text-left">Process</div>
 							</th>
 							<th className="p-2 whitespace-nowrap">
+								<div className="font-semibold text-center">Duration</div>
+							</th>
+							<th className="p-2 whitespace-nowrap">
+								<div className="font-semibold text-center">Realtime</div>
+							</th>
+							<th className="p-2 whitespace-nowrap">
+								<div className="font-semibold text-center">% CPU</div>
+							</th>
+							<th className="p-2 whitespace-nowrap">
+								<div className="font-semibold text-center">% Memory</div>
+							</th>
+							<th className="p-2 whitespace-nowrap">
 								<div className="font-semibold text-left">Tag</div>
 							</th>
 							<th className="p-2 whitespace-nowrap">
@@ -42,18 +54,6 @@ export const TasksTable = ({ tasks, className, onTaskClick }: TasksTableProps) =
 							</th>
 							<th className="p-2 whitespace-nowrap">
 								<div className="font-semibold text-center">Submitted</div>
-							</th>
-							<th className="p-2 whitespace-nowrap">
-								<div className="font-semibold text-center">Duration</div>
-							</th>
-							<th className="p-2 whitespace-nowrap">
-								<div className="font-semibold text-center">Realtime</div>
-							</th>
-							<th className="p-2 whitespace-nowrap">
-								<div className="font-semibold text-center">% CPU</div>
-							</th>
-							<th className="p-2 whitespace-nowrap">
-								<div className="font-semibold text-center">% Memory</div>
 							</th>
 							<th className="p-2 whitespace-nowrap">
 								<div className="font-semibold text-center">Peak RSS</div>
@@ -87,6 +87,18 @@ export const TasksTable = ({ tasks, className, onTaskClick }: TasksTableProps) =
 									<div className="text-left">{task.data.process}</div>
 								</td>
 								<td className="p-2 whitespace-nowrap">
+									<div className="text-left">{formatDuration(task.data.duration, "ms")}</div>
+								</td>
+								<td className="p-2 whitespace-nowrap">
+									<div className="text-left">{formatDuration(task.data.realtime, "ms")}</div>
+								</td>
+								<td className="p-2 whitespace-nowrap">
+									<div className="text-left">{task.data.pcpu}</div>
+								</td>
+								<td className="p-2 whitespace-nowrap">
+									<div className="text-center">{task.data.pmem}</div>
+								</td>
+								<td className="p-2 whitespace-nowrap">
 									<div className="text-left">{task.data.tag}</div>
 								</td>
 								<td className="p-2 whitespace-nowrap">
@@ -107,18 +119,6 @@ export const TasksTable = ({ tasks, className, onTaskClick }: TasksTableProps) =
 								</td>
 								<td className="p-2 whitespace-nowrap">
 									<div className="text-left">{fullDateTime(task.data.submit)}</div>
-								</td>
-								<td className="p-2 whitespace-nowrap">
-									<div className="text-left">{formatDuration(task.data.duration, "ms")}</div>
-								</td>
-								<td className="p-2 whitespace-nowrap">
-									<div className="text-left">{formatDuration(task.data.realtime, "ms")}</div>
-								</td>
-								<td className="p-2 whitespace-nowrap">
-									<div className="text-left">{task.data.pcpu}</div>
-								</td>
-								<td className="p-2 whitespace-nowrap">
-									<div className="text-center">{task.data.pmem}</div>
 								</td>
 								<td className="p-2 whitespace-nowrap">
 									<div className="text-center">{bytes(task.data.peakRss ?? 0)}</div>
