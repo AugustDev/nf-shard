@@ -100,7 +100,7 @@ export const MentionedResources = ({ data }: MentionedResourcesProps) => {
 					{sortedLinks.map((link) => (
 						<tr key={link.key}>
 							<td className="py-2">{link.key}</td>
-							<td className="py-2">
+							<td className="py-2 pl-4">
 								<a href={link.url} className="text-blue-500 underline text-sm" target="_blank">
 									{link.urlName}
 								</a>
@@ -110,17 +110,5 @@ export const MentionedResources = ({ data }: MentionedResourcesProps) => {
 				</tbody>
 			</table>
 		</div>
-		// <div>
-		// 	<p>Mentioned resources extracts paths used in Nextflow configuration and constructs URLs if possible.</p>
-		// 	<ul>
-		// 		{Object.entries(matches).map(([key, value]) => (
-		// 			<li key={key}>
-		// 				<p>
-		// 					{key}- {JSON.stringify(value)}
-		// 				</p>
-		// 			</li>
-		// 		))}
-		// 	</ul>
-		// </div>
 	)
 }
