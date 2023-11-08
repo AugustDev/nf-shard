@@ -21,8 +21,8 @@ export const RunsTable: React.FC<RunsTableProps> = ({ runs, className, onDeleteC
 		<div className={clsx(className, "overflow-x-auto h-full mx-4 md:mx-0 bg-white")}>
 			<div className="rounded-md text-left bg-white">
 				{runs.map((run) => (
-					<Link href={`/runs/${run.id}`} key={run.id}>
-						<div className="grid grid-cols-[minmax(auto,1fr),minmax(auto,1fr),minmax(auto,1fr),minmax(auto,1fr),minmax(auto,1fr),min-content] gap-4 hover:bg-gray-50 cursor-pointer align-middle sm:px-6 lg:px-8">
+					<Link href={`/runs/${run.id}`} key={run.id} className="">
+						<div className="grid grid-cols-[minmax(auto,1fr),minmax(auto,1fr),minmax(auto,1fr),minmax(auto,1fr),minmax(auto,1fr),min-content] gap-4  align-middle sm:px-6 lg:px-8 hover:bg-gray-50 cursor-pointer">
 							<div className="px-6 py-5 text-sm text-gray-500 min-w-[300px]">
 								<div className="text-gray-900">{run.manifest.description}</div>
 							</div>
@@ -39,7 +39,7 @@ export const RunsTable: React.FC<RunsTableProps> = ({ runs, className, onDeleteC
 									{!run.complete && <TimerDisplayDynamic startedAt={run.start} />}
 								</div>
 							</div>
-							<div className="px-3 py-5 text-sm flex justify-center items-center">
+							<div className="px-3 py-5 text-sm flex flex-wrap justify-center items-center min-w-[150px]">
 								{run.tags.map((tag) => (
 									<Tag key={tag} name={tag} />
 								))}

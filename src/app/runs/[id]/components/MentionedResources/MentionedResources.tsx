@@ -48,7 +48,11 @@ export const MentionedResources = ({ data }: MentionedResourcesProps) => {
 		return result
 	}
 
-	const priorityKeywords = ["output"]
+	/*
+	 * Sorts links by priority
+	 * Priority is defined by the presence of certain keywords in the key
+	 */
+	const priorityKeywords = ["output", "outdir"]
 
 	const hasPriority = (key: string): boolean => {
 		return priorityKeywords.some((keyword) => key.includes(keyword))
@@ -92,14 +96,14 @@ export const MentionedResources = ({ data }: MentionedResourcesProps) => {
 
 	return (
 		<div className="mx-auto">
-			<p className="mb-4 text-gray-600 font-sm">
+			<p className="mb-4 text-gray-600 text-sm">
 				Below are paths used in Nextflow resources and links to resources (S3) if possible.
 			</p>
 			<table className="min-w-full divide-y divide-gray-200">
 				<tbody className="bg-white divide-y divide-gray-200">
 					{sortedLinks.map((link) => (
 						<tr key={link.key}>
-							<td className="py-2">{link.key}</td>
+							<td className="py-2 text-black text-sm font-medium">{link.key}</td>
 							<td className="py-2 pl-4">
 								<a href={link.url} className="text-blue-500 underline text-sm" target="_blank">
 									{link.urlName}
