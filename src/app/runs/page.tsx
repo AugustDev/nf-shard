@@ -1,7 +1,7 @@
 import { prisma } from "@/services/prisma/prisma"
 import { Workflow, Workspace } from "@prisma/client"
 import { Main } from "./components/Main"
-import { getAllWorkspaces, GetWorkflows } from "@/services/prisma"
+import { getAllWorkspaces, searchWorkflows } from "@/services/prisma"
 
 export default async function Page(request: any) {
 	const workspaceId = Number(request.searchParams.workspaceId)
@@ -17,19 +17,12 @@ type TRunsPageProps = {
 }
 
 const getData = async (workspaceId: number): Promise<TRunsPageProps> => {
-	let workflows: Workflow[] = []
+	let workflows: Partial<Workflow>[] = []
 	let workspaces: Workspace[] = []
 	let searchTags: string[] = []
 	try {
-		workflows = await prisma.workflow.findMany({
-			take: 20,
-			orderBy: {
-				updatedAt: "desc",
-			},
-			where: {
-				workspaceId: workspaceId ? workspaceId : undefined,
-			},
-		})
+		const searchRes = await searchWorkflows({ workspaceId: workspaceId })
+		workflows = searchRes.workflows
 		workspaces = await getAllWorkspaces()
 		const workspaceName = workspaces.find((w) => w.id == workspaceId)?.name
 		if (workspaceName) {
@@ -40,6 +33,7 @@ const getData = async (workspaceId: number): Promise<TRunsPageProps> => {
 	}
 
 	return {
+		// @ts-ignore
 		runs: workflows,
 		workspaces: workspaces,
 		searchtags: searchTags,

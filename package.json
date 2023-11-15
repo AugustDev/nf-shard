@@ -12,6 +12,7 @@
 		"studio": "npx prisma studio"
 	},
 	"dependencies": {
+		"@ant-design/cssinjs": "^1.17.2",
 		"@emotion/react": "^11.11.1",
 		"@emotion/styled": "^11.11.0",
 		"@headlessui/react": "^1.7.16",
@@ -29,6 +30,7 @@
 		"@types/node": "20.4.8",
 		"@types/react": "18.2.18",
 		"@types/react-dom": "18.2.7",
+		"antd": "^5.11.1",
 		"autoprefixer": "10.4.14",
 		"bytes": "^3.1.2",
 		"clsx": "^2.0.0",
@@ -44,6 +46,7 @@
 		"react-dom": "18.2.0",
 		"react-hot-toast": "^2.4.1",
 		"react-icons": "^4.10.1",
+		"react-infinite-scroll-component": "^6.1.0",
 		"react-plotly.js": "^2.6.0",
 		"sass": "^1.66.1",
 		"tailwindcss": "3.3.3",

@@ -1,4 +1,5 @@
 import { prisma } from "@/services/prisma/prisma"
+import { Workflow } from "@prisma/client"
 
 type TSearchRequest = {
 	term?: string
@@ -10,13 +11,20 @@ type TSearchRequest = {
 	after?: Date
 	before?: Date
 	workspaceId?: number
+	first?: number
+	cursor?: string
+}
+
+type TPageInfo = {
+	hasNextPage: boolean
+	endCursor: string
 }
 
 export const searchWorkflows = async (request: TSearchRequest) => {
-	let conditions = []
+	let searchOpts = []
 
 	if (request.term) {
-		conditions.push({
+		searchOpts.push({
 			searchable: {
 				contains: request.term?.toLowerCase(),
 			},
@@ -24,7 +32,7 @@ export const searchWorkflows = async (request: TSearchRequest) => {
 	}
 
 	if (request.id) {
-		conditions.push({
+		searchOpts.push({
 			id: {
 				equals: request.id,
 			},
@@ -32,7 +40,7 @@ export const searchWorkflows = async (request: TSearchRequest) => {
 	}
 
 	if (request.runName) {
-		conditions.push({
+		searchOpts.push({
 			runName: {
 				equals: request.runName,
 			},
@@ -40,7 +48,7 @@ export const searchWorkflows = async (request: TSearchRequest) => {
 	}
 
 	if (request.projectName) {
-		conditions.push({
+		searchOpts.push({
 			projectName: {
 				equals: request.projectName,
 			},
@@ -48,7 +56,7 @@ export const searchWorkflows = async (request: TSearchRequest) => {
 	}
 
 	if (request.userName) {
-		conditions.push({
+		searchOpts.push({
 			userName: {
 				equals: request.userName,
 			},
@@ -56,7 +64,7 @@ export const searchWorkflows = async (request: TSearchRequest) => {
 	}
 
 	if (request.tags) {
-		conditions.push({
+		searchOpts.push({
 			tags: {
 				hasEvery: request.tags,
 			},
@@ -64,7 +72,7 @@ export const searchWorkflows = async (request: TSearchRequest) => {
 	}
 
 	if (request.after) {
-		conditions.push({
+		searchOpts.push({
 			updatedAt: {
 				gte: request.after,
 			},
@@ -72,7 +80,7 @@ export const searchWorkflows = async (request: TSearchRequest) => {
 	}
 
 	if (request.before) {
-		conditions.push({
+		searchOpts.push({
 			updatedAt: {
 				lte: request.before,
 			},
@@ -80,20 +88,60 @@ export const searchWorkflows = async (request: TSearchRequest) => {
 	}
 
 	if (request.workspaceId) {
-		conditions.push({
+		searchOpts.push({
 			workspaceId: {
 				equals: request.workspaceId,
 			},
 		})
 	}
-	const workflows = await prisma.workflow.findMany({
+
+	let paginationOpts = {}
+	// Cursor based pagination in Prisma requires skipping the first result
+	if (request.cursor) {
+		paginationOpts = {
+			cursor: {
+				id: request.cursor,
+			},
+			skip: 1,
+		}
+	}
+
+	const take = request.first || 20
+	// @ts-ignore
+	const workflows: Workflow[] = await prisma.workflow.findMany({
+		take: take,
+		...paginationOpts,
 		where: {
-			AND: conditions,
+			AND: searchOpts,
 		},
 		orderBy: {
-			updatedAt: "desc",
+			start: "desc",
+		},
+		select: {
+			id: true,
+			runName: true,
+			projectName: true,
+			userName: true,
+			tags: true,
+			start: true,
+			updatedAt: true,
+			complete: true,
+			workspaceId: true,
+			progress: true,
+			manifest: true,
+			exitStatus: true,
+			duration: true,
+			success: true,
+			errorMessage: true,
 		},
 	})
 
-	return workflows
+	return {
+		// @ts-ignore
+		workflows: workflows,
+		pageInfo: {
+			hasNextPage: workflows.length === take,
+			endCursor: workflows.length > 0 ? workflows[workflows.length - 1].id : null,
+		},
+	}
 }

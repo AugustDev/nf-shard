@@ -1,59 +1,132 @@
 "use client"
 
-import { useRouter } from "next/navigation"
-import { Tag, TimerDisplayDynamic, WorkflowStatusTag } from "@/app/components"
+import { TimerDisplayDynamic, WorkflowStatusTag } from "@/app/components"
 import { formatDifference, fullDateTime, workflowStatus } from "@/common"
 import { Workflow } from "@prisma/client"
+import InfiniteScroll from "react-infinite-scroll-component"
 
-import { clsx } from "clsx"
+import { Table } from "antd"
+import type { ColumnsType } from "antd/es/table"
+
 import { OptionsDropdown } from "../OptionsDropdown"
 import Link from "next/link"
 import React from "react"
+import { TPageInfo } from "@/app/api/search/types"
 
 type RunsTableProps = {
 	runs: Workflow[]
 	className?: string
 	onDeleteClick: (id: string) => void
+	fetchMoreData: () => void
+	pageInfo: TPageInfo
 }
 
-export const RunsTable: React.FC<RunsTableProps> = ({ runs, className, onDeleteClick }: RunsTableProps) => {
+export const RunsTable: React.FC<RunsTableProps> = ({
+	runs,
+	className,
+	onDeleteClick,
+	fetchMoreData,
+	pageInfo,
+}: RunsTableProps) => {
+	const columns: ColumnsType<Workflow> = [
+		{
+			title: "Description",
+			dataIndex: "description",
+			key: "description",
+			width: 300,
+			render: (_, run) => (
+				<Link className="text-black" href={`runs/${run.id}`}>
+					{run.manifest.description}
+				</Link>
+			),
+		},
+		{
+			title: "Project",
+			dataIndex: "project",
+			key: "project",
+			width: 200,
+			render: (_, run) => (
+				<div>
+					<div className="font-medium text-gray-900">
+						<Link className="text-black" href={`runs/${run.id}`}>
+							{run.runName}
+						</Link>
+					</div>
+					<div className="mt-1 text-gray-500">{run.projectName}</div>
+				</div>
+			),
+		},
+		{
+			title: "Date",
+			dataIndex: "date",
+			key: "date",
+			width: 200,
+			render: (_, run) => (
+				<div>
+					<div className="font-medium text-gray-900">{fullDateTime(run.start)}</div>
+					<div className="mt-1">
+						{run.complete && <div>{formatDifference(run.start, run.complete)}</div>}
+						{!run.complete && <TimerDisplayDynamic startedAt={run.start} />}
+					</div>
+				</div>
+			),
+		},
+		{
+			title: "Tags",
+			key: "tags",
+			dataIndex: "tags",
+			width: 200,
+			render: (_, { tags }) => (
+				<>
+					{tags.map((tag) => (
+						<span
+							key={tag}
+							className="inline-flex items-center rounded-md bg-gray-100 px-1.5 py-0.5 mr-1 mb-0.5 text-xs font-medium text-gray-600"
+						>
+							{tag}
+						</span>
+					))}
+				</>
+			),
+		},
+		{
+			title: "Status",
+			key: "status",
+			dataIndex: "status",
+			width: 150,
+			render: (_, run) => <WorkflowStatusTag status={workflowStatus(run)} />,
+		},
+		{
+			title: "Options",
+			key: "options",
+			dataIndex: "options",
+			width: 100,
+			align: "center",
+			render: (_, run) => <OptionsDropdown deleteWorkflow={() => onDeleteClick(run.id)} />,
+		},
+	]
+
 	return (
-		<div className={clsx(className, "overflow-x-auto h-full mx-4 md:mx-0 bg-white")}>
-			<div className="rounded-md text-left bg-white">
-				{runs.map((run) => (
-					<Link href={`/runs/${run.id}`} key={run.id} className="">
-						<div className="grid grid-cols-[minmax(auto,1fr),minmax(auto,1fr),minmax(auto,1fr),minmax(auto,1fr),minmax(auto,1fr),min-content] gap-4  align-middle sm:px-6 lg:px-8 hover:bg-gray-50 cursor-pointer">
-							<div className="px-6 py-5 text-sm text-gray-500 min-w-[300px]">
-								<div className="text-gray-900">{run.manifest.description}</div>
-							</div>
-							<div className="py-5 px-3 text-sm flex items-center min-w-[200px]">
-								<div className="ml-4">
-									<div className="font-medium text-gray-900">{run.runName}</div>
-									<div className="mt-1 text-gray-500">{run.projectName}</div>
-								</div>
-							</div>
-							<div className="px-3 py-5 text-sm text-gray-500 text-right min-w-[200px]">
-								<div className="font-medium text-gray-900">{fullDateTime(run.start)}</div>
-								<div className="mt-1">
-									{run.complete && <div>{formatDifference(run.start, run.complete)}</div>}
-									{!run.complete && <TimerDisplayDynamic startedAt={run.start} />}
-								</div>
-							</div>
-							<div className="px-3 py-5 text-sm flex flex-wrap justify-center items-center min-w-[150px]">
-								{run.tags.map((tag) => (
-									<Tag key={tag} name={tag} />
-								))}
-							</div>
-							<div className="py-5 text-sm text-gray-500 flex justify-center items-center min-w-[150px]">
-								<WorkflowStatusTag status={workflowStatus(run)} />
-							</div>
-							<div className="py-5 text-sm text-gray-500 flex justify-end items-center">
-								<OptionsDropdown deleteWorkflow={() => onDeleteClick(run.id)} />
-							</div>
-						</div>
-					</Link>
-				))}
-			</div>
-		</div>
+		<InfiniteScroll
+			dataLength={runs.length}
+			next={fetchMoreData}
+			hasMore={pageInfo.hasNextPage} // Replace with a condition to check if there's more data to load
+			loader={<h4>Loading...</h4>}
+			endMessage={
+				<p>
+					<b>End of runs</b>
+				</p>
+			}
+		>
+			<Table
+				className="pt-3"
+				columns={columns}
+				dataSource={runs}
+				rowKey={(row) => row.id}
+				scroll={{ x: 1000 }}
+				pagination={false}
+				tableLayout="fixed"
+			/>
+		</InfiniteScroll>
 	)
 }
