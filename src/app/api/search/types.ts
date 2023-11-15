@@ -10,8 +10,16 @@ export type SearchRequest = {
 	after?: Date
 	before?: Date
 	workspace_id?: number
+	first?: number
+	cursor?: string
+}
+
+export type TPageInfo = {
+	hasNextPage: boolean
+	endCursor?: string
 }
 
 export type SearchResponse = {
 	workflows: Workflow[]
+	pageInfo: TPageInfo
 }

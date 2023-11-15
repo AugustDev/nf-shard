@@ -1,12 +1,12 @@
 import { prisma } from "@/services/prisma/prisma"
 import { NextResponse } from "next/server"
-import { SearchRequest, SearchResponse } from "./types"
+import { SearchRequest } from "./types"
 import { searchWorkflows } from "@/services/prisma"
 
 export async function POST(request: Request) {
 	const searchRequest: SearchRequest = await request.json()
 
-	const workflows = await searchWorkflows({
+	const searchResults = await searchWorkflows({
 		term: searchRequest.term,
 		id: searchRequest.id,
 		runName: searchRequest.run_name,
@@ -16,11 +16,9 @@ export async function POST(request: Request) {
 		after: searchRequest.after,
 		before: searchRequest.before,
 		workspaceId: searchRequest.workspace_id,
+		first: searchRequest.first,
+		cursor: searchRequest.cursor,
 	})
 
-	const res: SearchResponse = {
-		workflows: workflows,
-	}
-
-	return NextResponse.json(res)
+	return NextResponse.json(searchResults)
 }

@@ -5,7 +5,7 @@ import { clsx } from "clsx"
 import { SearchBar } from "@/app/components"
 import { Workflow, Workspace } from "@prisma/client"
 import { RunsTable } from "../RunsTable"
-import { SearchRequest, SearchResponse } from "@/app/api/search/types"
+import { SearchRequest, SearchResponse, TPageInfo } from "@/app/api/search/types"
 import styles from "./Main.module.scss"
 import moment from "moment"
 
@@ -19,6 +19,7 @@ export const Main = (props: TMainProps) => {
 	const [searchTags, setSearchTags] = useState<string[]>(props.searchTags ?? [])
 	const [workflows, setWorkflows] = useState<Workflow[]>(props.runs)
 	const [workspaces, setWorkspaces] = useState<Workspace[]>(props.workspaces)
+	const [pageInfo, setPageInfo] = useState<TPageInfo>({ hasNextPage: true })
 
 	const addSearchTag = (tag: string) => {
 		if (tag == "" || searchTags.includes(tag)) {
@@ -30,7 +31,8 @@ export const Main = (props: TMainProps) => {
 	const removeSearchTag = (tag: string) => {
 		setSearchTags(searchTags.filter((t) => t !== tag))
 	}
-	const executeSearch = async () => {
+
+	const searchRuns = async (cursor?: string) => {
 		const searchBody: SearchRequest = {}
 
 		for (const tag of searchTags) {
@@ -82,6 +84,10 @@ export const Main = (props: TMainProps) => {
 			}
 		}
 
+		if (cursor) {
+			searchBody.cursor = cursor
+		}
+
 		const response = await fetch(`/api/search`, {
 			body: JSON.stringify(searchBody),
 			method: "POST",
@@ -89,7 +95,22 @@ export const Main = (props: TMainProps) => {
 		})
 
 		const results: SearchResponse = await response.json()
+		return results
+	}
+
+	const executeSearch = async () => {
+		const results = await searchRuns()
 		setWorkflows(results.workflows)
+		setPageInfo(results.pageInfo)
+	}
+
+	const getLatestRuns = async () => {
+		const results = await searchRuns()
+		setWorkflows((prevWorkflows) => {
+			const newWorkflows = [...prevWorkflows, ...results.workflows]
+			const idToWorkflowMap = new Map(newWorkflows.map((workflow) => [workflow.id, workflow]))
+			return Array.from(idToWorkflowMap.values())
+		})
 	}
 
 	const onWorkflowDeleteClick = async (id: string) => {
@@ -97,7 +118,17 @@ export const Main = (props: TMainProps) => {
 			method: "DELETE",
 			cache: "no-store",
 		})
-		executeSearch()
+		setWorkflows((prevWorkflows) => prevWorkflows.filter((workflow) => workflow.id !== id))
+	}
+
+	const fetchMoreData = async () => {
+		const results = await searchRuns(pageInfo.endCursor)
+		setWorkflows((prevWorkflows) => {
+			const newWorkflows = [...prevWorkflows, ...results.workflows]
+			const idToWorkflowMap = new Map(newWorkflows.map((workflow) => [workflow.id, workflow]))
+			return Array.from(idToWorkflowMap.values())
+		})
+		setPageInfo(results.pageInfo)
 	}
 
 	useEffect(() => {
@@ -105,7 +136,7 @@ export const Main = (props: TMainProps) => {
 
 		// Execute every 5 seconds
 		const intervalId = setInterval(() => {
-			executeSearch()
+			getLatestRuns()
 		}, 5000) // 5000 milliseconds = 5 seconds
 
 		// Clear interval on component unmount
@@ -122,6 +153,8 @@ export const Main = (props: TMainProps) => {
 					runs={workflows}
 					className={clsx(styles.fadeInBottom, "mt-8")}
 					onDeleteClick={onWorkflowDeleteClick}
+					fetchMoreData={fetchMoreData}
+					pageInfo={pageInfo}
 				/>
 			)}
 		</>
