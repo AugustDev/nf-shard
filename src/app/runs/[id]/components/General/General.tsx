@@ -8,6 +8,7 @@ import {
 import { FaDocker } from "react-icons/fa"
 import { PiEngineLight, PiSubtitlesLight } from "react-icons/pi"
 import { BuildingLibraryIcon, FolderIcon } from "@heroicons/react/24/outline"
+import { IoInformationCircleOutline } from "react-icons/io5"
 import { FaLayerGroup } from "react-icons/fa"
 import { Workflow, Workspace } from "@prisma/client"
 
@@ -88,6 +89,12 @@ export const General: React.FC<GeneralProps> = ({ workflow, workspace }: General
 					<DocumentIcon className="h-6 w-5 text-gray-400" aria-hidden="true" />
 				</dt>
 				<dd className="text-sm leading-6 text-gray-500">{workflow.id}</dd>
+			</div>
+			<div className="mt-4 flex w-full flex-none gap-x-4">
+				<dt className="flex-none">
+					<IoInformationCircleOutline className="h-6 w-5 text-gray-400" aria-hidden="true" />
+				</dt>
+				<dd className="text-sm leading-6 text-gray-500">{workflow.sessionId}</dd>
 			</div>
 			{workspace && (
 				<div className="mt-4 flex w-full flex-none gap-x-4">
