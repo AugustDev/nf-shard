@@ -44,6 +44,16 @@ export const General: React.FC<GeneralProps> = ({ workflow, workspace }: General
 				</dt>
 				<dd className="text-sm leading-6 text-gray-500">{workflow.runName}</dd>
 			</div>
+			{workflow.repository && (
+				<div className="mt-4 flex w-full flex-none gap-x-4">
+					<dt className="flex-none">
+						<FingerPrintIcon className="h-6 w-5 text-gray-400" aria-hidden="true" />
+					</dt>
+					<dd className="text-sm leading-6 text-gray-500">
+						{workflow.repository} ({workflow.revision})
+					</dd>
+				</div>
+			)}
 			<div className="mt-4 flex w-full flex-none gap-x-4">
 				<dt className="flex-none">
 					<FolderIcon className="h-6 w-5 text-gray-400" aria-hidden="true" />
