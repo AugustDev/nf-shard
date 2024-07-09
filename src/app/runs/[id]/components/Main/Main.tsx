@@ -151,7 +151,11 @@ export const MainRun = (props: PageProps) => {
 			<div className="md:grid md:grid-cols-2 md:gap-4 pt-8 grid-cols-1">
 				<div>{progress && <Processes processes={progress.processes} />}</div>
 				<div>
-					<Utilisation tasks={tasks} peakCpus={workflow.stats.peakCpus} loadCpus={workflow.stats.loadCpus} />
+					<Utilisation
+						tasks={tasks}
+						peakCpus={workflow?.stats?.peakCpus ?? 0}
+						loadCpus={workflow?.stats?.loadCpus ?? 0}
+					/>
 				</div>
 			</div>
 

@@ -52,26 +52,31 @@ export async function PUT(request: Request, { params }: any) {
 			},
 		})
 
-		const settings = await GetSettings()
-		if (
-			settings.slack_notifications_enabled &&
-			settings.slack_webhook_url &&
-			settings.slack_notification_events.includes("run_completed")
-		) {
-			const tags = requestJson.workflow?.params["tags"]?.split(",").map((e: string) => e.trim()) ?? []
-			const duration = formatDuration(requestJson.workflow.duration / 1000)
-			const slackWebhookOpts: RunCompletedOptions = {
-				id: id,
-				baseUrl: settings.base_url ?? "",
-				name: requestJson.workflow.manifest.description,
-				runName: requestJson.workflow.runName,
-				duration: duration,
-				tags: tags,
-				status: requestJson.workflow.success,
+		try {
+			const settings = await GetSettings()
+			if (
+				settings.slack_notifications_enabled &&
+				settings.slack_webhook_url &&
+				settings.slack_notification_events.includes("run_completed")
+			) {
+				const tags = requestJson.workflow?.params["tags"]?.split(",").map((e: string) => e.trim()) ?? []
+				const duration = formatDuration(requestJson.workflow.duration / 1000)
+				const slackWebhookOpts: RunCompletedOptions = {
+					id: id,
+					baseUrl: settings.base_url ?? "",
+					name: requestJson.workflow.manifest.description,
+					runName: requestJson.workflow.runName,
+					duration: duration,
+					tags: tags,
+					status: requestJson.workflow.success,
+				}
+				RunCompletedWebhook(settings.slack_webhook_url, slackWebhookOpts)
 			}
-			RunCompletedWebhook(settings.slack_webhook_url, slackWebhookOpts)
+		} catch (error) {
+			console.error("Error sending slack notification", error)
 		}
 	} catch (e: any) {
+		console.error(e)
 		return NextResponse.json({ error: e }, { status: 500 })
 	}
 

@@ -36,7 +36,7 @@ export async function PUT(request: NextRequest, { params }: any) {
 				profile: requestJson.workflow.profile,
 				homeDir: requestJson.workflow.homeDir,
 				workDir: requestJson.workflow.workDir,
-				container: requestJson.workflow.container,
+				container: requestJson.workflow.container ?? "",
 				commitId: requestJson.workflow.commitId,
 				errorMessage: requestJson.workflow.errorMessage,
 				repository: requestJson.workflow.repository,
@@ -53,7 +53,7 @@ export async function PUT(request: NextRequest, { params }: any) {
 				commandLine: requestJson.workflow.commandLine,
 				stubRun: requestJson.workflow.stubRun,
 				nextflow: requestJson.workflow.nextflow,
-				stats: requestJson.workflow.workflowStats,
+				// stats: requestJson.workflow.workflowStats,
 				resume: requestJson.workflow.resume,
 				success: requestJson.workflow.success,
 				projectName: requestJson.workflow.projectName,
@@ -73,21 +73,20 @@ export async function PUT(request: NextRequest, { params }: any) {
 				progress: {
 					create: {
 						id: id,
-						pending: requestJson.workflow.workflowStats.pendingCount,
-						ignored: requestJson.workflow.workflowStats.ignoredCount,
-						loadCpus: requestJson.workflow.workflowStats.loadCpus,
-						loadMemory: requestJson.workflow.workflowStats.loadMemory,
-						processes: requestJson.workflow.workflowStats.processes,
-						aborted: requestJson.workflow.workflowStats.abortedCount,
-						succeeded: requestJson.workflow.workflowStats.succeededCount,
-						peakMemory: requestJson.workflow.workflowStats.peakMemory,
-						peakCpus: requestJson.workflow.workflowStats.peakCpus,
-						failed: requestJson.workflow.workflowStats.failedCount,
-						running: requestJson.workflow.workflowStats.runningCount,
-						retries: requestJson.workflow.workflowStats.retriesCount,
-						peakRunning: requestJson.workflow.workflowStats.peakRunning,
-						cached: requestJson.workflow.workflowStats.cachedCount,
-						submitted: requestJson.workflow.workflowStats.submittedCount,
+						pending: 0,
+						ignored: 0,
+						loadCpus: 0,
+						loadMemory: 0,
+						aborted: 0,
+						succeeded: 0,
+						peakMemory: 0,
+						peakCpus: 0,
+						failed: 0,
+						running: 0,
+						retries: 0,
+						peakRunning: 0,
+						cached: 0,
+						submitted: 0,
 					},
 				},
 			},
@@ -100,6 +99,7 @@ export async function PUT(request: NextRequest, { params }: any) {
 			watchUrl: `${baseUrl}/runs/${id}`,
 		})
 	} catch (e: any) {
+		console.error(e)
 		return NextResponse.json({ error: e }, { status: 500 })
 	}
 }

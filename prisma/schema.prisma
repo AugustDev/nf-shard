@@ -21,7 +21,7 @@ model Workflow {
   profile         String
   homeDir         String
   workDir         String
-  container       String
+  container       String?
   commitId        String?
   errorMessage    String?
   repository      String?
@@ -40,7 +40,7 @@ model Workflow {
   /// [Nextflow]
   nextflow        Json
   /// [Stats]
-  stats           Json
+  stats           Json?
   resume          Boolean
   success         Boolean
   projectName     String
