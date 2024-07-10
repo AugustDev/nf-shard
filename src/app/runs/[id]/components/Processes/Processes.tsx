@@ -48,10 +48,11 @@ export const Processes: React.FC<ProcessesProps> = ({ processes, className }: Pr
 		<Container sectionName="Processes" className={className}>
 			<div className="flex flex-col  border-gray-900/5 ">
 				{processes.map((progress) => {
+					const progressRunning = progress.running > 0 ? progress.running : 0
 					const total =
 						progress.succeeded +
 						progress.failed +
-						progress.running +
+						progressRunning +
 						progress.pending +
 						progress.aborted +
 						progress.cached +
@@ -64,13 +65,13 @@ export const Processes: React.FC<ProcessesProps> = ({ processes, className }: Pr
 										<span className="text-sm font-medium text-gray-500 group-hover:text-gray-900 truncate pr-4">
 											{progress.name}
 										</span>
-										<span className="text-sm font-medium text-gray-500 group-hover:text-gray-900">
-											{progress.succeeded + progress.failed + progress.cached + progress.ignored} / {total}
+										<span className="text-sm font-medium text-gray-500 group-hover:text-gray-900 break-keep">
+											{progress.succeeded + progress.failed + progress.cached + progress.ignored}/{total}
 										</span>
 									</div>
 									<ProgressBar
 										completed={progress.succeeded + progress.cached}
-										running={progress.running}
+										running={progressRunning}
 										failed={progress.failed}
 										total={total}
 									/>
