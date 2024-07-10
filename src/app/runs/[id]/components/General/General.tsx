@@ -5,7 +5,7 @@ import {
 	FingerPrintIcon,
 	WrenchScrewdriverIcon,
 } from "@heroicons/react/20/solid"
-import { FaDocker } from "react-icons/fa"
+import { FaDocker, FaGithub } from "react-icons/fa"
 import { PiEngineLight, PiSubtitlesLight } from "react-icons/pi"
 import { BuildingLibraryIcon, FolderIcon } from "@heroicons/react/24/outline"
 import { IoInformationCircleOutline } from "react-icons/io5"
@@ -47,10 +47,10 @@ export const General: React.FC<GeneralProps> = ({ workflow, workspace }: General
 			{workflow.repository && (
 				<div className="mt-4 flex w-full flex-none gap-x-4">
 					<dt className="flex-none">
-						<FingerPrintIcon className="h-6 w-5 text-gray-400" aria-hidden="true" />
+						<FaGithub className="h-6 w-5 text-gray-400" aria-hidden="true" />
 					</dt>
 					<dd className="text-sm leading-6 text-gray-500">
-						{workflow.repository} ({workflow.revision})
+						{workflow.repository} {workflow.revision && <span>({workflow.revision})</span>}
 					</dd>
 				</div>
 			)}
