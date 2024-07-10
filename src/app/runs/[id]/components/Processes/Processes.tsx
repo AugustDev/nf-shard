@@ -61,7 +61,9 @@ export const Processes: React.FC<ProcessesProps> = ({ processes, className }: Pr
 							<a href={undefined}>
 								<div className="flex flex-col w-full">
 									<div className="flex flex-row justify-between">
-										<span className="text-sm font-medium text-gray-500 group-hover:text-gray-900">{progress.name}</span>
+										<span className="text-sm font-medium text-gray-500 group-hover:text-gray-900 truncate pr-4">
+											{progress.name}
+										</span>
 										<span className="text-sm font-medium text-gray-500 group-hover:text-gray-900">
 											{progress.succeeded + progress.failed + progress.cached + progress.ignored} / {total}
 										</span>
