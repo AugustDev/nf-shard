@@ -1,8 +1,9 @@
-import React, { useMemo } from "react"
+import React, { useMemo, useState } from "react"
 import {
 	createColumnHelper,
 	flexRender,
 	getCoreRowModel,
+	getFilteredRowModel,
 	getSortedRowModel,
 	useReactTable,
 } from "@tanstack/react-table"
@@ -108,16 +109,45 @@ const columns = [
 
 export const TasksTable = ({ tasks, className, onTaskClick }: TasksTableProps) => {
 	const data = useMemo(() => tasks, [tasks])
+	const [globalFilter, setGlobalFilter] = useState("")
 
 	const table = useReactTable({
 		data,
 		columns,
 		getCoreRowModel: getCoreRowModel(),
 		getSortedRowModel: getSortedRowModel(),
+		getFilteredRowModel: getFilteredRowModel(),
+		globalFilterFn: "includesString",
+		state: {
+			globalFilter,
+		},
+		onGlobalFilterChange: setGlobalFilter,
 	})
 
 	return (
-		<Container sectionName="Tasks" className={className}>
+		<Container
+			sectionName="Tasks"
+			className={className}
+			headerChildren={
+				<div>
+					<div className="relative">
+						<input
+							id="search"
+							name="search"
+							type="text"
+							value={globalFilter}
+							onChange={(e) => setGlobalFilter(e.target.value)}
+							placeholder="Search status, process, tag"
+							className="peer block w-64 border-0 bg-gray-50 py-1.5 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
+						/>
+						<div
+							aria-hidden="true"
+							className="absolute inset-x-0 bottom-0 border-t border-gray-300 peer-focus:border-t-2 peer-focus:border-indigo-600"
+						/>
+					</div>
+				</div>
+			}
+		>
 			<div className="overflow-x-auto">
 				<table className="table-auto w-full text-black">
 					<thead className="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
