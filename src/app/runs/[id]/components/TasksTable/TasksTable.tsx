@@ -11,7 +11,6 @@ import { Container, StatusTag, TaskStatusTag } from "@/app/components"
 import { formatDuration, fullDateTime } from "@/common"
 import { Task } from "@prisma/client"
 import bytes from "bytes"
-import { FaCaretDown } from "react-icons/fa"
 
 type TasksTableProps = {
 	tasks: Task[]
@@ -35,11 +34,27 @@ const columns = [
 		id: "duration",
 		header: "Duration",
 		cell: (info) => formatDuration(info.getValue(), "ms"),
+		footer: ({ table }) => {
+			let rows = table.getFilteredRowModel().rows
+			let msSum = 0.0
+			for (let i = 0; i < rows.length; i++) {
+				msSum += (rows[i].getValue("duration") as number) ?? 0
+			}
+			return formatDuration(msSum, "ms")
+		},
 	}),
 	columnHelper.accessor((row) => row.data.realtime, {
 		id: "realtime",
 		header: "Realtime",
 		cell: (info) => formatDuration(info.getValue(), "ms"),
+		footer: ({ table }) => {
+			let rows = table.getFilteredRowModel().rows
+			let msSum = 0.0
+			for (let i = 0; i < rows.length; i++) {
+				msSum += (rows[i].getValue("realtime") as number) ?? 0
+			}
+			return formatDuration(msSum, "ms")
+		},
 	}),
 	columnHelper.accessor((row) => row.data.pcpu, {
 		id: "pcpu",
@@ -194,6 +209,17 @@ export const TasksTable = ({ tasks, className, onTaskClick }: TasksTableProps) =
 							</tr>
 						))}
 					</tbody>
+					<tfoot className="border-solid border-t-[1px] border-gray-100">
+						{table.getFooterGroups().map((footerEl) => (
+							<tr key={footerEl.id}>
+								{footerEl.headers.map((columnEl) => (
+									<th className="text-sm" key={columnEl.id} colSpan={columnEl.colSpan}>
+										{flexRender(columnEl.column.columnDef.footer, columnEl.getContext())}
+									</th>
+								))}
+							</tr>
+						))}
+					</tfoot>
 				</table>
 			</div>
 		</Container>
