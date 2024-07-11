@@ -137,25 +137,23 @@ export const MainRun = (props: PageProps) => {
 
 			<Tabs tabs={tabs} className="py-5 px-5" panelClassName="max-h-96" />
 
-			{progress && <Status progress={progress} className="pt-8" />}
+			<div className="md:grid md:grid-cols-2 md:gap-4 pt-8 grid-cols-1">
+				{progress && <Status progress={progress} />}
+				<AggregateStats tasks={tasks} completedAt={workflow.complete} startedAt={workflow.start} />
+			</div>
 
 			<div className="md:grid md:grid-cols-2 md:gap-4 pt-8 grid-cols-1">
 				<div>
 					<General workflow={workflow} workspace={props.workspace} />
-				</div>
-				<div>
-					<AggregateStats tasks={tasks} completedAt={workflow.complete} startedAt={workflow.start} />
-				</div>
-			</div>
-
-			<div className="md:grid md:grid-cols-2 md:gap-4 pt-8 grid-cols-1">
-				<div>{progress && <Processes processes={progress.processes} />}</div>
-				<div>
 					<Utilisation
 						tasks={tasks}
 						peakCpus={workflow?.stats?.peakCpus ?? 0}
 						loadCpus={workflow?.stats?.loadCpus ?? 0}
+						className="mt-8"
 					/>
+				</div>
+				<div>
+					<div>{progress && <Processes processes={progress.processes} />}</div>
 				</div>
 			</div>
 

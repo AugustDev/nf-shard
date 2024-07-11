@@ -54,38 +54,38 @@ export const AggregateStats: React.FC<AggregateStatsProps> = ({
 	return (
 		<div>
 			<dl className={clsx(className, "grid grid-cols-3 gap-5 px-4 md:px-0 mt-8 md:mt-0")}>
-				<div className="overflow-hidden rounded-md bg-white px-4 py-5 shadow">
+				<div className="overflow-hidden rounded-md bg-white px-4 py-5 shadow h-24">
 					<dt className="truncate text-sm font-medium text-gray-500">Wall Time</dt>
 					<dd className="mt-1 text-2xl font-semibold tracking-tight text-gray-900">
 						{completedAt && <div>{formatDifference(startedAt, completedAt)}</div>}
 						{!completedAt && <TimerDisplayDynamic startedAt={startedAt} />}
 					</dd>
 				</div>
-				<div className="overflow-hidden rounded-md bg-white px-4 py-5 shadow">
+				<div className="overflow-hidden rounded-md bg-white px-4 py-5 shadow h-24">
 					<dt className="truncate text-sm font-medium text-gray-500">CPU time</dt>
 					<dd className="mt-1 text-2xl font-semibold tracking-tight text-gray-900">
 						{aggregates.cpuTime.toFixed(2)} h
 					</dd>
 				</div>
-				<div className="overflow-hidden rounded-md bg-white px-4 py-5 shadow">
+				<div className="overflow-hidden rounded-md bg-white px-4 py-5 shadow h-24">
 					<dt className="truncate text-sm font-medium text-gray-500">Total Memory</dt>
 					<dd className="mt-1 text-2xl font-semibold tracking-tight text-gray-900">
 						{bytes(aggregates.totalMemory, { unitSeparator: " " })}
 					</dd>
 				</div>
-				<div className="overflow-hidden rounded-md bg-white px-4 py-5 shadow">
+				<div className="overflow-hidden rounded-md bg-white px-4 py-5 shadow h-24">
 					<dt className="truncate text-sm font-medium text-gray-500">Storage Read</dt>
 					<dd className="mt-1 text-2xl font-semibold tracking-tight text-gray-900">
 						{bytes(aggregates.storageRead, { unitSeparator: " " })}
 					</dd>
 				</div>
-				<div className="overflow-hidden rounded-md bg-white px-4 py-5 shadow">
+				<div className="overflow-hidden rounded-md bg-white px-4 py-5 shadow h-24">
 					<dt className="truncate text-sm font-medium text-gray-500">Storage Write</dt>
 					<dd className="mt-1 text-2xl font-semibold tracking-tight text-gray-900">
 						{bytes(aggregates.storageWrite, { unitSeparator: " " })}
 					</dd>
 				</div>
-				<div className="overflow-hidden rounded-md bg-white px-4 py-5 shadow">
+				<div className="overflow-hidden rounded-md bg-white px-4 py-5 shadow h-24">
 					<dt className="truncate text-sm font-medium text-gray-500">Estimated Cost</dt>
 					<dd className="mt-1 text-2xl font-semibold tracking-tight text-gray-900">$ {costEstimate.toFixed(3)}</dd>
 				</div>
