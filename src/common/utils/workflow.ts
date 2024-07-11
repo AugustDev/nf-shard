@@ -24,3 +24,15 @@ export const workflowStatus = (workflow: Workflow): WorkflowStatus => {
 
 	return WorkflowStatus.RUNNING
 }
+
+export const extractExecutor = (configText: string) => {
+	const executorRegex = /^\s*executor\s*=\s*['"]?(\w+)['"]?/m
+
+	const match = configText.match(executorRegex)
+
+	if (match) {
+		return match[1]
+	}
+
+	return null
+}
