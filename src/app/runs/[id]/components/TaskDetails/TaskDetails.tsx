@@ -4,14 +4,31 @@ import React from "react"
 import { CodeText } from ".."
 import { formatDuration, fullDateTime } from "@/common"
 import bytes from "bytes"
+import Link from "next/link"
 
 type TaskDetailsProps = {
 	task: Task
 }
 
 export const TaskDetails = ({ task }: TaskDetailsProps) => {
+	console.log(task.id)
 	return (
 		<div className="text-black">
+			{task.data.executor === "float" && (
+				<div className="mb-4">
+					<Link
+						target="_blank"
+						href={`${process.env.NEXT_PUBLIC_MMC_CLOUD_BASE_URL}/#/opcenter/jobs/${task.data.nativeId}`}
+					>
+						<button
+							type="button"
+							className="rounded-md bg-indigo-50 px-2.5 py-1.5 text-sm text-indigo-600 shadow-sm hover:bg-indigo-100"
+						>
+							Open in MMCloud
+						</button>
+					</Link>
+				</div>
+			)}
 			<div>
 				<div className="text-lg">Name</div>
 				<CodeText code={`${task.data.process} ${task.data.name}`} />

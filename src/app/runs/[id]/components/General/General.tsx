@@ -15,6 +15,7 @@ import { Workflow, Workspace } from "@prisma/client"
 import { fullDateTime } from "@common/index"
 import { Container } from "@/app/components"
 import Link from "next/link"
+import { extractExecutor } from "@/common/utils/workflow"
 
 type GeneralProps = {
 	workflow: Workflow
@@ -22,6 +23,7 @@ type GeneralProps = {
 }
 
 export const General: React.FC<GeneralProps> = ({ workflow, workspace }: GeneralProps) => {
+	const executor = extractExecutor(workflow.configText)
 	return (
 		<Container sectionName="General">
 			<div className="flex w-full flex-none gap-x-4 border-gray-900/5">
@@ -78,7 +80,7 @@ export const General: React.FC<GeneralProps> = ({ workflow, workspace }: General
 				<dt className="flex-none">
 					<PiEngineLight className="h-6 w-5 text-gray-400" aria-hidden="true" />
 				</dt>
-				<dd className="text-sm leading-6 text-gray-500">{workflow.profile}</dd>
+				<dd className="text-sm leading-6 text-gray-500">{executor}</dd>
 			</div>
 			<div className="mt-4 flex w-full flex-none gap-x-4">
 				<dt className="flex-none">
