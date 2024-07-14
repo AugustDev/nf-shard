@@ -9,7 +9,7 @@ export enum WorkflowStatus {
 }
 
 export const workflowStatus = (workflow: Workflow): WorkflowStatus => {
-	if (workflow.success) {
+	if (workflow?.success) {
 		return WorkflowStatus.SUCCESS
 	}
 
