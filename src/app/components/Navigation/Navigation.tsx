@@ -6,9 +6,23 @@ import { Disclosure } from "@headlessui/react"
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
 import { Toaster } from "react-hot-toast"
 import { usePathname } from "next/navigation"
+import Link from "next/link"
+import { CircleUser, Menu, Package2 } from "lucide-react"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Button } from "@/components/ui/button"
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { cn } from "@/lib/utils"
 
 const navigation = [
 	{ name: "Runs", href: "/runs" },
+	{ name: "Launch", href: "/launch" },
 	{ name: "Workspaces", href: "/workspaces" },
 	{ name: "Get Started", href: "/guide" },
 	{ name: "Settings", href: "/settings" },
@@ -20,6 +34,90 @@ type MainNavigationProps = {
 
 export const MainNavigation: FC<MainNavigationProps> = ({ child }) => {
 	const currentPath = usePathname()
+
+	return (
+		<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+			<header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+				<nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+					<Link href="#" className="flex items-center gap-2 text-lg font-semibold md:text-base">
+						<div className="flex-shrink-0">
+							<img className="h-9" src="/logo.png" alt="nf-shard" />
+						</div>
+						<span className="sr-only">Shard</span>
+					</Link>
+
+					{navigation.map((item) => (
+						<Link
+							key={item.name}
+							href={item.href}
+							className={cn(
+								item.href === currentPath
+									? "text-foreground font-medium"
+									: "text-muted-foreground hover:text-foreground",
+								"transition-colors hover:text-foreground"
+							)}
+						>
+							{item.name}
+						</Link>
+					))}
+				</nav>
+				{/* <Sheet>
+					<SheetTrigger asChild>
+						<Button variant="outline" size="icon" className="shrink-0 md:hidden">
+							<Menu className="h-5 w-5" />
+							<span className="sr-only">Toggle navigation menu</span>
+						</Button>
+					</SheetTrigger>
+					<SheetContent side="left">
+						<nav className="grid gap-6 text-lg font-medium">
+							<Link href="#" className="flex items-center gap-2 text-lg font-semibold">
+								<Package2 className="h-6 w-6" />
+								<span className="sr-only">Acme Inc</span>
+							</Link>
+							<Link href="#" className="text-muted-foreground hover:text-foreground">
+								Dashboard
+							</Link>
+							<Link href="#" className="text-muted-foreground hover:text-foreground">
+								Orders
+							</Link>
+							<Link href="#" className="text-muted-foreground hover:text-foreground">
+								Products
+							</Link>
+							<Link href="#" className="text-muted-foreground hover:text-foreground">
+								Customers
+							</Link>
+							<Link href="#" className="hover:text-foreground">
+								Settings
+							</Link>
+						</nav>
+					</SheetContent>
+				</Sheet> */}
+				{/* <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<Button variant="secondary" size="icon" className="rounded-full">
+								<CircleUser className="h-5 w-5" />
+								<span className="sr-only">Toggle user menu</span>
+							</Button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent align="end">
+							<DropdownMenuLabel>My Account</DropdownMenuLabel>
+							<DropdownMenuSeparator />
+							<DropdownMenuItem>Settings</DropdownMenuItem>
+							<DropdownMenuItem>Support</DropdownMenuItem>
+							<DropdownMenuSeparator />
+							<DropdownMenuItem>Logout</DropdownMenuItem>
+						</DropdownMenuContent>
+					</DropdownMenu>
+				</div> */}
+			</header>
+			{/* </div> */}
+
+			<div className="h-full py-6 sm:px-6 lg:px-8">
+				{child} <Toaster position="top-right" />
+			</div>
+		</div>
+	)
 
 	return (
 		<div className="h-full">

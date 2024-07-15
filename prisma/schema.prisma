@@ -126,3 +126,13 @@ model AppSettings {
 	slack_notification_events String[]
 	slack_notifications_enabled Boolean @default(false)
 }
+
+model ComputeEnvironment {
+	id         Int      @id @default(autoincrement())
+	name       String
+	description String?
+	is_deleted  Boolean @default(false)
+	orchestrator_endpoint String
+	orchestrator_token String
+	executor String
+}
