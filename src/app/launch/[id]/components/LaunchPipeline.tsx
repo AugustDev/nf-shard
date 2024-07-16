@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button"
 import { Run, TParameter, TRunRequest } from "@/services/orchestrator/orchestrator"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Terminal } from "lucide-react"
+import confetti from "canvas-confetti"
 
 type TProps = {
 	pipeline: Pipeline
@@ -38,6 +39,7 @@ const validateKVArg = (arg: TKVArg) => {
 }
 
 export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
+	const [isConfettiActive, setIsConfettiActive] = useState(false)
 	const [selectedComputeEnv, setSelectedComputeEnv] = useState<ComputeEnvironment | null>(null)
 	const [runParams, setRunParams] = useState<TKVArg[]>(pipeline.run_params as TKVArg[])
 	const [nextflowCommand, setNextflowCommand] = useState<string>("")
@@ -80,6 +82,12 @@ export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
 		try {
 			await Run(selectedComputeEnv, req)
 			setSubmittedJob(true)
+
+			confetti({
+				particleCount: 100,
+				spread: 70,
+				origin: { y: 0.6 },
+			})
 		} catch (error) {
 			console.error(error)
 		}
@@ -104,6 +112,14 @@ export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
 		const full = `${command} ${args.join(" \\\n")}`
 		setNextflowCommand(full)
 	}, [pipeline, runParams])
+
+	const handleClick = () => {
+		confetti({
+			particleCount: 100,
+			spread: 70,
+			origin: { y: 0.6 },
+		})
+	}
 
 	return (
 		<div>
@@ -190,7 +206,7 @@ export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
 							<Alert>
 								<Terminal className="h-4 w-4" />
 								<AlertTitle>Job Submitted!</AlertTitle>
-								<AlertDescription>Your task should soon be visible in the Runs list.</AlertDescription>
+								<AlertDescription>Your job should soon be visible in the Runs list.</AlertDescription>
 							</Alert>
 						)}
 					</div>
