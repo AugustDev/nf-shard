@@ -1,13 +1,13 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { Pipeline } from "@prisma/client"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { X } from "lucide-react"
-import { ComputeEnvironment } from "@prisma/client"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormDescription, FormField, FormLabel, FormMessage } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
@@ -15,11 +15,12 @@ import { Separator } from "@/components/ui/separator"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
-import { TKVArg, computeEnvOverrides } from "@/app/launch/create/types"
-import { TCreatePipeline } from "@/app/launch/create/actions/CreatePipeline"
+import { TComputeEnvOverride, TKVArg, computeEnvOverrides } from "@/app/pipeline/types"
+import { TUpsertPipeline } from "@/app/pipeline/actions/UpsertPipeline"
 
 type TProps = {
-	createPipeline: (pipeline: TCreatePipeline) => Promise<boolean>
+	pipeline?: Pipeline | null
+	submitPipeline: (pipeline: TUpsertPipeline) => Promise<boolean>
 }
 
 const formSchema = z.object({
@@ -27,33 +28,33 @@ const formSchema = z.object({
 		message: "Name must be at least 2 characters.",
 	}),
 	description: z.string(),
-	// computeEnv: z.object({
-	// 	id: z.number(),
-	// 	name: z.string(),
-	// }),
 	pipelineUrl: z.string().url(),
 })
 
-export const CreatePipeline = ({ createPipeline }: TProps) => {
-	const [computeConfigOverrides, setComputeConfigOverrides] = useState(computeEnvOverrides)
+const defaultArgs: TKVArg[] = [
+	{ id: "0", key: "--input", value: "", required: true, flag: false },
+	{ id: "1", key: "-r", value: "main", required: true, flag: false },
+	{ id: "2", key: "-latest", value: "", required: true, flag: true },
+]
+
+export const CreatePipeline = ({ pipeline, submitPipeline }: TProps) => {
+	const router = useRouter()
+	const [computeConfigOverrides, setComputeConfigOverrides] = useState<TComputeEnvOverride[]>(
+		(pipeline?.compute_overrides ?? computeEnvOverrides) as TComputeEnvOverride[]
+	)
+
+	const [args, setArgs] = useState<TKVArg[]>((pipeline?.run_params ?? defaultArgs) as TKVArg[])
 
 	const updateOverrides = (name: string, content: string) => {
 		setComputeConfigOverrides(computeConfigOverrides.map((env) => (env.name === name ? { ...env, content } : env)))
 	}
 
-	const [args, setArgs] = useState<TKVArg[]>([
-		{ id: "0", key: "--input", value: "", required: true, flag: false },
-		{ id: "1", key: "-r", value: "main", required: true, flag: false },
-		{ id: "2", key: "-latest", value: "", required: true, flag: true },
-	])
-
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			name: "",
-			description: "",
-			// computeEnv: computeEnvironments[0],
-			pipelineUrl: "",
+			name: pipeline?.name ?? "",
+			description: pipeline?.description ?? "",
+			pipelineUrl: pipeline?.github_url ?? "",
 		},
 	})
 
@@ -76,15 +77,20 @@ export const CreatePipeline = ({ createPipeline }: TProps) => {
 		setArgs(args.filter((item) => item.id !== id))
 	}
 
-	function onSubmit(values: z.infer<typeof formSchema>) {
-		const status = createPipeline({
+	async function onSubmit(values: z.infer<typeof formSchema>) {
+		const filteredArgs = args.filter((item) => item.key !== "")
+
+		const status = await submitPipeline({
+			id: pipeline?.id,
 			name: values.name,
 			description: values.description,
 			githubUrl: values.pipelineUrl,
-			runParams: args,
+			runParams: filteredArgs,
 			computeOverrides: computeConfigOverrides,
 		})
-		console.log(status)
+		if (status) {
+			router.push("/launch")
+		}
 	}
 
 	return (
@@ -136,44 +142,6 @@ export const CreatePipeline = ({ createPipeline }: TProps) => {
 									</div>
 								)}
 							/>
-							{/* <FormField
-								control={form.control}
-								name="computeEnv"
-								render={({ field }) => (
-									<div>
-										<div className="grid grid-cols-4 gap-4 w-full">
-											<FormLabel className="text-right pt-3">Compute Environment</FormLabel>
-											<div className="w-full col-span-3">
-												<Select
-													onValueChange={(value) => {
-														const selectedEnv = computeEnvironments.find((env) => String(env.id) === value)
-														if (selectedEnv) {
-															field.onChange(selectedEnv)
-														}
-													}}
-													value={field.value.id.toString()}
-												>
-													<FormControl>
-														<SelectTrigger>
-															<SelectValue placeholder="Compute Environment" />
-														</SelectTrigger>
-													</FormControl>
-													<SelectContent>
-														<SelectContent>
-															{computeEnvironments.map((env) => (
-																<SelectItem key={env.id} value={String(env.id)}>
-																	{env.name} <span className="text-xs font-medium">{env.executor}</span>
-																</SelectItem>
-															))}
-														</SelectContent>
-													</SelectContent>
-												</Select>
-												<FormMessage className="pt-3" />
-											</div>
-										</div>
-									</div>
-								)}
-							/> */}
 							<FormField
 								control={form.control}
 								name="pipelineUrl"
@@ -265,7 +233,13 @@ export const CreatePipeline = ({ createPipeline }: TProps) => {
 											</Button>
 										</div>
 									))}
-									<Button variant="outline" onClick={addArg}>
+									<Button
+										variant="outline"
+										onClick={(e) => {
+											e.preventDefault()
+											addArg()
+										}}
+									>
 										New Parameter
 									</Button>
 								</div>
@@ -302,7 +276,7 @@ export const CreatePipeline = ({ createPipeline }: TProps) => {
 							</Tabs>
 						</div>
 						<Separator />
-						<Button type="submit">Create Pipeline</Button>
+						<Button type="submit">Save</Button>
 					</form>
 				</Form>
 			</CardContent>

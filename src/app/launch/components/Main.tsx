@@ -1,26 +1,28 @@
-import Image from "next/image"
+"use client"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { Pipeline } from "@prisma/client"
+import { MoreHorizontal, PlusCircle } from "lucide-react"
+import { IoMdPlay } from "react-icons/io"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import {
 	DropdownMenu,
-	DropdownMenuCheckboxItem,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { MoreHorizontal, PlusCircle } from "lucide-react"
-import { IoMdPlay } from "react-icons/io"
-import Link from "next/link"
-import { Pipeline } from "@prisma/client"
 
 type TProps = {
 	pipelines: Pipeline[]
+	deletePipeline: (id: string) => Promise<any>
 }
 
-export const Main = ({ pipelines }: TProps) => {
+export const Main = ({ deletePipeline, pipelines }: TProps) => {
+	const router = useRouter()
 	return (
 		<div className="flex flex-col gap-4">
 			<div className="ml-auto flex items-center gap-2">
@@ -29,7 +31,7 @@ export const Main = ({ pipelines }: TProps) => {
 						<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Compute Environments</span>
 					</Button>
 				</Link>
-				<Link href="/launch/create">
+				<Link href="/pipeline/create">
 					<Button size="sm" className="h-8 gap-1">
 						<PlusCircle className="h-3.5 w-3.5" />
 						<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Add Pipeline</span>
@@ -50,6 +52,8 @@ export const Main = ({ pipelines }: TProps) => {
 							<TableRow>
 								<TableHead>Launch</TableHead>
 								<TableHead>Name</TableHead>
+								<TableHead>id</TableHead>
+								<TableHead>Description</TableHead>
 								<TableHead>Repository</TableHead>
 								<TableHead>Actions</TableHead>
 							</TableRow>
@@ -63,6 +67,8 @@ export const Main = ({ pipelines }: TProps) => {
 										</Button>
 									</TableCell>
 									<TableCell className="font-medium">{pipeline.name}</TableCell>
+									<TableCell className="font-normal">{pipeline.description}</TableCell>
+									<TableCell className="font-normal">{pipeline.id}</TableCell>
 									<TableCell>
 										<Badge variant="outline">{pipeline.github_url}</Badge>
 									</TableCell>
@@ -76,8 +82,17 @@ export const Main = ({ pipelines }: TProps) => {
 											</DropdownMenuTrigger>
 											<DropdownMenuContent align="end">
 												<DropdownMenuLabel>Actions</DropdownMenuLabel>
-												<DropdownMenuItem>Edit</DropdownMenuItem>
-												<DropdownMenuItem>Delete</DropdownMenuItem>
+												<DropdownMenuItem onClick={() => router.push(`/pipeline/${pipeline.id}`)}>
+													Edit
+												</DropdownMenuItem>
+												<DropdownMenuItem
+													onClick={() => {
+														deletePipeline(pipeline.id)
+														router.refresh()
+													}}
+												>
+													Delete
+												</DropdownMenuItem>
 											</DropdownMenuContent>
 										</DropdownMenu>
 									</TableCell>
