@@ -1,4 +1,6 @@
 "use client"
+
+import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Pipeline } from "@prisma/client"
@@ -15,6 +17,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Modal } from "@/app/components"
 
 type TProps = {
 	pipelines: Pipeline[]
@@ -23,6 +26,8 @@ type TProps = {
 
 export const Main = ({ deletePipeline, pipelines }: TProps) => {
 	const router = useRouter()
+	const [deletePipelineState, setDeletePipelineState] = useState<string | null>(null)
+
 	return (
 		<div className="flex flex-col gap-4">
 			<div className="ml-auto flex items-center gap-2">
@@ -52,7 +57,6 @@ export const Main = ({ deletePipeline, pipelines }: TProps) => {
 							<TableRow>
 								<TableHead>Launch</TableHead>
 								<TableHead>Name</TableHead>
-								<TableHead>id</TableHead>
 								<TableHead>Description</TableHead>
 								<TableHead>Repository</TableHead>
 								<TableHead>Actions</TableHead>
@@ -68,7 +72,6 @@ export const Main = ({ deletePipeline, pipelines }: TProps) => {
 									</TableCell>
 									<TableCell className="font-medium">{pipeline.name}</TableCell>
 									<TableCell className="font-normal">{pipeline.description}</TableCell>
-									<TableCell className="font-normal">{pipeline.id}</TableCell>
 									<TableCell>
 										<Badge variant="outline">{pipeline.github_url}</Badge>
 									</TableCell>
@@ -85,14 +88,7 @@ export const Main = ({ deletePipeline, pipelines }: TProps) => {
 												<DropdownMenuItem onClick={() => router.push(`/pipeline/${pipeline.id}`)}>
 													Edit
 												</DropdownMenuItem>
-												<DropdownMenuItem
-													onClick={() => {
-														deletePipeline(pipeline.id)
-														router.refresh()
-													}}
-												>
-													Delete
-												</DropdownMenuItem>
+												<DropdownMenuItem onClick={() => setDeletePipelineState(pipeline.id)}>Delete</DropdownMenuItem>
 											</DropdownMenuContent>
 										</DropdownMenu>
 									</TableCell>
@@ -107,6 +103,30 @@ export const Main = ({ deletePipeline, pipelines }: TProps) => {
 					</div>
 				</CardFooter>
 			</Card>
+			<Modal open={!!deletePipelineState} setOpen={(open) => !open && setDeletePipelineState(null)}>
+				<div>
+					<div className="text-center">
+						<div className="mt-2 text-left">
+							<p className="text-md text-black">Permanently delete Pipeline?</p>
+						</div>
+					</div>
+				</div>
+				<div className="mt-5 ">
+					<button
+						type="button"
+						className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+						onClick={() => {
+							if (deletePipelineState) {
+								deletePipeline(deletePipelineState)
+								setDeletePipelineState(null)
+								router.refresh()
+							}
+						}}
+					>
+						Delete
+					</button>
+				</div>
+			</Modal>
 		</div>
 	)
 }
