@@ -15,18 +15,11 @@ import { Separator } from "@/components/ui/separator"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
-import { TComputeEnvOverride, computeEnvOverrides } from "./PipelineEnvOverrides"
+import { TKVArg, computeEnvOverrides } from "@/app/launch/create/types"
+import { TCreatePipeline } from "@/app/launch/create/actions/CreatePipeline"
 
 type TProps = {
-	computeEnvironments: ComputeEnvironment[]
-}
-
-type TKVArg = {
-	id: string
-	key: string
-	value: string
-	required: boolean
-	flag: boolean
+	createPipeline: (pipeline: TCreatePipeline) => Promise<boolean>
 }
 
 const formSchema = z.object({
@@ -41,7 +34,7 @@ const formSchema = z.object({
 	pipelineUrl: z.string().url(),
 })
 
-export const CreatePipeline = ({ computeEnvironments }: TProps) => {
+export const CreatePipeline = ({ createPipeline }: TProps) => {
 	const [computeConfigOverrides, setComputeConfigOverrides] = useState(computeEnvOverrides)
 
 	const updateOverrides = (name: string, content: string) => {
@@ -84,9 +77,14 @@ export const CreatePipeline = ({ computeEnvironments }: TProps) => {
 	}
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
-		console.log(values)
+		const status = createPipeline({
+			name: values.name,
+			description: values.description,
+			githubUrl: values.pipelineUrl,
+			runParams: args,
+			computeOverrides: computeConfigOverrides,
+		})
+		console.log(status)
 	}
 
 	return (

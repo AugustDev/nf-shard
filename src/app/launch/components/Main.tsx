@@ -14,33 +14,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { MoreHorizontal, PlusCircle } from "lucide-react"
 import { IoMdPlay } from "react-icons/io"
 import Link from "next/link"
+import { Pipeline } from "@prisma/client"
 
-type Pipeline = {
-	id: string
-	name: string
-	description: string
-	repository: string
-	computeEnvironmentName: string
+type TProps = {
+	pipelines: Pipeline[]
 }
 
-const pipelines: Pipeline[] = [
-	{
-		id: "1",
-		name: "Methylseq",
-		description: "Build and deploy the application to the staging environment.",
-		repository: "github.com/cfdx-ai/methylseq",
-		computeEnvironmentName: "AWS Batch",
-	},
-	{
-		id: "2",
-		name: "Methylseq",
-		description: "Build and deploy the application to the staging environment.",
-		repository: "github.com/cfdx-ai/sm",
-		computeEnvironmentName: "Float",
-	},
-]
-
-export const Main = () => {
+export const Main = ({ pipelines }: TProps) => {
 	return (
 		<div className="flex flex-col gap-4">
 			<div className="ml-auto flex items-center gap-2">
@@ -71,7 +51,6 @@ export const Main = () => {
 								<TableHead>Launch</TableHead>
 								<TableHead>Name</TableHead>
 								<TableHead>Repository</TableHead>
-								<TableHead>Compute Environment</TableHead>
 								<TableHead>Actions</TableHead>
 							</TableRow>
 						</TableHeader>
@@ -85,9 +64,8 @@ export const Main = () => {
 									</TableCell>
 									<TableCell className="font-medium">{pipeline.name}</TableCell>
 									<TableCell>
-										<Badge variant="outline">{pipeline.repository}</Badge>
+										<Badge variant="outline">{pipeline.github_url}</Badge>
 									</TableCell>
-									<TableCell>{pipeline.computeEnvironmentName}</TableCell>
 									<TableCell>
 										<DropdownMenu>
 											<DropdownMenuTrigger asChild>

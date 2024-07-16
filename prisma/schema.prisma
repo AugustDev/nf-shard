@@ -136,3 +136,12 @@ model ComputeEnvironment {
 	orchestrator_token String
 	executor String
 }
+
+model Pipeline {
+	id String @id @unique @default(cuid())
+	name String
+	description String
+	github_url String
+	compute_overrides Json?
+	run_params Json?
+}

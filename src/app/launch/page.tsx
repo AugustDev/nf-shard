@@ -1,7 +1,25 @@
 import { Main } from "@/app/launch/components/Main"
+import { prisma } from "@/services"
+import { Pipeline } from "@prisma/client"
 
 export default async function Page() {
-	return <Main />
+	const { pipelines } = await getData()
+	return <Main pipelines={pipelines} />
+}
+
+const getData = async () => {
+	let pipelines: Pipeline[] = []
+	try {
+		pipelines = await prisma.pipeline.findMany()
+	} catch (error) {
+		console.error(error)
+	}
+
+	console.log(pipelines)
+
+	return {
+		pipelines,
+	}
 }
 
 export const fetchCache = "force-no-store"
