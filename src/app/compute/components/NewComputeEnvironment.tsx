@@ -52,9 +52,9 @@ export const NewComputeEnvironment = ({ close, createComputeEnv }: TProps) => {
 						</SelectTrigger>
 						<SelectContent>
 							<SelectGroup>
-								<SelectItem value="apple">AWS Batch</SelectItem>
-								<SelectItem value="banana">GCP Batch</SelectItem>
-								<SelectItem value="blueberry">nf-float</SelectItem>
+								<SelectItem value="awsbatch">AWS Batch</SelectItem>
+								<SelectItem value="gcpbatch">GCP Batch</SelectItem>
+								<SelectItem value="float">nf-float</SelectItem>
 							</SelectGroup>
 						</SelectContent>
 					</Select>

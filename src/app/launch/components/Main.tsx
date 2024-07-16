@@ -49,10 +49,12 @@ export const Main = () => {
 						<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Compute Environments</span>
 					</Button>
 				</Link>
-				<Button size="sm" className="h-8 gap-1">
-					<PlusCircle className="h-3.5 w-3.5" />
-					<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Add Pipeline</span>
-				</Button>
+				<Link href="/launch/create">
+					<Button size="sm" className="h-8 gap-1">
+						<PlusCircle className="h-3.5 w-3.5" />
+						<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Add Pipeline</span>
+					</Button>
+				</Link>
 			</div>
 			<Card x-chunk="dashboard-06-chunk-0">
 				<CardHeader>
