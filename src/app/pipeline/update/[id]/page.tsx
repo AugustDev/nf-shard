@@ -1,6 +1,6 @@
 import { prisma } from "@/services"
-import { upsertPipelineAction } from "../actions/UpsertPipeline"
-import { CreatePipeline } from "../components/PipelineForm"
+import { upsertPipelineAction } from "@/app/pipeline/actions/UpsertPipeline"
+import { CreatePipeline } from "@/app/pipeline/components/PipelineForm"
 
 export default async function Page({ params }: { params: { id: string } }) {
 	const { pipeline } = await getData(params.id)

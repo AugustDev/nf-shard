@@ -16,8 +16,6 @@ const getData = async () => {
 		console.error(error)
 	}
 
-	console.log(pipelines)
-
 	return {
 		pipelines,
 	}

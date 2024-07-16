@@ -66,9 +66,11 @@ export const Main = ({ deletePipeline, pipelines }: TProps) => {
 							{pipelines.map((pipeline) => (
 								<TableRow key={pipeline.id}>
 									<TableCell>
-										<Button variant="ghost" size="icon">
-											<IoMdPlay className="h-4 w-4" />
-										</Button>
+										<Link href={`/launch/${pipeline.id}`}>
+											<Button variant="ghost" size="icon">
+												<IoMdPlay className="h-4 w-4" />
+											</Button>
+										</Link>
 									</TableCell>
 									<TableCell className="font-medium">{pipeline.name}</TableCell>
 									<TableCell className="font-normal">{pipeline.description}</TableCell>
@@ -85,7 +87,7 @@ export const Main = ({ deletePipeline, pipelines }: TProps) => {
 											</DropdownMenuTrigger>
 											<DropdownMenuContent align="end">
 												<DropdownMenuLabel>Actions</DropdownMenuLabel>
-												<DropdownMenuItem onClick={() => router.push(`/pipeline/${pipeline.id}`)}>
+												<DropdownMenuItem onClick={() => router.push(`/pipeline/update/${pipeline.id}`)}>
 													Edit
 												</DropdownMenuItem>
 												<DropdownMenuItem onClick={() => setDeletePipelineState(pipeline.id)}>Delete</DropdownMenuItem>
