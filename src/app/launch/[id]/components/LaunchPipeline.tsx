@@ -9,34 +9,80 @@ import { Separator } from "@/components/ui/separator"
 import { Input } from "@/components/ui/input"
 import { TKVArg } from "@/app/pipeline/types"
 import { CodeText } from "@/app/runs/[id]/components/BashCode/CodeText"
-import { FormLabel } from "@/components/ui/form"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
+import { Run, TParameter, TRunRequest } from "@/services/orchestrator/orchestrator"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Terminal } from "lucide-react"
 
 type TProps = {
 	pipeline: Pipeline
 	computeEnvs: ComputeEnvironment[]
 }
 
+const validateKVArg = (arg: TKVArg) => {
+	if (arg.flag === true) {
+		return true
+	}
+
+	if (arg.required && arg.value !== "") {
+		return true
+	}
+
+	if (!arg.required) {
+		return true
+	}
+
+	return false
+}
+
 export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
+	const [selectedComputeEnv, setSelectedComputeEnv] = useState<ComputeEnvironment | null>(null)
 	const [runParams, setRunParams] = useState<TKVArg[]>(pipeline.run_params as TKVArg[])
 	const [nextflowCommand, setNextflowCommand] = useState<string>("")
+	const [submittedJob, setSubmittedJob] = useState(false)
 
-	const validateKVArg = (arg: TKVArg) => {
-		if (arg.flag === true) {
-			return true
+	const validRunParams = runParams.filter(validateKVArg).filter((item) => item.value !== "" && !item.flag)
+
+	const showLaunchButton = useMemo(() => {
+		if (selectedComputeEnv === null) {
+			return false
 		}
 
-		if (arg.required && arg.value !== "") {
-			return true
+		if (runParams.filter((item) => !validateKVArg(item)).length != 0) {
+			return false
 		}
 
-		if (!arg.required) {
-			return true
+		return true
+	}, [runParams, selectedComputeEnv])
+
+	const launch = async () => {
+		if (selectedComputeEnv === null) {
+			return
 		}
 
-		return false
+		const params: TParameter[] = validRunParams.map((item) => ({
+			key: item.key,
+			value: item.value,
+			is_flag: item.flag,
+		}))
+
+		const req: TRunRequest = {
+			pipeline_url: pipeline.github_url,
+			executor: {
+				name: selectedComputeEnv.executor,
+				compute_override: pipeline.compute_overrides[selectedComputeEnv.executor] ?? "",
+			},
+			parameters: params,
+		}
+
+		try {
+			await Run(selectedComputeEnv, req)
+			setSubmittedJob(true)
+		} catch (error) {
+			console.error(error)
+		}
 	}
 
 	const updateRunParam = (id: string, field: keyof TKVArg, value: string | boolean) => {
@@ -81,16 +127,22 @@ export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
 							<Label htmlFor="username" className="text-left">
 								Compute Environment
 							</Label>
-							<Select onValueChange={(e) => e}>
+							<Select
+								onValueChange={(value) => {
+									const selectedEnv = computeEnvs.find((env) => String(env.id) === value)
+									setSelectedComputeEnv(selectedEnv || null)
+								}}
+								value={selectedComputeEnv?.id.toString()}
+							>
 								<SelectTrigger className="w-full">
 									<SelectValue placeholder="Select Compute Environment" />
 								</SelectTrigger>
 								<SelectContent>
-									<SelectGroup>
-										{computeEnvs.map((env) => (
-											<SelectItem value={String(env.id)}>{env.name}</SelectItem>
-										))}
-									</SelectGroup>
+									{computeEnvs.map((env) => (
+										<SelectItem key={env.id} value={env.id.toString()}>
+											{env.name}
+										</SelectItem>
+									))}
 								</SelectContent>
 							</Select>
 						</div>
@@ -128,16 +180,21 @@ export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
 
 						<Separator />
 
-						<div className="text-right">
-							<Button>Launch</Button>
-						</div>
+						{!submittedJob && showLaunchButton && (
+							<div className="text-right">
+								<Button onClick={() => launch()}>Launch</Button>
+							</div>
+						)}
+
+						{submittedJob && (
+							<Alert>
+								<Terminal className="h-4 w-4" />
+								<AlertTitle>Job Submitted!</AlertTitle>
+								<AlertDescription>Your task should soon be visible in the Runs list.</AlertDescription>
+							</Alert>
+						)}
 					</div>
 				</CardContent>
-				<CardFooter>
-					<div className="text-xs text-muted-foreground">
-						{/* <strong>{pipelines.length}</strong> {pipelines.length === 1 ? "pipeline" : "pipelines"} */}
-					</div>
-				</CardFooter>
 			</Card>
 		</div>
 	)

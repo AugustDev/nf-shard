@@ -142,6 +142,7 @@ model Pipeline {
 	name String
 	description String
 	github_url String
+	/// [ComputeEnvOverride]
 	compute_overrides Json?
 	run_params Json?
 }
