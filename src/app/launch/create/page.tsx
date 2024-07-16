@@ -3,7 +3,6 @@ import { CreatePipeline } from "./components/CreatePipeline"
 
 export default async function Page() {
 	const { computeEnvironments } = await getData()
-	console.log(computeEnvironments)
 	return <CreatePipeline computeEnvironments={computeEnvironments} />
 }
 

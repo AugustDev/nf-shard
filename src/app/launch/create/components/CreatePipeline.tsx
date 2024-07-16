@@ -1,22 +1,21 @@
 "use client"
 
 import { useState } from "react"
+import { z } from "zod"
+import { useForm } from "react-hook-form"
+import { X } from "lucide-react"
+import { ComputeEnvironment } from "@prisma/client"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
 import { Form, FormControl, FormDescription, FormField, FormLabel, FormMessage } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
-import { ComputeEnvironment } from "@prisma/client"
 import { Separator } from "@/components/ui/separator"
 import { Checkbox } from "@/components/ui/checkbox"
-import { X } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
-import { computeEnvOverrides } from "./PipelineEnvOverrides"
+import { TComputeEnvOverride, computeEnvOverrides } from "./PipelineEnvOverrides"
 
 type TProps = {
 	computeEnvironments: ComputeEnvironment[]
@@ -35,14 +34,20 @@ const formSchema = z.object({
 		message: "Name must be at least 2 characters.",
 	}),
 	description: z.string(),
-	computeEnv: z.object({
-		id: z.number(),
-		name: z.string(),
-	}),
+	// computeEnv: z.object({
+	// 	id: z.number(),
+	// 	name: z.string(),
+	// }),
 	pipelineUrl: z.string().url(),
 })
 
 export const CreatePipeline = ({ computeEnvironments }: TProps) => {
+	const [computeConfigOverrides, setComputeConfigOverrides] = useState(computeEnvOverrides)
+
+	const updateOverrides = (name: string, content: string) => {
+		setComputeConfigOverrides(computeConfigOverrides.map((env) => (env.name === name ? { ...env, content } : env)))
+	}
+
 	const [args, setArgs] = useState<TKVArg[]>([
 		{ id: "0", key: "--input", value: "", required: true, flag: false },
 		{ id: "1", key: "-r", value: "main", required: true, flag: false },
@@ -54,7 +59,7 @@ export const CreatePipeline = ({ computeEnvironments }: TProps) => {
 		defaultValues: {
 			name: "",
 			description: "",
-			computeEnv: computeEnvironments[0],
+			// computeEnv: computeEnvironments[0],
 			pipelineUrl: "",
 		},
 	})
@@ -70,11 +75,11 @@ export const CreatePipeline = ({ computeEnvironments }: TProps) => {
 		setArgs([...args, newItem])
 	}
 
-	const updateItem = (id: string, field: keyof TKVArg, value: string | boolean) => {
+	const updateArg = (id: string, field: keyof TKVArg, value: string | boolean) => {
 		setArgs(args.map((item) => (item.id === id ? { ...item, [field]: value } : item)))
 	}
 
-	const deleteItem = (id: string) => {
+	const deleteArg = (id: string) => {
 		setArgs(args.filter((item) => item.id !== id))
 	}
 
@@ -133,7 +138,7 @@ export const CreatePipeline = ({ computeEnvironments }: TProps) => {
 									</div>
 								)}
 							/>
-							<FormField
+							{/* <FormField
 								control={form.control}
 								name="computeEnv"
 								render={({ field }) => (
@@ -170,7 +175,7 @@ export const CreatePipeline = ({ computeEnvironments }: TProps) => {
 										</div>
 									</div>
 								)}
-							/>
+							/> */}
 							<FormField
 								control={form.control}
 								name="pipelineUrl"
@@ -212,14 +217,14 @@ export const CreatePipeline = ({ computeEnvironments }: TProps) => {
 											<Input
 												placeholder="Key"
 												value={item.key}
-												onChange={(e) => updateItem(item.id, "key", e.target.value)}
+												onChange={(e) => updateArg(item.id, "key", e.target.value)}
 												className="w-1/3"
 											/>
 											<div className={`w-1/3 ${item.flag ? "invisible" : "visible"}`}>
 												<Input
 													placeholder="Value"
 													value={item.value}
-													onChange={(e) => updateItem(item.id, "value", e.target.value)}
+													onChange={(e) => updateArg(item.id, "value", e.target.value)}
 													className="w-full"
 													disabled={item.flag}
 												/>
@@ -229,7 +234,7 @@ export const CreatePipeline = ({ computeEnvironments }: TProps) => {
 													<Checkbox
 														id={`required-${item.id}`}
 														checked={item.required}
-														onCheckedChange={(checked) => updateItem(item.id, "required", checked as boolean)}
+														onCheckedChange={(checked) => updateArg(item.id, "required", checked as boolean)}
 													/>
 													<label
 														htmlFor={`required-${item.id}`}
@@ -242,7 +247,7 @@ export const CreatePipeline = ({ computeEnvironments }: TProps) => {
 													<Checkbox
 														id={`flag-${item.id}`}
 														checked={item.flag}
-														onCheckedChange={(checked) => updateItem(item.id, "flag", checked as boolean)}
+														onCheckedChange={(checked) => updateArg(item.id, "flag", checked as boolean)}
 													/>
 													<label
 														htmlFor={`flag-${item.id}`}
@@ -255,7 +260,7 @@ export const CreatePipeline = ({ computeEnvironments }: TProps) => {
 											<Button
 												variant="ghost"
 												size="icon"
-												onClick={() => deleteItem(item.id)}
+												onClick={() => deleteArg(item.id)}
 												disabled={args.length === 1}
 											>
 												<X className="h-4 w-4" />
@@ -278,25 +283,24 @@ export const CreatePipeline = ({ computeEnvironments }: TProps) => {
 								will handle implementation behind the scenes.
 							</p>
 
-							<Tabs defaultValue="batch" className="pt-4 w-full">
+							<Tabs defaultValue="awsbatch" className="pt-4 w-full">
 								<TabsList>
-									{computeEnvOverrides.map((env) => (
-										<TabsTrigger className="data-[state=active]:bg-white" value={env.name}>
+									{computeConfigOverrides.map((env) => (
+										<TabsTrigger key={env.name} className="data-[state=active]:bg-white" value={env.name}>
 											{env.name}
 										</TabsTrigger>
 									))}
 								</TabsList>
-								{computeEnvOverrides.map((env) => (
-									<TabsContent value={env.name}>
-										<Textarea rows={10} placeholder="process {}" value={env.content} />
+								{computeConfigOverrides.map((env) => (
+									<TabsContent key={env.name} value={env.name}>
+										<Textarea
+											onChange={(e) => updateOverrides(env.name, e.target.value)}
+											rows={10}
+											placeholder="process {}"
+											value={env.content}
+										/>
 									</TabsContent>
 								))}
-								{/* <TabsContent value="batch">
-									<Textarea rows={10} placeholder="process {}" />
-								</TabsContent>
-								<TabsContent value="float">
-									<Textarea rows={10} placeholder="process {}" />
-								</TabsContent> */}
 							</Tabs>
 						</div>
 						<Separator />

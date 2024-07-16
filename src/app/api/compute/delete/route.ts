@@ -7,7 +7,6 @@ type TDeleteComputeEnv = {
 
 export async function DELETE(request: Request) {
 	const requestJson: TDeleteComputeEnv = await request.json()
-	console.log(requestJson)
 	try {
 		await DeleteComputeEnvironment(requestJson.id)
 		const computeEnvs = await GetAllComputeEnvironments()

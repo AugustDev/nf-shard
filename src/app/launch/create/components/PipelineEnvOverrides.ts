@@ -7,7 +7,12 @@ const floatDefaultConfigOverride = `process {
 }
 `
 
-export const computeEnvOverrides: { name: string; content: string }[] = [
-	{ name: "batch", content: batchDefaultConfigOverride },
+export type TComputeEnvOverride = {
+	name: string
+	content: string
+}
+
+export const computeEnvOverrides: TComputeEnvOverride[] = [
+	{ name: "awsbatch", content: batchDefaultConfigOverride },
 	{ name: "float", content: floatDefaultConfigOverride },
 ]

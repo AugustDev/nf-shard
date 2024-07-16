@@ -68,26 +68,26 @@ export const Main = () => {
 					<Table>
 						<TableHeader>
 							<TableRow>
+								<TableHead>Launch</TableHead>
 								<TableHead>Name</TableHead>
 								<TableHead>Repository</TableHead>
 								<TableHead>Compute Environment</TableHead>
-								<TableHead>Launch</TableHead>
 								<TableHead>Actions</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
 							{pipelines.map((pipeline) => (
-								<TableRow>
-									<TableCell className="font-medium">{pipeline.name}</TableCell>
-									<TableCell>
-										<Badge variant="outline">{pipeline.repository}</Badge>
-									</TableCell>
-									<TableCell>{pipeline.computeEnvironmentName}</TableCell>
+								<TableRow key={pipeline.id}>
 									<TableCell>
 										<Button variant="ghost" size="icon">
 											<IoMdPlay className="h-4 w-4" />
 										</Button>
 									</TableCell>
+									<TableCell className="font-medium">{pipeline.name}</TableCell>
+									<TableCell>
+										<Badge variant="outline">{pipeline.repository}</Badge>
+									</TableCell>
+									<TableCell>{pipeline.computeEnvironmentName}</TableCell>
 									<TableCell>
 										<DropdownMenu>
 											<DropdownMenuTrigger asChild>
