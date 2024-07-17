@@ -12,7 +12,7 @@ import { CodeText } from "@/app/runs/[id]/components/BashCode/CodeText"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Run, TParameter, TRunRequest } from "@/services/orchestrator/orchestrator"
+import { Health, Run, TParameter, TRunRequest } from "@/services/orchestrator/orchestrator"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Terminal } from "lucide-react"
 import confetti from "canvas-confetti"
@@ -39,8 +39,8 @@ const validateKVArg = (arg: TKVArg) => {
 }
 
 export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
-	const [isConfettiActive, setIsConfettiActive] = useState(false)
 	const [selectedComputeEnv, setSelectedComputeEnv] = useState<ComputeEnvironment | null>(null)
+	const [computeEnvStatus, setComputeEnvStatus] = useState<{ status: boolean; message?: string }>({ status: false })
 	const [runParams, setRunParams] = useState<TKVArg[]>(pipeline.run_params as TKVArg[])
 	const [nextflowCommand, setNextflowCommand] = useState<string>("")
 	const [submittedJob, setSubmittedJob] = useState(false)
@@ -56,8 +56,26 @@ export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
 			return false
 		}
 
+		if (!computeEnvStatus.status) {
+			return false
+		}
+
 		return true
-	}, [runParams, selectedComputeEnv])
+	}, [runParams, selectedComputeEnv, computeEnvStatus])
+
+	const checkHealth = async () => {
+		if (selectedComputeEnv === null) {
+			return
+		}
+
+		const health = await Health(selectedComputeEnv)
+		console.log({ health })
+		setComputeEnvStatus(health)
+	}
+
+	useEffect(() => {
+		checkHealth()
+	}, [selectedComputeEnv])
 
 	const launch = async () => {
 		if (selectedComputeEnv === null) {
@@ -161,6 +179,13 @@ export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
 									))}
 								</SelectContent>
 							</Select>
+							<div>
+								{computeEnvStatus.status ? (
+									<FaCheckCircle className="w-5 h-5" />
+								) : (
+									<FaTimes className="w-5 h-5 text-red-600" />
+								)}
+							</div>
 						</div>
 
 						<div>
@@ -207,6 +232,14 @@ export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
 								<Terminal className="h-4 w-4" />
 								<AlertTitle>Job Submitted!</AlertTitle>
 								<AlertDescription>Your job should soon be visible in the Runs list.</AlertDescription>
+							</Alert>
+						)}
+
+						{!computeEnvStatus.status && (
+							<Alert variant={"destructive"}>
+								<Terminal className="h-4 w-4" />
+								<AlertTitle>Could not access compute environment</AlertTitle>
+								<AlertDescription>{computeEnvStatus.message}</AlertDescription>
 							</Alert>
 						)}
 					</div>
