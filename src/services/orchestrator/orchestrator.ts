@@ -33,14 +33,24 @@ export const Health = async (computeEnv: ComputeEnvironment) => {
 				Authorization: `Bearer ${computeEnv.orchestrator_token}`,
 			},
 		})
+
+		if (!res.ok) {
+			const errorText = await res.text()
+			return {
+				status: false,
+				message: errorText.trim(),
+			}
+		}
+
 		const data = await res.json()
 		return {
 			status: data.status,
 		}
 	} catch (error) {
+		console.error("Health check failed:", error)
 		return {
 			status: false,
-			message: (error as Error).message,
+			message: (error as Error).message || "An unexpected error occurred",
 		}
 	}
 }

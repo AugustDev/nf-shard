@@ -233,7 +233,16 @@ export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
 							<Alert>
 								<Terminal className="h-4 w-4" />
 								<AlertTitle>Job Submitted!</AlertTitle>
-								<AlertDescription>Your job should soon be visible in the Runs list.</AlertDescription>
+								<AlertDescription>
+									Your job should soon be visible in the{" "}
+									<Link className="hover:underline" href={"/runs"}>
+										Runs list
+									</Link>
+									.{" "}
+									<span className="hover:underline hover:cursor-pointer" onClick={() => setSubmittedJob(false)}>
+										Run another job.
+									</span>
+								</AlertDescription>
 							</Alert>
 						)}
 
