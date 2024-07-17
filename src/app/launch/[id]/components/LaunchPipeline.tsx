@@ -40,7 +40,9 @@ const validateKVArg = (arg: TKVArg) => {
 
 export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
 	const [selectedComputeEnv, setSelectedComputeEnv] = useState<ComputeEnvironment | null>(null)
-	const [computeEnvStatus, setComputeEnvStatus] = useState<{ status: boolean; message?: string }>({ status: false })
+	const [computeEnvStatus, setComputeEnvStatus] = useState<{ status?: boolean; message?: string }>({
+		status: undefined,
+	})
 	const [runParams, setRunParams] = useState<TKVArg[]>(pipeline.run_params as TKVArg[])
 	const [nextflowCommand, setNextflowCommand] = useState<string>("")
 	const [submittedJob, setSubmittedJob] = useState(false)
@@ -235,7 +237,7 @@ export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
 							</Alert>
 						)}
 
-						{!computeEnvStatus.status && (
+						{computeEnvStatus?.status === false && (
 							<Alert variant={"destructive"}>
 								<Terminal className="h-4 w-4" />
 								<AlertTitle>Could not access compute environment</AlertTitle>
