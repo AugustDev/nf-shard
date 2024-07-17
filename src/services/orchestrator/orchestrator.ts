@@ -16,7 +16,7 @@ export type TParameter = {
 }
 
 export const Run = async (computeEnv: ComputeEnvironment, data: TRunRequest) => {
-	await fetch(`${computeEnv.orchestrator_endpoint}/v1/run`, {
+	return await fetch(`${computeEnv.orchestrator_endpoint}/v1/run`, {
 		method: "POST",
 		body: JSON.stringify(data),
 		headers: {

@@ -38,14 +38,22 @@ const validateKVArg = (arg: TKVArg) => {
 	return false
 }
 
+enum SubmissionStatus {
+	Idle = 0,
+	Loading = 1,
+	Submitted = 2,
+	Failed = 3,
+}
+
 export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
+	const [submissionStatus, setSubmissionStatus] = useState<SubmissionStatus>(SubmissionStatus.Idle)
+	const [submissionError, setSubmissionError] = useState<string | null>(null)
 	const [selectedComputeEnv, setSelectedComputeEnv] = useState<ComputeEnvironment | null>(null)
 	const [computeEnvStatus, setComputeEnvStatus] = useState<{ status?: boolean; message?: string }>({
 		status: undefined,
 	})
 	const [runParams, setRunParams] = useState<TKVArg[]>(pipeline.run_params as TKVArg[])
 	const [nextflowCommand, setNextflowCommand] = useState<string>("")
-	const [submittedJob, setSubmittedJob] = useState(false)
 
 	const validRunParams = runParams.filter(validateKVArg).filter((item) => item.value !== "" && !item.flag)
 
@@ -71,7 +79,6 @@ export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
 		}
 
 		const health = await Health(selectedComputeEnv)
-		console.log({ health })
 		setComputeEnvStatus(health)
 	}
 
@@ -90,18 +97,27 @@ export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
 			is_flag: item.flag,
 		}))
 
+		const computeOverride: string =
+			pipeline.compute_overrides.find((item: any) => item.name === selectedComputeEnv.executor)?.content ?? ""
+
 		const req: TRunRequest = {
 			pipeline_url: pipeline.github_url,
 			executor: {
 				name: selectedComputeEnv.executor,
-				compute_override: pipeline.compute_overrides[selectedComputeEnv.executor] ?? "",
+				compute_override: computeOverride,
 			},
 			parameters: params,
 		}
 
 		try {
-			await Run(selectedComputeEnv, req)
-			setSubmittedJob(true)
+			setSubmissionStatus(SubmissionStatus.Loading)
+			const res = await Run(selectedComputeEnv, req)
+			setSubmissionStatus(SubmissionStatus.Submitted)
+
+			if (!res.ok) {
+				const errorText = await res.text()
+				setSubmissionError(errorText.trim())
+			}
 
 			confetti({
 				particleCount: 100,
@@ -109,6 +125,8 @@ export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
 				origin: { y: 0.6 },
 			})
 		} catch (error) {
+			setSubmissionStatus(SubmissionStatus.Failed)
+			setSubmissionError((error as Error).message)
 			console.error(error)
 		}
 	}
@@ -223,13 +241,17 @@ export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
 
 						<Separator />
 
-						{!submittedJob && showLaunchButton && (
+						{submissionStatus === SubmissionStatus.Idle && showLaunchButton && (
 							<div className="text-right">
 								<Button onClick={() => launch()}>Launch</Button>
 							</div>
 						)}
 
-						{submittedJob && (
+						{submissionStatus === SubmissionStatus.Loading && (
+							<div className="text-right">Submitting & Simulating...</div>
+						)}
+
+						{submissionStatus === SubmissionStatus.Submitted && (
 							<Alert>
 								<Terminal className="h-4 w-4" />
 								<AlertTitle>Job Submitted!</AlertTitle>
@@ -238,8 +260,13 @@ export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
 									<Link className="hover:underline" href={"/runs"}>
 										Runs list
 									</Link>
-									.{" "}
-									<span className="hover:underline hover:cursor-pointer" onClick={() => setSubmittedJob(false)}>
+									. Float jobs may take up to 5 minutes to appear.{" "}
+									<span
+										className="hover:underline hover:cursor-pointer"
+										onClick={() => {
+											setSubmissionStatus(SubmissionStatus.Idle)
+										}}
+									>
 										Run another job.
 									</span>
 								</AlertDescription>
@@ -251,6 +278,14 @@ export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
 								<Terminal className="h-4 w-4" />
 								<AlertTitle>Could not access compute environment</AlertTitle>
 								<AlertDescription>{computeEnvStatus.message}</AlertDescription>
+							</Alert>
+						)}
+
+						{submissionStatus === SubmissionStatus.Failed && (
+							<Alert variant={"destructive"}>
+								<Terminal className="h-4 w-4" />
+								<AlertTitle>Failed to submit job</AlertTitle>
+								<AlertDescription>{submissionError}</AlertDescription>
 							</Alert>
 						)}
 					</div>
