@@ -53,7 +53,7 @@ export const NewComputeEnvironment = ({ close, createComputeEnv }: TProps) => {
 						<SelectContent>
 							<SelectGroup>
 								<SelectItem value="awsbatch">AWS Batch</SelectItem>
-								<SelectItem value="gcpbatch">GCP Batch</SelectItem>
+								<SelectItem value="google-batch">GCP Batch</SelectItem>
 								<SelectItem value="float">nf-float</SelectItem>
 							</SelectGroup>
 						</SelectContent>

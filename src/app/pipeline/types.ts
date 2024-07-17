@@ -22,5 +22,6 @@ const floatDefaultConfigOverride = `process {
 
 export const computeEnvOverrides: TComputeEnvOverride[] = [
 	{ name: "awsbatch", content: batchDefaultConfigOverride },
+	{ name: "google-batch", content: batchDefaultConfigOverride },
 	{ name: "float", content: floatDefaultConfigOverride },
 ]
