@@ -133,7 +133,8 @@ export const CreatePipeline = ({ pipeline, submitPipeline }: TProps) => {
 											<FormLabel className="text-right pt-3">Description</FormLabel>
 											<div className="w-full col-span-3">
 												<FormControl>
-													<Input placeholder="Pipeline description" {...field} />
+													<Textarea placeholder="Pipeline description" {...field} />
+													{/* <Input placeholder="Pipeline description" {...field} /> */}
 												</FormControl>
 												{/* <FormDescription>Name of the pipeline.</FormDescription> */}
 												<FormMessage className="pt-3" />

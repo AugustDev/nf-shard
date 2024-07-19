@@ -23,3 +23,6 @@ const getData = async (): Promise<TProps> => {
 		computeEnvs: computeEnvs,
 	}
 }
+
+export const fetchCache = "force-no-store"
+export const revalidate = 0

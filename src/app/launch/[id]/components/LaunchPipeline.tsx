@@ -16,10 +16,12 @@ import { Health, Run, TParameter, TRunRequest } from "@/services/orchestrator/or
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Terminal } from "lucide-react"
 import confetti from "canvas-confetti"
+import { Spinner } from "@/app/components/Spinner/Spinner"
 
 type TProps = {
 	pipeline: Pipeline
 	computeEnvs: ComputeEnvironment[]
+	createProcessKey: (processKey: string, executor: string, runName: string, computeEnvironmentId: number) => void
 }
 
 const validateKVArg = (arg: TKVArg) => {
@@ -45,7 +47,7 @@ enum SubmissionStatus {
 	Failed = 3,
 }
 
-export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
+export const LaunchPipeline = ({ pipeline, computeEnvs, createProcessKey }: TProps) => {
 	const [submissionStatus, setSubmissionStatus] = useState<SubmissionStatus>(SubmissionStatus.Idle)
 	const [submissionError, setSubmissionError] = useState<string | null>(null)
 	const [selectedComputeEnv, setSelectedComputeEnv] = useState<ComputeEnvironment | null>(null)
@@ -112,18 +114,26 @@ export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
 		try {
 			setSubmissionStatus(SubmissionStatus.Loading)
 			const res = await Run(selectedComputeEnv, req)
-			setSubmissionStatus(SubmissionStatus.Submitted)
 
 			if (!res.ok) {
 				const errorText = await res.text()
 				setSubmissionError(errorText.trim())
+				setSubmissionStatus(SubmissionStatus.Failed)
 			}
 
-			confetti({
-				particleCount: 100,
-				spread: 70,
-				origin: { y: 0.6 },
-			})
+			if (res.ok) {
+				const resData = await res.json()
+
+				createProcessKey(resData.process_key, resData.executor, resData.run_name, selectedComputeEnv.id)
+
+				setSubmissionStatus(SubmissionStatus.Submitted)
+
+				confetti({
+					particleCount: 100,
+					spread: 70,
+					origin: { y: 0.6 },
+				})
+			}
 		} catch (error) {
 			setSubmissionStatus(SubmissionStatus.Failed)
 			setSubmissionError((error as Error).message)
@@ -173,7 +183,7 @@ export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
 								</Link>
 							</div>
 						</div>
-						<p className="text-sm text-muted-foreground">{pipeline.description}</p>
+						<p className="text-sm text-muted-foreground whitespace-pre">{pipeline.description}</p>
 
 						<Separator />
 
@@ -241,14 +251,15 @@ export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
 
 						<Separator />
 
-						{submissionStatus === SubmissionStatus.Idle && showLaunchButton && (
-							<div className="text-right">
-								<Button onClick={() => launch()}>Launch</Button>
-							</div>
-						)}
-
 						{submissionStatus === SubmissionStatus.Loading && (
-							<div className="text-right">Submitting & Simulating...</div>
+							<div className="flex justify-end">
+								<div className="text-right">
+									<div className="flex flex-col items-center">
+										<Spinner />
+										<div className="text-sm pt-2">Simulating...</div>
+									</div>
+								</div>
+							</div>
 						)}
 
 						{submissionStatus === SubmissionStatus.Submitted && (
@@ -288,6 +299,13 @@ export const LaunchPipeline = ({ pipeline, computeEnvs }: TProps) => {
 								<AlertDescription>{submissionError}</AlertDescription>
 							</Alert>
 						)}
+
+						{(submissionStatus === SubmissionStatus.Idle || submissionStatus == SubmissionStatus.Failed) &&
+							showLaunchButton && (
+								<div className="text-right">
+									<Button onClick={() => launch()}>Launch</Button>
+								</div>
+							)}
 					</div>
 				</CardContent>
 			</Card>

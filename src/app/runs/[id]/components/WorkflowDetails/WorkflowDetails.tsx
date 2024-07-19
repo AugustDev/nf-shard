@@ -1,6 +1,6 @@
 "use client"
 
-import { AnimatedIcon, Spinner } from "@/app/components"
+import { AnimatedIcon, Modal, Spinner } from "@/app/components"
 import { WorkflowStatus } from "@common/index"
 import { FaCircleCheck } from "react-icons/fa6"
 import { MdCancel } from "react-icons/md"
@@ -8,6 +8,9 @@ import { MdCancel } from "react-icons/md"
 import { clsx } from "clsx"
 import { CodeText } from ".."
 import { AiOutlineLoading3Quarters } from "react-icons/ai"
+import { ComputeEnvironment, ProcessKeys } from "@prisma/client"
+import { Button } from "@/components/ui/button"
+import { useState } from "react"
 
 type WorkflowDetailsProps = {
 	runName: string
@@ -18,9 +21,41 @@ type WorkflowDetailsProps = {
 	errorMessage?: string | null
 	exitStatus: number | null
 	errorReport?: string | null
+	processKey?: ProcessKeys | null
 }
 
 export const WorkflowDetails = (props: WorkflowDetailsProps) => {
+	const [terminateWorkflow, setTerminateWorkflow] = useState<boolean>(false)
+
+	const stopProcess = async () => {
+		if (!props.processKey) {
+			return
+		}
+
+		const computeEnv: ComputeEnvironment = (props.processKey as any).computeEnvironment
+		const body = {
+			process_id: props.processKey.processKey,
+			executor: props.processKey.executor,
+		}
+
+		try {
+			await fetch(`${computeEnv.orchestrator_endpoint}/v1/stop`, {
+				method: "POST",
+				body: JSON.stringify(body),
+				cache: "no-store",
+				headers: {
+					Authorization: `Bearer ${computeEnv.orchestrator_token}`,
+				},
+			})
+			console.log("stopping process key", props.processKey)
+		} catch (error) {
+			console.log(props.processKey)
+			console.error(error)
+		}
+
+		setTerminateWorkflow(false)
+	}
+
 	return (
 		<div className={clsx("bg-white py-8 px-8 rounded-md shadow-sm ring-1 ring-gray-900/5", props.className)}>
 			<div className="flex flex-row items-center">
@@ -36,13 +71,20 @@ export const WorkflowDetails = (props: WorkflowDetailsProps) => {
 					<MdCancel className="h-10 w-10 text-red-500 mr-4" aria-hidden="true" />
 				)}
 
-				<div className="flex flex-col items-end">
-					<div className="font-medium text-2xl pr-4 text-black">
-						<div>{props.runName}</div>
+				<div className="flex flex-row items-center justify-between w-full">
+					<div className="flex flex-col items-start">
+						<div className="font-medium text-xl text-black">
+							<div>{props.runName}</div>
+						</div>
+						<div className="font-medium text-sm text-gray-500">
+							{props.workflowName} {props.projectName}
+						</div>
 					</div>
-					<div className="font-medium text-xl pr-4 text-gray-500">
-						{props.workflowName} {props.projectName}
-					</div>
+					{props.status == WorkflowStatus.RUNNING && props.processKey?.executor !== "float" && (
+						<Button variant="destructive" onClick={() => setTerminateWorkflow(true)}>
+							Stop
+						</Button>
+					)}
 				</div>
 			</div>
 
@@ -58,6 +100,26 @@ export const WorkflowDetails = (props: WorkflowDetailsProps) => {
 					</div>
 				</div>
 			)}
+
+			<Modal open={terminateWorkflow} setOpen={setTerminateWorkflow}>
+				<div>
+					<div className="text-center">
+						<div className="mt-2 text-left">
+							<p className="text-md text-black">Terminate run?</p>
+							<p className="text-xs text-black">Termination is irreversible.</p>
+						</div>
+					</div>
+				</div>
+				<div className="mt-5 ">
+					<button
+						type="button"
+						className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+						onClick={stopProcess}
+					>
+						Terminate
+					</button>
+				</div>
+			</Modal>
 		</div>
 	)
 }

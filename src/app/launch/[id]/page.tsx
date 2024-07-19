@@ -1,7 +1,6 @@
-import { Main } from "@/app/launch/components/Main"
 import { prisma } from "@/services"
-import { Pipeline } from "@prisma/client"
 import { LaunchPipeline } from "@/app/launch/[id]/components/LaunchPipeline"
+import { CreateProcessKey } from "../actions/ProcessKeys"
 
 export default async function Page({ params }: { params: { id: string } }) {
 	const { pipeline, computeEnvs } = await getData(params.id)
@@ -10,7 +9,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 		return <div>Could not find the pipeline</div>
 	}
 
-	return <LaunchPipeline pipeline={pipeline} computeEnvs={computeEnvs} />
+	return <LaunchPipeline createProcessKey={CreateProcessKey} pipeline={pipeline} computeEnvs={computeEnvs} />
 }
 
 const getData = async (id: string) => {

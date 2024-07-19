@@ -57,8 +57,8 @@ export const Main = ({ deletePipeline, pipelines }: TProps) => {
 							<TableRow>
 								<TableHead>Launch</TableHead>
 								<TableHead>Name</TableHead>
-								<TableHead>Description</TableHead>
 								<TableHead>Repository</TableHead>
+								<TableHead>Description</TableHead>
 								<TableHead>Actions</TableHead>
 							</TableRow>
 						</TableHeader>
@@ -73,10 +73,10 @@ export const Main = ({ deletePipeline, pipelines }: TProps) => {
 										</Link>
 									</TableCell>
 									<TableCell className="font-medium">{pipeline.name}</TableCell>
-									<TableCell className="font-normal">{pipeline.description}</TableCell>
 									<TableCell>
-										<Badge variant="outline">{pipeline.github_url}</Badge>
+										<Badge variant="outline">{pipeline.github_url.replace("https://", "")}</Badge>
 									</TableCell>
+									<TableCell className="font-normal">{pipeline.description}</TableCell>
 									<TableCell>
 										<DropdownMenu>
 											<DropdownMenuTrigger asChild>

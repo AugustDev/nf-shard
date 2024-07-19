@@ -16,13 +16,29 @@ export type TParameter = {
 }
 
 export const Run = async (computeEnv: ComputeEnvironment, data: TRunRequest) => {
-	return await fetch(`${computeEnv.orchestrator_endpoint}/v1/run`, {
-		method: "POST",
-		body: JSON.stringify(data),
-		headers: {
-			Authorization: `Bearer ${computeEnv.orchestrator_token}`,
-		},
-	})
+	const timeout = 120000
+	const controller = new AbortController()
+	const id = setTimeout(() => controller.abort(), timeout)
+
+	try {
+		const response = await fetch(`${computeEnv.orchestrator_endpoint}/v1/run`, {
+			method: "POST",
+			body: JSON.stringify(data),
+			headers: {
+				Authorization: `Bearer ${computeEnv.orchestrator_token}`,
+			},
+			signal: controller.signal,
+		})
+
+		clearTimeout(id)
+		return response
+	} catch (error) {
+		clearTimeout(id)
+		if ((error as Error).name === "AbortError") {
+			throw new Error("Request timed out")
+		}
+		throw error
+	}
 }
 
 export const Health = async (computeEnv: ComputeEnvironment) => {
