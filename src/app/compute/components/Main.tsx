@@ -63,7 +63,7 @@ export const Main = (props: TProps) => {
 			<div className="ml-auto flex items-center gap-2">
 				<Button size="sm" className="h-8 gap-1" onClick={() => setOpen(true)}>
 					<PlusCircle className="h-3.5 w-3.5" />
-					<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Create</span>
+					<span className="whitespace-nowrap">Create</span>
 				</Button>
 				<Dialog open={open} onOpenChange={setOpen}>
 					<NewComputeEnvironment close={() => {}} createComputeEnv={createComputeEnvironment} />
@@ -97,7 +97,7 @@ export const Main = (props: TProps) => {
 												</Button>
 											</DropdownMenuTrigger>
 											<DropdownMenuContent align="end">
-												<DropdownMenuItem>Edit</DropdownMenuItem>
+												{/* <DropdownMenuItem>Edit</DropdownMenuItem> */}
 												<DropdownMenuItem onClick={() => deleteComputeEnvironment(environment.id)}>
 													Delete
 												</DropdownMenuItem>

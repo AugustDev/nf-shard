@@ -33,13 +33,13 @@ export const Main = ({ deletePipeline, pipelines }: TProps) => {
 			<div className="ml-auto flex items-center gap-2">
 				<Link href="/compute">
 					<Button size="sm" className="h-8 gap-1">
-						<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Compute Environments</span>
+						<span className="whitespace-nowrap">Compute Environments</span>
 					</Button>
 				</Link>
 				<Link href="/pipeline/create">
 					<Button size="sm" className="h-8 gap-1">
 						<PlusCircle className="h-3.5 w-3.5" />
-						<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Add Pipeline</span>
+						<span className="whitespace-nowrap">Add Pipeline</span>
 					</Button>
 				</Link>
 			</div>
