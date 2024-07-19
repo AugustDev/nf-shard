@@ -1,7 +1,7 @@
 "use client"
 
 import { toast } from "react-hot-toast"
-import { Progress, Task, Workflow, Workspace } from "@prisma/client"
+import { ProcessKeys, Progress, Task, Workflow, Workspace } from "@prisma/client"
 import {
 	AggregateStats,
 	CodeText,
@@ -28,6 +28,7 @@ type PageProps = {
 	tasks: Task[]
 	progress?: Progress | null
 	workspace?: Workspace | null
+	processsKey?: ProcessKeys | null
 }
 
 export const MainRun = (props: PageProps) => {
@@ -133,6 +134,7 @@ export const MainRun = (props: PageProps) => {
 				errorMessage={workflow.errorMessage}
 				exitStatus={workflow.exitStatus}
 				errorReport={workflow.errorReport}
+				processKey={props.processsKey}
 			/>
 
 			<Tabs tabs={tabs} className="py-5 px-5" panelClassName="max-h-96" />

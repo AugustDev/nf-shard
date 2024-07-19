@@ -156,6 +156,11 @@ declare global {
 			machineType?: string
 			priceModel?: string
 		}
+
+		export type TComputeEnvOverride = {
+			name: string
+			content: string
+		}
 	}
 }
 

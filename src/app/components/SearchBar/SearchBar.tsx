@@ -19,7 +19,7 @@ export const SearchBar = ({ tags, addTag, removeTag }: SearchProps) => {
 
 	return (
 		<>
-			<div className="bg-white border border-gray-300 rounded-md pl-2 py-1 mx-4 md:mx-0">
+			<div className="bg-white border border-gray-300 rounded-md py-2 px-4">
 				<ul className="inline-flex flex-wrap content-center items-center w-full">
 					{tags.map((tag, i) => (
 						<SearchTag key={i} tag={tag} onRemoveClick={removeTag} />

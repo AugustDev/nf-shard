@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x", "rhel-openssl-1.0.x"]
 }
 
@@ -13,10 +13,10 @@ datasource db {
 }
 
 model Workflow {
-  id              String                   @id
+  id              String    @id
   start           DateTime?
   complete        DateTime?
-  updatedAt       DateTime                 @default(now()) @updatedAt
+  updatedAt       DateTime  @default(now()) @updatedAt
   projectDir      String
   profile         String
   homeDir         String
@@ -61,20 +61,19 @@ model Workflow {
   tasks           Task[]
 
   // nf-shard specific
-  searchable String?
-  tags String[]
-  workspace Workspace? @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  searchable  String?
+  tags        String[]
+  workspace   Workspace? @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
   workspaceId Int?
 
   @@index([id, updatedAt, projectName, runName, userName, tags, workspaceId])
   @@index([searchable(ops: raw("gin_trgm_ops"))], type: Gin, name: "searchable_idx")
-
 }
 
 model Workspace {
-  id         Int  @id @default(autoincrement())
-  name       String
-  workflows  Workflow[]
+  id        Int        @id @default(autoincrement())
+  name      String
+  workflows Workflow[]
 
   @@index([id], type: Hash)
 }
@@ -120,9 +119,42 @@ model Task {
 }
 
 model AppSettings {
-	id         Int      @id @default(autoincrement())
-	base_url	 String?
-	slack_webhook_url String?
-	slack_notification_events String[]
-	slack_notifications_enabled Boolean @default(false)
+  id                          Int      @id @default(autoincrement())
+  base_url                    String?
+  slack_webhook_url           String?
+  slack_notification_events   String[]
+  slack_notifications_enabled Boolean  @default(false)
+}
+
+model ComputeEnvironment {
+  id                    Int           @id @default(autoincrement())
+  name                  String
+  description           String?
+  is_deleted            Boolean       @default(false)
+  orchestrator_endpoint String
+  orchestrator_token    String
+  executor              String
+  ProcessKeys           ProcessKeys[]
+}
+
+model Pipeline {
+  id                String @id @unique @default(cuid())
+  name              String
+  description       String
+  github_url        String
+  /// [ComputeEnvOverride]
+  compute_overrides Json?
+  run_params        Json?
+}
+
+model ProcessKeys {
+  id         Int    @id @default(autoincrement())
+  processKey String
+  executor   String
+  runName    String
+
+  computeEnvironment   ComputeEnvironment? @relation(fields: [computeEnvironmentId], references: [id], onDelete: SetNull)
+  computeEnvironmentId Int?
+
+  @@index([runName])
 }
