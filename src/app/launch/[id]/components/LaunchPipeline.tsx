@@ -138,7 +138,7 @@ export const LaunchPipeline = ({ pipeline, computeEnvs, createProcessKey }: TPro
 				},
 				{
 					url: `${selectedComputeEnv.orchestrator_endpoint}/query`,
-					token: `Bearer ${selectedComputeEnv.orchestrator_token}`,
+					token: `${selectedComputeEnv.orchestrator_token}`,
 				}
 			)
 

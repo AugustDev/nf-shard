@@ -51,7 +51,7 @@ export const WorkflowDetails = (props: WorkflowDetailsProps) => {
 				},
 				{
 					url: `${computeEnv.orchestrator_endpoint}/query`,
-					token: `Bearer ${computeEnv.orchestrator_token}`,
+					token: `${computeEnv.orchestrator_token}`,
 				}
 			)
 
