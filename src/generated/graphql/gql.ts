@@ -13,7 +13,7 @@ import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-	"mutation RunJob($command: RunJobCommand!) {\n  runJob(input: $command) {\n    status\n    processKey\n    executor\n    runName\n  }\n}\n\nmutation TerminateJob($command: TerminateJobCommand!) {\n  terminateJob(input: $command)\n}\n\nquery Health {\n  healthCheck\n}\n\nquery StatusCheck {\n  checkStatus\n}":
+	"mutation RunJob($command: RunJobCommand!) {\n  runJob(input: $command) {\n    status\n    processKey\n    executor\n    runName\n  }\n}\n\nmutation TerminateJob($command: TerminateJobCommand!) {\n  terminateJob(input: $command)\n}\n\nquery Health {\n  healthCheck\n}\n\nquery StatusCheck {\n  checkStatus\n}\n\nsubscription StreamLogs($runName: String!) {\n  streamLogs(runName: $runName) {\n    message\n    timestamp\n  }\n}":
 		types.RunJobDocument,
 }
 
@@ -35,8 +35,8 @@ export function graphql(source: string): unknown
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-	source: "mutation RunJob($command: RunJobCommand!) {\n  runJob(input: $command) {\n    status\n    processKey\n    executor\n    runName\n  }\n}\n\nmutation TerminateJob($command: TerminateJobCommand!) {\n  terminateJob(input: $command)\n}\n\nquery Health {\n  healthCheck\n}\n\nquery StatusCheck {\n  checkStatus\n}"
-): (typeof documents)["mutation RunJob($command: RunJobCommand!) {\n  runJob(input: $command) {\n    status\n    processKey\n    executor\n    runName\n  }\n}\n\nmutation TerminateJob($command: TerminateJobCommand!) {\n  terminateJob(input: $command)\n}\n\nquery Health {\n  healthCheck\n}\n\nquery StatusCheck {\n  checkStatus\n}"]
+	source: "mutation RunJob($command: RunJobCommand!) {\n  runJob(input: $command) {\n    status\n    processKey\n    executor\n    runName\n  }\n}\n\nmutation TerminateJob($command: TerminateJobCommand!) {\n  terminateJob(input: $command)\n}\n\nquery Health {\n  healthCheck\n}\n\nquery StatusCheck {\n  checkStatus\n}\n\nsubscription StreamLogs($runName: String!) {\n  streamLogs(runName: $runName) {\n    message\n    timestamp\n  }\n}"
+): (typeof documents)["mutation RunJob($command: RunJobCommand!) {\n  runJob(input: $command) {\n    status\n    processKey\n    executor\n    runName\n  }\n}\n\nmutation TerminateJob($command: TerminateJobCommand!) {\n  terminateJob(input: $command)\n}\n\nquery Health {\n  healthCheck\n}\n\nquery StatusCheck {\n  checkStatus\n}\n\nsubscription StreamLogs($runName: String!) {\n  streamLogs(runName: $runName) {\n    message\n    timestamp\n  }\n}"]
 
 export function graphql(source: string) {
 	return (documents as any)[source] ?? {}

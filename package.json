@@ -74,6 +74,7 @@
 		"tailwindcss": "3.3.3",
 		"tailwindcss-animate": "^1.0.7",
 		"typescript": "5.1.6",
+		"unique-names-generator": "^4.7.1",
 		"urql": "^4.1.0",
 		"zod": "^3.23.8"
 	},

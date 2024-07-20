@@ -18,3 +18,10 @@ query Health {
 query StatusCheck {
 	checkStatus
 }
+
+subscription StreamLogs($runName: String!) {
+	streamLogs(runName: $runName) {
+		message
+		timestamp
+	}
+}

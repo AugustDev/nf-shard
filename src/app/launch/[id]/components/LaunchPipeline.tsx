@@ -16,9 +16,44 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Terminal } from "lucide-react"
 import confetti from "canvas-confetti"
 import { Spinner } from "@/app/components/Spinner/Spinner"
-import { useQuery } from "urql"
-import { HealthDocument, RunJobDocument, StatusCheckDocument } from "@/generated/graphql/graphql"
+import { useQuery, useSubscription } from "urql"
+import { Log, RunJobDocument, StatusCheckDocument, StreamLogsDocument } from "@/generated/graphql/graphql"
 import { useMutationWithContext } from "@/common/urql"
+import { LogsContainer } from "@/app/components/LogsContainer/LogsContainer"
+import { uniqueNamesGenerator, Config, adjectives, animals, names } from "unique-names-generator"
+
+const extraNames = [
+	"ravi",
+	"solanki",
+	"augustinas",
+	"malinauskas",
+	"jay",
+	"ganbat",
+	"christoforos",
+	"nalmpantis",
+	"hannah",
+	"thompson",
+	"maxence",
+	"lam",
+	"robert",
+	"pouya",
+	"yanki",
+	"yangi",
+	"arif",
+	"surani",
+	"ben",
+	"fredericka",
+	"luccas",
+	"husam",
+	"jonathan",
+	"wan",
+	"tim",
+]
+const customConfig: Config = {
+	dictionaries: [adjectives, [...animals, ...names, ...extraNames]],
+	separator: "-",
+	length: 2,
+}
 
 type TProps = {
 	pipeline: Pipeline
@@ -56,10 +91,16 @@ export const LaunchPipeline = ({ pipeline, computeEnvs, createProcessKey }: TPro
 	const [computeEnvStatus, setComputeEnvStatus] = useState<{ status?: boolean; message?: string }>({
 		status: undefined,
 	})
+	const [runName, setRunName] = useState<string>("")
 	const [runParams, setRunParams] = useState<TKVArg[]>(pipeline.run_params as TKVArg[])
 	const [nextflowCommand, setNextflowCommand] = useState<string>("")
 	const [_, runJobMutation] = useMutationWithContext(RunJobDocument)
 	const [result, executeHealthQuery] = useQuery({ query: StatusCheckDocument, pause: true })
+	const [newLogSub] = useSubscription({
+		query: StreamLogsDocument,
+		variables: { runName: runName },
+	})
+	const [logs, setLogs] = useState<Log[]>([])
 
 	useEffect(() => {
 		if (result.data) {
@@ -70,6 +111,15 @@ export const LaunchPipeline = ({ pipeline, computeEnvs, createProcessKey }: TPro
 			setComputeEnvStatus({ status: false, message: result.error.message })
 		}
 	}, [result, executeHealthQuery])
+
+	useEffect(() => {
+		console.log("sub")
+		if (newLogSub.data) {
+			const log = newLogSub.data.streamLogs
+			setLogs((prev) => [...prev, log])
+			console.log(log)
+		}
+	}, [newLogSub, runName])
 
 	const validRunParams = runParams.filter(validateKVArg).filter((item) => item.value !== "" && !item.flag)
 
@@ -125,9 +175,14 @@ export const LaunchPipeline = ({ pipeline, computeEnvs, createProcessKey }: TPro
 		try {
 			setSubmissionStatus(SubmissionStatus.Loading)
 
+			const runName: string = uniqueNamesGenerator(customConfig)
+			setRunName(runName)
+			setLogs([])
+
 			const res = await runJobMutation(
 				{
 					command: {
+						runName: runName,
 						pipelineUrl: pipeline.github_url,
 						executor: {
 							name: selectedComputeEnv.executor,
@@ -189,14 +244,6 @@ export const LaunchPipeline = ({ pipeline, computeEnvs, createProcessKey }: TPro
 		const full = `${command} ${args.join(" \\\n")}`
 		setNextflowCommand(full)
 	}, [pipeline, runParams])
-
-	const handleClick = () => {
-		confetti({
-			particleCount: 100,
-			spread: 70,
-			origin: { y: 0.6 },
-		})
-	}
 
 	return (
 		<div>
@@ -302,9 +349,10 @@ export const LaunchPipeline = ({ pipeline, computeEnvs, createProcessKey }: TPro
 									</Link>
 									. Float jobs may take up to 5 minutes to appear.{" "}
 									<span
-										className="hover:underline hover:cursor-pointer"
+										className="underline hover:cursor-pointer"
 										onClick={() => {
 											setSubmissionStatus(SubmissionStatus.Idle)
+											setLogs([])
 										}}
 									>
 										Run another job.
@@ -328,6 +376,8 @@ export const LaunchPipeline = ({ pipeline, computeEnvs, createProcessKey }: TPro
 								<AlertDescription>{submissionError}</AlertDescription>
 							</Alert>
 						)}
+
+						{logs.length > 0 && <LogsContainer logs={logs} />}
 
 						{(submissionStatus === SubmissionStatus.Idle || submissionStatus == SubmissionStatus.Failed) &&
 							showLaunchButton && (

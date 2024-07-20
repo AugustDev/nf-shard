@@ -21,6 +21,12 @@ export type Executor = {
 	name: Scalars["String"]["input"]
 }
 
+export type Log = {
+	__typename?: "Log"
+	message: Scalars["String"]["output"]
+	timestamp: Scalars["String"]["output"]
+}
+
 export type Mutation = {
 	__typename?: "Mutation"
 	runJob: RunJobResponse
@@ -51,6 +57,7 @@ export type RunJobCommand = {
 	executor: Executor
 	parameters: Array<Parameter>
 	pipelineUrl: Scalars["String"]["input"]
+	runName: Scalars["String"]["input"]
 }
 
 export type RunJobResponse = {
@@ -59,6 +66,15 @@ export type RunJobResponse = {
 	processKey: Scalars["String"]["output"]
 	runName: Scalars["String"]["output"]
 	status: Scalars["Boolean"]["output"]
+}
+
+export type Subscription = {
+	__typename?: "Subscription"
+	streamLogs: Log
+}
+
+export type SubscriptionStreamLogsArgs = {
+	runName: Scalars["String"]["input"]
 }
 
 export type TerminateJobCommand = {
@@ -88,6 +104,15 @@ export type HealthQuery = { __typename: "Query"; healthCheck: boolean }
 export type StatusCheckQueryVariables = Exact<{ [key: string]: never }>
 
 export type StatusCheckQuery = { __typename: "Query"; checkStatus: boolean }
+
+export type StreamLogsSubscriptionVariables = Exact<{
+	runName: Scalars["String"]["input"]
+}>
+
+export type StreamLogsSubscription = {
+	__typename?: "Subscription"
+	streamLogs: { __typename: "Log"; message: string; timestamp: string }
+}
 
 export const RunJobDocument = {
 	__meta__: { hash: "530ffa54a7abf6340303b02a1595195360d7c8d1" },
@@ -208,3 +233,45 @@ export const StatusCheckDocument = {
 		},
 	],
 } as unknown as DocumentNode<StatusCheckQuery, StatusCheckQueryVariables>
+export const StreamLogsDocument = {
+	__meta__: { hash: "fa259b288d825a01bed0817a3b8d85d76c2faf62" },
+	kind: "Document",
+	definitions: [
+		{
+			kind: "OperationDefinition",
+			operation: "subscription",
+			name: { kind: "Name", value: "StreamLogs" },
+			variableDefinitions: [
+				{
+					kind: "VariableDefinition",
+					variable: { kind: "Variable", name: { kind: "Name", value: "runName" } },
+					type: { kind: "NonNullType", type: { kind: "NamedType", name: { kind: "Name", value: "String" } } },
+				},
+			],
+			selectionSet: {
+				kind: "SelectionSet",
+				selections: [
+					{
+						kind: "Field",
+						name: { kind: "Name", value: "streamLogs" },
+						arguments: [
+							{
+								kind: "Argument",
+								name: { kind: "Name", value: "runName" },
+								value: { kind: "Variable", name: { kind: "Name", value: "runName" } },
+							},
+						],
+						selectionSet: {
+							kind: "SelectionSet",
+							selections: [
+								{ kind: "Field", name: { kind: "Name", value: "__typename" } },
+								{ kind: "Field", name: { kind: "Name", value: "message" } },
+								{ kind: "Field", name: { kind: "Name", value: "timestamp" } },
+							],
+						},
+					},
+				],
+			},
+		},
+	],
+} as unknown as DocumentNode<StreamLogsSubscription, StreamLogsSubscriptionVariables>
