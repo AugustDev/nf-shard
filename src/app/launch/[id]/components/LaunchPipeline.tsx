@@ -16,8 +16,8 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Terminal } from "lucide-react"
 import confetti from "canvas-confetti"
 import { Spinner } from "@/app/components/Spinner/Spinner"
-import { createClient, createRequest, useQuery } from "urql"
-import { HealthDocument, HealthQuery, RunJobDocument } from "@/generated/graphql/graphql"
+import { useQuery } from "urql"
+import { HealthDocument, RunJobDocument, StatusCheckDocument } from "@/generated/graphql/graphql"
 import { useMutationWithContext } from "@/common/urql"
 
 type TProps = {
@@ -59,8 +59,7 @@ export const LaunchPipeline = ({ pipeline, computeEnvs, createProcessKey }: TPro
 	const [runParams, setRunParams] = useState<TKVArg[]>(pipeline.run_params as TKVArg[])
 	const [nextflowCommand, setNextflowCommand] = useState<string>("")
 	const [_, runJobMutation] = useMutationWithContext(RunJobDocument)
-	const [result, executeHealthQuery] = useQuery({ query: HealthDocument, pause: true })
-	// const client = useClient()
+	const [result, executeHealthQuery] = useQuery({ query: StatusCheckDocument, pause: true })
 
 	useEffect(() => {
 		if (result.data) {

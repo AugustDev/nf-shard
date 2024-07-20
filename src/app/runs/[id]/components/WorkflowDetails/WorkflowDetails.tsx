@@ -10,9 +10,9 @@ import { CodeText } from ".."
 import { AiOutlineLoading3Quarters } from "react-icons/ai"
 import { ComputeEnvironment, ProcessKeys } from "@prisma/client"
 import { Button } from "@/components/ui/button"
-import { useMemo, useState } from "react"
-import { useMutation, useQuery } from "urql"
+import { useState } from "react"
 import { TerminateJobDocument } from "@/generated/graphql/graphql"
+import { useMutationWithContext } from "@/common/urql"
 
 type WorkflowDetailsProps = {
 	runName: string
@@ -28,7 +28,7 @@ type WorkflowDetailsProps = {
 
 export const WorkflowDetails = (props: WorkflowDetailsProps) => {
 	const [terminateWorkflow, setTerminateWorkflow] = useState<boolean>(false)
-	const [_, terminateJobMutation] = useMutation(TerminateJobDocument)
+	const [_, terminateJobMutation] = useMutationWithContext(TerminateJobDocument)
 
 	const stopProcess = async () => {
 		if (!props.processKey) {
@@ -42,21 +42,19 @@ export const WorkflowDetails = (props: WorkflowDetailsProps) => {
 		}
 
 		try {
-			terminateJobMutation({
-				command: {
-					processKey: props.processKey.processKey,
-					executor: props.processKey.executor,
+			terminateJobMutation(
+				{
+					command: {
+						processKey: props.processKey.processKey,
+						executor: props.processKey.executor,
+					},
 				},
-			})
+				{
+					url: `${computeEnv.orchestrator_endpoint}/query`,
+					token: `Bearer ${computeEnv.orchestrator_token}`,
+				}
+			)
 
-			await fetch(`${computeEnv.orchestrator_endpoint}/v1/stop`, {
-				method: "POST",
-				body: JSON.stringify(body),
-				cache: "no-store",
-				headers: {
-					Authorization: `Bearer ${computeEnv.orchestrator_token}`,
-				},
-			})
 			console.log("stopping process key", props.processKey)
 		} catch (error) {
 			console.log(props.processKey)
