@@ -4,12 +4,12 @@ import { Client, Provider, cacheExchange, fetchExchange, subscriptionExchange } 
 
 import { SubscriptionClient } from "subscriptions-transport-ws"
 
-const wsClient = new SubscriptionClient("ws://localhost:4001/query", {
+const wsClient = new SubscriptionClient("wss://server.cfdx.subj.org/query", {
 	reconnect: true,
 })
 
 export const client = new Client({
-	url: "https://server.cfdx.subj.org/query",
+	url: "http://localhost:4002/query",
 	exchanges: [
 		// cacheExchange,
 		fetchExchange,
