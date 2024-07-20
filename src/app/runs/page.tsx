@@ -1,4 +1,3 @@
-import { prisma } from "@/services/prisma/prisma"
 import { Workflow, Workspace } from "@prisma/client"
 import { Main } from "./components/Main"
 import { getAllWorkspaces, searchWorkflows } from "@/services/prisma"

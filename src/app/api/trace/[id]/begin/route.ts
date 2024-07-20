@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/services/prisma/prisma"
 import { BeginRunRequest } from "./types"
-import { GetSettings } from "@/services/prisma"
 
 export async function PUT(request: NextRequest, { params }: any) {
 	const id = params.id
