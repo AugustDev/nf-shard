@@ -1,0 +1,7 @@
+{
+	"530ffa54a7abf6340303b02a1595195360d7c8d1": "mutation RunJob($command: RunJobCommand!) { __typename runJob(input: $command) { __typename executor processKey runName status } }",
+	"c079354d332830cbd3e3423be21b5287dfbfa506": "mutation TerminateJob($command: TerminateJobCommand!) { __typename terminateJob(input: $command) }",
+	"0ce029cdb22e1c818c94d4b9e492821d8325c141": "query Health { __typename healthCheck }",
+	"ae3a7643b1de8baff664c20a01ca88d924fb752c": "query StatusCheck { __typename checkStatus }",
+	"fa259b288d825a01bed0817a3b8d85d76c2faf62": "subscription StreamLogs($runName: String!) { streamLogs(runName: $runName) { __typename message timestamp } }"
+}

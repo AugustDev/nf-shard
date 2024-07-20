@@ -11,7 +11,6 @@ type TaskDetailsProps = {
 }
 
 export const TaskDetails = ({ task }: TaskDetailsProps) => {
-	console.log(task.id)
 	return (
 		<div className="text-black">
 			{task.data.executor === "float" && (

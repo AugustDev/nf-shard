@@ -112,11 +112,7 @@ export const RunsTable: React.FC<RunsTableProps> = ({
 			next={fetchMoreData}
 			hasMore={pageInfo.hasNextPage} // Replace with a condition to check if there's more data to load
 			loader={<h4>Loading...</h4>}
-			endMessage={
-				<p>
-					<b>End of runs</b>
-				</p>
-			}
+			endMessage={<p className="text-xs">End of runs</p>}
 		>
 			<Table
 				className="pt-3"

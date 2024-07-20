@@ -52,7 +52,10 @@ export const General: React.FC<GeneralProps> = ({ workflow, workspace }: General
 						<FaGithub className="h-6 w-5 text-gray-400" aria-hidden="true" />
 					</dt>
 					<dd className="text-sm leading-6 text-gray-500">
-						{workflow.repository} {workflow.revision && <span>({workflow.revision})</span>}
+						<Link className="hover:underline" target="_blank" href={workflow.repository}>
+							{workflow.repository}
+						</Link>
+						{workflow.revision && <span>({workflow.revision})</span>}
 					</dd>
 				</div>
 			)}
@@ -76,12 +79,14 @@ export const General: React.FC<GeneralProps> = ({ workflow, workspace }: General
 					<dd className="text-sm leading-6 text-gray-500">{workflow.container}</dd>
 				</div>
 			)}
-			<div className="mt-4 flex w-full flex-none gap-x-4">
-				<dt className="flex-none">
-					<PiEngineLight className="h-6 w-5 text-gray-400" aria-hidden="true" />
-				</dt>
-				<dd className="text-sm leading-6 text-gray-500">{executor}</dd>
-			</div>
+			{executor !== null && (
+				<div className="mt-4 flex w-full flex-none gap-x-4">
+					<dt className="flex-none">
+						<PiEngineLight className="h-6 w-5 text-gray-400" aria-hidden="true" />
+					</dt>
+					<dd className="text-sm leading-6 text-gray-500">{executor}</dd>
+				</div>
+			)}
 			<div className="mt-4 flex w-full flex-none gap-x-4">
 				<dt className="flex-none">
 					<BuildingLibraryIcon className="h-6 w-5 text-gray-400" aria-hidden="true" />
