@@ -10,7 +10,9 @@ import { CodeText } from ".."
 import { AiOutlineLoading3Quarters } from "react-icons/ai"
 import { ComputeEnvironment, ProcessKeys } from "@prisma/client"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { useMemo, useState } from "react"
+import { useMutation, useQuery } from "urql"
+import { TerminateJobDocument } from "@/generated/graphql/graphql"
 
 type WorkflowDetailsProps = {
 	runName: string
@@ -26,6 +28,7 @@ type WorkflowDetailsProps = {
 
 export const WorkflowDetails = (props: WorkflowDetailsProps) => {
 	const [terminateWorkflow, setTerminateWorkflow] = useState<boolean>(false)
+	const [_, terminateJobMutation] = useMutation(TerminateJobDocument)
 
 	const stopProcess = async () => {
 		if (!props.processKey) {
@@ -39,6 +42,13 @@ export const WorkflowDetails = (props: WorkflowDetailsProps) => {
 		}
 
 		try {
+			terminateJobMutation({
+				command: {
+					processKey: props.processKey.processKey,
+					executor: props.processKey.executor,
+				},
+			})
+
 			await fetch(`${computeEnv.orchestrator_endpoint}/v1/stop`, {
 				method: "POST",
 				body: JSON.stringify(body),

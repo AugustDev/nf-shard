@@ -4,19 +4,21 @@ import React, { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import { ComputeEnvironment, Pipeline } from "@prisma/client"
 import { FaCheckCircle, FaGithub, FaTimes } from "react-icons/fa"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Input } from "@/components/ui/input"
 import { TKVArg } from "@/app/pipeline/types"
 import { CodeText } from "@/app/runs/[id]/components/BashCode/CodeText"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Health, Run, TParameter, TRunRequest } from "@/services/orchestrator/orchestrator"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Terminal } from "lucide-react"
 import confetti from "canvas-confetti"
 import { Spinner } from "@/app/components/Spinner/Spinner"
+import { createClient, createRequest, useQuery } from "urql"
+import { HealthDocument, HealthQuery, RunJobDocument } from "@/generated/graphql/graphql"
+import { useMutationWithContext } from "@/common/urql"
 
 type TProps = {
 	pipeline: Pipeline
@@ -56,6 +58,19 @@ export const LaunchPipeline = ({ pipeline, computeEnvs, createProcessKey }: TPro
 	})
 	const [runParams, setRunParams] = useState<TKVArg[]>(pipeline.run_params as TKVArg[])
 	const [nextflowCommand, setNextflowCommand] = useState<string>("")
+	const [_, runJobMutation] = useMutationWithContext(RunJobDocument)
+	const [result, executeHealthQuery] = useQuery({ query: HealthDocument, pause: true })
+	// const client = useClient()
+
+	useEffect(() => {
+		if (result.data) {
+			setComputeEnvStatus({ status: true, message: "" })
+		}
+
+		if (result.error) {
+			setComputeEnvStatus({ status: false, message: result.error.message })
+		}
+	}, [result, executeHealthQuery])
 
 	const validRunParams = runParams.filter(validateKVArg).filter((item) => item.value !== "" && !item.flag)
 
@@ -76,12 +91,18 @@ export const LaunchPipeline = ({ pipeline, computeEnvs, createProcessKey }: TPro
 	}, [runParams, selectedComputeEnv, computeEnvStatus])
 
 	const checkHealth = async () => {
-		if (selectedComputeEnv === null) {
+		if (!selectedComputeEnv) {
 			return
 		}
 
-		const health = await Health(selectedComputeEnv)
-		setComputeEnvStatus(health)
+		executeHealthQuery({
+			url: `${selectedComputeEnv.orchestrator_endpoint}/query`,
+			fetchOptions: {
+				headers: {
+					Authorization: `Bearer ${selectedComputeEnv.orchestrator_token}`,
+				},
+			},
+		})
 	}
 
 	useEffect(() => {
@@ -93,38 +114,42 @@ export const LaunchPipeline = ({ pipeline, computeEnvs, createProcessKey }: TPro
 			return
 		}
 
-		const params: TParameter[] = validRunParams.map((item) => ({
+		const params = validRunParams.map((item) => ({
 			key: item.key,
 			value: item.value,
-			is_flag: item.flag,
+			isFlag: item.flag,
 		}))
 
 		const computeOverride: string =
 			pipeline.compute_overrides.find((item: any) => item.name === selectedComputeEnv.executor)?.content ?? ""
 
-		const req: TRunRequest = {
-			pipeline_url: pipeline.github_url,
-			executor: {
-				name: selectedComputeEnv.executor,
-				compute_override: computeOverride,
-			},
-			parameters: params,
-		}
-
 		try {
 			setSubmissionStatus(SubmissionStatus.Loading)
-			const res = await Run(selectedComputeEnv, req)
 
-			if (!res.ok) {
-				const errorText = await res.text()
-				setSubmissionError(errorText.trim())
-				setSubmissionStatus(SubmissionStatus.Failed)
-			}
+			const res = await runJobMutation(
+				{
+					command: {
+						pipelineUrl: pipeline.github_url,
+						executor: {
+							name: selectedComputeEnv.executor,
+							computeOverride: computeOverride,
+						},
+						parameters: params,
+					},
+				},
+				{
+					url: `${selectedComputeEnv.orchestrator_endpoint}/query`,
+					token: `Bearer ${selectedComputeEnv.orchestrator_token}`,
+				}
+			)
 
-			if (res.ok) {
-				const resData = await res.json()
-
-				createProcessKey(resData.process_key, resData.executor, resData.run_name, selectedComputeEnv.id)
+			if (res.data) {
+				createProcessKey(
+					res.data.runJob.processKey,
+					res.data.runJob.executor,
+					res.data.runJob.runName,
+					selectedComputeEnv.id
+				)
 
 				setSubmissionStatus(SubmissionStatus.Submitted)
 
@@ -133,6 +158,11 @@ export const LaunchPipeline = ({ pipeline, computeEnvs, createProcessKey }: TPro
 					spread: 70,
 					origin: { y: 0.6 },
 				})
+			}
+
+			if (res.error) {
+				setSubmissionStatus(SubmissionStatus.Failed)
+				setSubmissionError(res.error.message)
 			}
 		} catch (error) {
 			setSubmissionStatus(SubmissionStatus.Failed)

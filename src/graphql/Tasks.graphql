@@ -1,0 +1,20 @@
+mutation RunJob($command: RunJobCommand!) {
+	runJob(input: $command) {
+		status
+		processKey
+		executor
+		runName
+	}
+}
+
+mutation TerminateJob($command: TerminateJobCommand!) {
+	terminateJob(input: $command)
+}
+
+query Health {
+	healthCheck
+}
+
+query StatusCheck {
+	checkStatus
+}

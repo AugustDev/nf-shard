@@ -9,12 +9,15 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"studio": "npx prisma studio"
+		"studio": "npx prisma studio",
+		"codegen": "graphql-codegen --config codegen.ts"
 	},
 	"dependencies": {
 		"@ant-design/cssinjs": "^1.17.2",
 		"@emotion/react": "^11.11.1",
 		"@emotion/styled": "^11.11.0",
+		"@graphql-codegen/cli": "^5.0.2",
+		"@graphql-codegen/client-preset": "^4.3.2",
 		"@headlessui/react": "^1.7.16",
 		"@heroicons/react": "^2.0.18",
 		"@hookform/resolvers": "^3.9.0",
@@ -50,6 +53,7 @@
 		"clsx": "^2.1.1",
 		"eslint": "8.46.0",
 		"eslint-config-next": "13.4.19",
+		"graphql": "^16.9.0",
 		"lucide-react": "^0.408.0",
 		"moment": "^2.29.4",
 		"nanoid": "^4.0.2",
@@ -65,10 +69,12 @@
 		"react-infinite-scroll-component": "^6.1.0",
 		"react-plotly.js": "^2.6.0",
 		"sass": "^1.66.1",
+		"subscriptions-transport-ws": "^0.11.0",
 		"tailwind-merge": "^2.4.0",
 		"tailwindcss": "3.3.3",
 		"tailwindcss-animate": "^1.0.7",
 		"typescript": "5.1.6",
+		"urql": "^4.1.0",
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {
