@@ -109,6 +109,9 @@ I was picking the a stack with large communities to maximise open source contrib
 - List of historical runs
 - Run details
 - `nf-tower` plugin compatible API.
+- Store and submit pipeline jobs from Shard UI (beta requires deploying [shard-worker](https://github.com/AugustDev/shard-worker))
+
+![image](https://github.com/user-attachments/assets/1a2a0aea-2559-4c7a-b8bb-c033da4c2c9b)
 
 ## Roadmap
 
