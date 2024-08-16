@@ -129,3 +129,7 @@ Useful during development
 docker buildx build --platform linux/amd64 -t nf-shard:semver . --load
 docker run -it nf-shard:semver /bin/sh
 ```
+
+## Author
+
+Augustinas Malinauskas
