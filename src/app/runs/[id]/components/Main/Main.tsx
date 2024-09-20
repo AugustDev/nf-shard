@@ -168,16 +168,18 @@ export const MainRun = (props: PageProps) => {
 			<div className="md:grid md:grid-cols-2 md:gap-4 pt-8 grid-cols-1">
 				<div>
 					<General workflow={workflow} workspace={props.workspace} />
+				</div>
+				<div>
 					<Utilisation
 						tasks={tasks}
 						peakCpus={workflow?.stats?.peakCpus ?? 0}
 						loadCpus={workflow?.stats?.loadCpus ?? 0}
-						className="mt-8"
 					/>
 				</div>
-				<div>
-					<div>{progress && <Processes processes={progress.processes} />}</div>
-				</div>
+			</div>
+
+			<div className="pt-8">
+				<div>{progress && <Processes processes={progress.processes} />}</div>
 			</div>
 
 			{tasks.length > 0 && <TasksTable tasks={tasks} className="mt-8" onTaskClick={setselectedTask} />}
